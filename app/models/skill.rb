@@ -11,7 +11,36 @@ class Skill < ActiveRecord::Base
   validate :static_name_matches_category_correctly!
   validate :active_skill_has_non_zero_cooldown!
 
+  belongs_to :hero
+  validates :hero, presence: true, strict: ActiveRecord::StatementInvalid
+  
   has_many :skill_atbs, dependent: :destroy
+
+  def self.search _q
+    result = Array.new
+
+    Skill.joins(:hero)
+         .where('skills.name LIKE :q', q: "%#{_q}%")
+         .select('skills.id AS skill_id,
+                  skills.name AS skill_name,
+                  skills.cooldown AS skill_cooldown,
+                  skills.category AS skill_category,
+                  heros.id AS hero_id,
+                  heros.name AS hero_name,
+                  heros.rank AS hero_rank').each do |h|
+      result.push({
+        hero_id: h.hero_id,
+        hero_name: h.hero_name,
+        hero_rank: h.hero_rank,
+        skill_id: h.skill_id,
+        skill_name: h.skill_name,
+        skill_cooldown: h.skill_cooldown,
+        skill_category: Skill.categories.keys[h.skill_category]
+      })
+    end
+
+    return result
+  end
 
   def parse
     self.static_name =~ /\_(\d)\z/
