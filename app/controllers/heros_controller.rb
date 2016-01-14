@@ -9,4 +9,8 @@ class HerosController < ApplicationController
   def view_fetch
     render json: Hero.details(params[:id])
   end
+
+  def search
+    render json: Hero.search(params[:q])
+  end
 end

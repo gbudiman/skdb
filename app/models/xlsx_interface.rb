@@ -13,7 +13,7 @@ class XlsxInterface
     data = Importer.new(xlsx.result)
   end
 
-  def self.update_database
+  def self.update_database!
     xlsx = XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
     data = Importer.new(xlsx.result)
     data.commit
@@ -31,7 +31,6 @@ private
             attributes:     Array.new }
 
       row.keys[4..-1].each_slice(3) do |s|
-        #ap s
         unless row[s[0]].blank?
           value = case row[s[2]]
           when /[A-Za-z]/

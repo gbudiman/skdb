@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
   root    'heros#index_fetch'
 
-  get     'heroes'                      => 'heros#index_fetch'
-  get     'heroes/:id'                  => 'heros#view'
-  get     'heroes/fetch/:id'            => 'heros#view_fetch'
+  get     'heros'                              => 'heros#index_fetch'
+  get     'heros/:id'                          => 'heros#view'
+  get     'heros/fetch/:id'                    => 'heros#view_fetch'
+
+  get     'heros/search/:q'                    => 'heros#search'
+  get     'skills/search/:q'                   => 'skills#search'
+  get     'attributes/search/:q'               => 'atbs#search'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

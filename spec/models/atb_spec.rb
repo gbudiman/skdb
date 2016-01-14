@@ -5,16 +5,23 @@ RSpec.describe Skill, type: :model do
     @atb = Atb.new
   end
 
-  context "inline parsing should be able to detect modifier" do
-    {"inflict_turns_something" => "turns",
-     "inflict_fraction_of_magical_attack" => "fraction",
-     "inflict_amount_of_whatever" => "amount",
-     "inflict_burn_probability" => "probability",
-     "inflict_whatever_hit_count" => "hit_count"}.each do |k, v|
-      it "#{v}" do
+  context "inline parsing should be able to" do
+    {"inflict_turns_something" => ["turns", "inflict_something"],
+     "inflict_fraction_of_magical_attack" => ["fraction", "inflict_magical_attack"],
+     "inflict_amount_of_whatever" => ["amount", "inflict_whatever"],
+     "inflict_burn_probability" => ["probability", "inflict_burn"],
+     "inflict_whatever_hit_count" => ["hit_count", "inflict_whatever"]}.each do |k, r|
+      
+      it "detect modifier #{r[0]}" do
         @atb.name = k
         @atb.parse
-        expect(@atb.modifier).to eq(v) 
+        expect(@atb.modifier).to eq(r[0]) 
+      end
+
+      it "detect effect #{r[1]}" do
+        @atb.name = k
+        @atb.parse
+        expect(@atb.effect).to eq(r[1])
       end
     end
   end

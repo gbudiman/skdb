@@ -12,55 +12,81 @@ class Hero < ActiveRecord::Base
 
   has_many :skills, dependent: :destroy
 
+  def self.search _q
+    result = Array.new
+
+    Hero.where('name LIKE :q', q: "%#{_q}%").each do |h|
+      result.push({
+        id: h.id,
+        name: h.name,
+        rank: h.rank
+      })
+    end
+
+    return result
+  end
+
   def self.details _id
     result = {
       hero_id: nil,
       hero_name: nil,
-      skill_id: nil,
-      static_name: nil,
-      skill_name: nil,
-      skill_category: nil,
-      skill_cooldown: nil,
-      attributes: Hash.new
+      skills: Hash.new
     }
+
     Hero.joins('INNER JOIN skills AS sk
                    ON        heros.id = sk.hero_id
                 INNER JOIN skill_atbs AS sa
                    ON           sk.id = sa.skill_id
                 INNER JOIN atbs
                    ON         atbs.id = sa.atb_id')
-        .where(id: _id)
-        .select('heros.id AS id,
-                 heros.name AS hero_name,
-                 heros.rank AS hero_rank,
-                 sk.id AS skill_id,
-                 sk.static_name AS static_name,
-                 sk.name AS skill_name,
-                 sk.category AS skill_category,
-                 sk.cooldown AS skill_cooldown,
-                 sa.value AS atb_value,
-                 sa.target AS atb_target,
-                 atbs.id AS atb_id,
-                 atbs.name AS atb_name,
-                 atbs.category AS atb_category,
-                 atbs.modifier AS atb_modifier').each do |r|
-      result[:hero_id] = r.id
-      result[:skill_id] = r.skill_id
-      result[:static_name] = r.static_name
+        .where('heros.id = :id', id: _id)
+        .select('heros.id           AS id,
+                 heros.name         AS hero_name,
+                 heros.rank         AS hero_rank,
+                 sk.id              AS skill_id,
+                 sk.static_name     AS static_name,
+                 sk.name            AS skill_name,
+                 sk.category        AS skill_category,
+                 sk.cooldown        AS skill_cooldown,
+                 sa.value           AS atb_value,
+                 sa.target          AS atb_target,
+                 atbs.id            AS atb_id,
+                 atbs.name          AS atb_name,
+                 atbs.category      AS atb_category,
+                 atbs.effect        AS atb_effect,
+                 atbs.modifier      AS atb_modifier').each do |r|
+      result[:hero_id]      = r.id
+      result[:hero_name]    = r.hero_name
+      result[:hero_rank]    = r.hero_rank.to_i
 
-      result[:hero_name] = r.hero_name
-      result[:hero_rank] = r.hero_rank.to_i
-      result[:skill_name] = r.skill_name
-      result[:skill_category] = Skill.categories.keys[r.skill_category]
-      result[:skill_cooldown] = r.skill_cooldown
+      # Skill sub-member ######
+      category = Skill.categories.keys[r.skill_category]
+      result[:skills][category] ||= Hash.new
+      skill = result[:skills][category]
 
-      result[:attributes][r[:atb_id]] = {
-        atb_name: r.atb_name,
-        atb_category: r.atb_category,
-        atb_modifier: Atb.modifiers.keys[r.atb_modifier],
-        atb_value: r.atb_value,
-        atb_target: SkillAtb.targets.keys[r.atb_target]
-      }
+      skill[:id]            = r.skill_id
+      skill[:name]          = r.skill_name
+      skill[:category]      = Skill.categories.keys[r.skill_category]
+      skill[:cooldown]      = r.skill_cooldown
+      skill[:attributes]  ||= Hash.new
+
+        # Attribute sub-member ##
+        skill[:attributes][r.atb_effect] ||= Hash.new
+        atb = skill[:attributes][r.atb_effect]
+
+        atb[:id]            = r.atb_id
+        atb[:name]          = r.atb_name
+        atb[:category]      = r.atb_category
+        atb[:effect]        = r.atb_effect
+        atb[:target]        = SkillAtb.targets.keys[r.atb_target]
+        atb[:modifiers]   ||= Hash.new
+
+          # Attribute modifier ####
+          modifier = Atb.modifiers.keys[r.atb_modifier]
+          atb[:modifiers][modifier] = r.atb_value
+          # End Attribute modifier #
+        # End Attribute #########
+      # End Skill #############
     end
     
     return result

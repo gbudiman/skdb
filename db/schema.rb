@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160109221833) do
+ActiveRecord::Schema.define(version: 20160112165912) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -19,8 +19,10 @@ ActiveRecord::Schema.define(version: 20160109221833) do
     t.integer  "modifier",   limit: 4,   null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "effect",     limit: 255, null: false
   end
 
+  add_index "atbs", ["effect"], name: "index_atbs_on_effect", using: :btree
   add_index "atbs", ["name", "modifier"], name: "unique_attribute_name_modifier", unique: true, using: :btree
 
   create_table "heros", force: :cascade do |t|
