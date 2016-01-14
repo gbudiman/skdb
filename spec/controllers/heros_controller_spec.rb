@@ -10,7 +10,7 @@ RSpec.describe HerosController, type: :controller do
     before :each do
       get :view_fetch, id: @hero_id
       @response = response
-      @body = JSON.parse(@response.body).deep_symbolize_keys
+      @body = JSON.parse(@response.body).first.deep_symbolize_keys
     end
 
     it "should return status 200" do
@@ -54,5 +54,23 @@ RSpec.describe HerosController, type: :controller do
       expect(@body_sample[:rank]).to be >  0 
       expect(@body_sample[:rank]).to be <= 6
     end
+  end
+
+  describe "GET having ATB effect" do
+    before :each do
+      get :fetch_having_atb_effect, n: 'attack_physical'
+      @response = response
+      @body_sample = JSON.parse(@response.body).first.deep_symbolize_keys
+    end
+
+    it "should return 1 or more rows" do
+      expect(@response.body.length).to be > 0
+    end
+
+    it "should return status 200" do
+      expect(@response.status).to eq(200)
+    end
+
+    # remaining tests are similar to GET fetch
   end
 end

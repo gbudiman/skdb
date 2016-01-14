@@ -12,6 +12,50 @@ class Hero < ActiveRecord::Base
 
   has_many :skills, dependent: :destroy
 
+  def self.fetch_having_atb_effect _n
+    pre_result = Hash.new
+
+    #skill_superset = Atb.joins(:skills).where('atbs.effect = :n', n: _n).pluck('skills.id')
+
+    hero_superset = Atb.joins(skills: :hero).where('atbs.effect = :n', n: _n).pluck('heros.id').uniq
+    Hero.details(hero_superset)
+
+    # Atb.joins(skills: :hero)
+    #    .where('skills.id IN (:ids)', ids: skill_superset)
+    #    .select('atbs.id AS atb_id,
+    #             atbs.name AS atb_name,
+    #             atbs.effect AS atb_effect,
+    #             atbs.modifier AS atb_modifier,
+    #             skills.id AS skill_id,
+    #             skills.name AS skill_name,
+    #             skills.category AS skill_category,
+    #             skills.cooldown AS skill_cooldown,
+    #             skill_atbs.target AS atb_target,
+    #             heros.id AS hero_id,
+    #             heros.name AS hero_name,
+    #             heros.rank AS hero_rank')
+    #    .each do |r|
+    #   pre_result[r.skill_id] ||= Hash.new
+    #   skill_hash = pre_result[r.skill_id]
+
+    #   skill_hash[:hero_id] = r.hero_id
+    #   skill_hash[:hero_name] = r.hero_name
+    #   skill_hash[:hero_rank] = r.hero_rank
+    #   skill_hash[:hero_name] = r.skill_name
+    #   skill_hash[:skill_category] = Skill.categories.keys[r.skill_category]
+    #   skill_hash[:skill_cooldown] = r.skill_cooldown
+    #   skill_hash[:attributes] ||= Hash.new
+
+    #   skill_hash[:attributes][r.atb_name] ||= Hash.new
+    #   atb_hash = skill_hash[:attributes][r.atb_name]
+    #   atb_hash[:effect] = r.atb_effect
+    #   atb_hash[:modifier] = Atb.modifiers.keys[r.atb_modifier]
+    #   atb_hash[:target] = SkillAtb.targets.keys[r.atb_target]
+    # end
+
+    # return pre_result.values
+  end
+
   def self.search _q
     result = Array.new
 
@@ -27,11 +71,7 @@ class Hero < ActiveRecord::Base
   end
 
   def self.details _id
-    result = {
-      hero_id: nil,
-      hero_name: nil,
-      skills: Hash.new
-    }
+    result = Hash.new
 
     Hero.joins('INNER JOIN skills AS sk
                    ON        heros.id = sk.hero_id
@@ -39,8 +79,8 @@ class Hero < ActiveRecord::Base
                    ON           sk.id = sa.skill_id
                 INNER JOIN atbs
                    ON         atbs.id = sa.atb_id')
-        .where('heros.id = :id', id: _id)
-        .select('heros.id           AS id,
+        .where('heros.id IN(:id)', id: _id)
+        .select('heros.id           AS hero_id,
                  heros.name         AS hero_name,
                  heros.rank         AS hero_rank,
                  sk.id              AS skill_id,
@@ -55,14 +95,18 @@ class Hero < ActiveRecord::Base
                  atbs.category      AS atb_category,
                  atbs.effect        AS atb_effect,
                  atbs.modifier      AS atb_modifier').each do |r|
-      result[:hero_id]      = r.id
-      result[:hero_name]    = r.hero_name
-      result[:hero_rank]    = r.hero_rank.to_i
+      result[r.hero_id] ||= Hash.new
+
+      hero                = result[r.hero_id]
+      hero[:hero_id]      = r.hero_id
+      hero[:hero_name]    = r.hero_name
+      hero[:hero_rank]    = r.hero_rank.to_i
+      hero[:skills]     ||= Hash.new
 
       # Skill sub-member ######
       category = Skill.categories.keys[r.skill_category]
-      result[:skills][category] ||= Hash.new
-      skill = result[:skills][category]
+      hero[:skills][category] ||= Hash.new
+      skill = hero[:skills][category]
 
       skill[:id]            = r.skill_id
       skill[:name]          = r.skill_name
@@ -89,7 +133,7 @@ class Hero < ActiveRecord::Base
       # End Skill #############
     end
     
-    return result
+    return result.values
   end
 
   def parse

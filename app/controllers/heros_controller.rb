@@ -13,4 +13,8 @@ class HerosController < ApplicationController
   def search
     render json: Hero.search(params[:q])
   end
+
+  def fetch_having_atb_effect
+    render json: Hero.fetch_having_atb_effect(params[:n])
+  end
 end

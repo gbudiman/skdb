@@ -10,7 +10,7 @@ class Importer
     return self
   end
 
-  def commit
+  def commit!
     ActiveRecord::Base.transaction do
       @stat[:attributes].keys.each do |atb|
         Atb.find_or_create_by!(name: atb)

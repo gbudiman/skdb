@@ -206,25 +206,25 @@ RSpec.describe Importer, type: :model do
 
     context "statistics" do
       it "should correctly reflect inserted heros" do
-        expect { @imported_data.commit }.to change{Hero.count}.by(@imported_data.stat[:heros].keys.count)
+        expect { @imported_data.commit! }.to change{Hero.count}.by(@imported_data.stat[:heros].keys.count)
       end
 
       it "should correctly reflect inserted skills" do
-        expect { @imported_data.commit }.to change{Skill.count}.by(@imported_data.stat[:skills].keys.count)
+        expect { @imported_data.commit! }.to change{Skill.count}.by(@imported_data.stat[:skills].keys.count)
       end
 
       it "should correctly reflect inserted attributes" do
-        expect { @imported_data.commit }.to change{Atb.count}.by(@imported_data.stat[:attributes].keys.count)
+        expect { @imported_data.commit! }.to change{Atb.count}.by(@imported_data.stat[:attributes].keys.count)
       end
 
       it "should correctly reflect inserted skill_attributes" do
-        expect { @imported_data.commit }.to change{SkillAtb.count}.by(@imported_data.stat[:skill_attribute_count])
+        expect { @imported_data.commit! }.to change{SkillAtb.count}.by(@imported_data.stat[:skill_attribute_count])
       end
     end
 
     context "overwriting" do
       before :each do
-        @imported_data.commit
+        @imported_data.commit!
       end
 
       it "must be able to update hero" do
@@ -243,7 +243,7 @@ RSpec.describe Importer, type: :model do
         ]
 
         old_row = Hero.find_by(static_name: 'rudy_4')
-        Importer.new(new_data).commit
+        Importer.new(new_data).commit!
         expect([old_row.name, Hero.find_by(static_name: 'rudy_4').name]).to eq [@imported_data.stat[:heros]['rudy_4'], 'Haxxed Guardian Rudy']
       end
 
@@ -263,7 +263,7 @@ RSpec.describe Importer, type: :model do
         ]
 
         old_row = Skill.find_by(static_name: 'rudy_4_0')
-        Importer.new(new_data).commit
+        Importer.new(new_data).commit!
         expect([old_row.name, Skill.find_by(static_name: 'rudy_4_0').name]).to eq [@imported_data.stat[:skills]['rudy_4_0'], 'Mega Rush']
       end
 
@@ -280,7 +280,7 @@ RSpec.describe Importer, type: :model do
           },
         ]
 
-        Importer.new(new_data).commit
+        Importer.new(new_data).commit!
         sab_ids = SkillAtb.where(skill_id: Skill.find_by(static_name: 'rudy_4_0')).pluck(:atb_id)
         atbs = Atb.where(id: sab_ids).pluck(:name)
 

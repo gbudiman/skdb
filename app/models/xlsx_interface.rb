@@ -16,7 +16,7 @@ class XlsxInterface
   def self.update_database!
     xlsx = XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
     data = Importer.new(xlsx.result)
-    data.commit
+    data.commit!
   end
 
 private
