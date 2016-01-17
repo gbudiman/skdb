@@ -1,4 +1,10 @@
 class HerosController < ApplicationController
+  def index
+  end
+
+  def index_mock
+  end
+
   def index_fetch
     render json: Hero.all
   end

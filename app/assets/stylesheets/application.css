@@ -13,3 +13,73 @@
  *= require_tree .
  *= require_self
  */
+
+#left-bar, #right-bar {
+  overflow: auto;
+}
+
+#left-bar {
+  resize: horizontal;
+}
+
+#right-bar {
+  resize: horizontal;
+  overflow-x: visible;
+}
+
+.panel-search-result {
+  overflow-y: auto;
+  max-height: 12em;
+}
+
+.effect-hero-item, .effect-hero-skill-item {
+  padding-left: 1em;
+}
+
+#panel-search-result-body {
+  overflow-y: auto;
+  max-height: 75vh;
+}
+
+th.compare-table-th {
+  min-width: 12em;
+  text-align: center;
+}
+
+div.panel.panel-primary.condensed, div.panel.panel-warning.condensed {
+  margin-bottom: 0.5em;
+}
+
+div.panel-heading.condensed {
+  padding: 0.2em;
+}
+
+div.panel-body.condensed {
+  padding: 0.2em;
+}
+
+ul.list-unstyled.condensed {
+  margin-bottom: 0;
+}
+
+.glyphicon-green {
+  color: #5CB85C;
+}
+
+.glyphicon-red {
+  color: #D9534F;
+}
+
+span.label.label-primary.label-stack {
+  display:inline-block;
+  line-height: 150%;
+  text-align: left;
+} 
+
+.stack-first-column {
+  font-weight: bold;
+}
+
+.bootstrap-table {
+  margin: 0.5em 0em 0.5em 0em;
+}

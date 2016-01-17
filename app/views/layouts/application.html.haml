@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Seven Knights Database
+    /= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    /= javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = javascript_include_tag 'jquery.min'
+    = javascript_include_tag 'jquery-ui.min'
+    = javascript_include_tag 'bootstrap.min'
+    = javascript_include_tag 'bootstrap-table.min'
+    = stylesheet_link_tag    'application'
+    = stylesheet_link_tag    'bootstrap.min'
+    = stylesheet_link_tag    'bootstrap-theme.min'
+    = stylesheet_link_tag    'bootstrap-table.min'
+    = csrf_meta_tags
+  %body
+    %nav{class: 'navbar navbar-inverse'}
+      %div{class: 'container-fluid'}
+        %div{class: 'navbar-header'}
+        %a{class: 'navbar-brand', href: '/'} Seven Knights Database
+    = yield

@@ -1,0 +1,249 @@
+.container-fluid
+  %div{id: 'left-bar', class: 'col-md-4'} 
+    %div{class: 'panel'}
+      %div{class: 'panel-heading'}
+        %input{type: 'text', class: 'form-control input-lg', size: 64, placeholder: 'Type anything to begin search...'}
+      %div{class: 'panel-body', id: 'panel-search-result-body'}
+        %div{class: 'panel panel-primary'}
+          %div{class: 'panel-heading'} 
+            Hero
+            %span{class: 'badge pull-right'} 24
+          %ul{class: 'list-group  panel-search-result'}
+            %li{class: 'list-group-item'}
+              Hero Name
+              %span{class: 'glyphicon glyphicon-star'}
+              5
+              %a{href: '#add-to-compare'}
+                %span{class: 'glyphicon glyphicon-expand pull-right tooltip-add-to-compare', 
+                      title: 'Add to Compare'}
+            %li{class: 'list-group-item'} Hero 2
+            %li{class: 'list-group-item'} Hero 2
+            %li{class: 'list-group-item'} Hero 2
+            %li{class: 'list-group-item'} Hero 2
+            %li{class: 'list-group-item'} Hero 2
+            %li{class: 'list-group-item'} Hero 2
+        %div{class: 'panel panel-primary'}
+          %div{class: 'panel-heading'}
+            Skills
+            %span{class: 'badge pull-right'} 8
+          %ul{class: 'list-group panel-search-result'}
+            %li{class: 'list-group-item'}
+              %div{class: 'row'}
+                %div{class: 'col-xs-12'}
+                  Skill Name
+                  %span{class: 'pull-right'} active_0
+              %div{class: 'row'}
+                %div{class: 'col-xs-12 small'}
+                  Hero Owner name
+                  %span{class: 'glyphicon glyphicon-star'}
+                  5
+                  %a{href: '#add-to-compare'}
+                    %span{class: 'glyphicon glyphicon-expand pull-right tooltip-add-to-compare', 
+                          title: 'Add to Compare'}
+            %li{class: 'list-group-item'}
+              %div{class: 'row'}
+                %div{class: 'col-xs-12'}
+                  Skill Name
+                  %span{class: 'pull-right'} active_0
+              %div{class: 'row'}
+                %div{class: 'col-xs-12 small'}
+                  Hero Owner name
+                  %span{class: 'glyphicon glyphicon-star'}
+                  5
+                  %a{href: '#'}
+                    %span{class: 'glyphicon glyphicon-expand pull-right tooltip-add-to-compare', 
+                          title: 'Add to Compare'}
+        %div{class: 'panel panel-primary'}
+          %div{class: 'panel-heading'} 
+            Effects
+            %span{class: 'badge pull-right'} 24
+          %ul{class: 'list-group  panel-search-result-infinite'}
+            %li{class: 'list-group-item'}
+              %a{'data-toggle' => 'collapse', 'data-target' => '#inflict-death', href: '#'}
+                Inflict Death
+                %span{class: 'badge pull-right'} 5
+              %ul{class: 'list-unstyled collapse', id: 'inflict-death'}
+                %li
+                  %span{class: 'effect-hero-item'}Hero 1
+                  %span{class: 'glyphicon glyphicon-star'}
+                  4
+                  %a{href: '#'}
+                    %span{class: 'glyphicon glyphicon-expand pull-right tooltip-add-to-compare', 
+                          title: 'Add to Compare'}
+                  %div{class: 'row'}
+                    %div{class: 'col-xs-11 col-xs-offset-1'}
+                      Skill Name
+                      %span{class: 'pull-right'} active_0
+                    %div{class: 'col-xs-11 col-xs-offset-1'}
+                      Enemy: Single
+                      %span{class: 'pull-right'} 74s
+                %li
+                  %span{class: 'effect-hero-item'}Hero 1
+                  %span{class: 'glyphicon glyphicon-star'}
+                  5
+                %li
+                  %span{class: 'effect-hero-item'}Hero 1
+                  %span{class: 'glyphicon glyphicon-star'}
+                  6
+            %li{class: 'list-group-item'}
+              Inflict Stun
+              %span{class: 'badge'} 3
+            %li{class: 'list-group-item'}
+              Immunity to Death
+              %span{class: 'badge'} 7
+
+  %div{id: 'right-bar', class: 'col-md-8'}
+    %table{id: 'compare-table'}
+      %thead
+        %tr
+          %th
+          %th{'data-class' => 'compare-table-th'}
+            Eileene
+            %span{class: 'glyphicon glyphicon-star'}
+            4
+          %th{'data-class' => 'compare-table-th'}
+            Eileene
+            %span{class: 'glyphicon glyphicon-star'}
+            5
+          %th{'data-class' => 'compare-table-th'}
+            Eileene
+            %span{class: 'glyphicon glyphicon-star'}
+            6
+          %th{'data-class' => 'compare-table-th'}
+            Kris
+            %span{class: 'glyphicon glyphicon-star'}
+            6
+          %th{'data-class' => 'compare-table-th'}
+            Dellons 
+            %span{class: 'glyphicon glyphicon-star'}
+            6
+          %th{'data-class' => 'compare-table-th'}
+            Shane
+            %span{class: 'glyphicon glyphicon-star'}
+            6
+          %th{'data-class' => 'compare-table-th'}
+            Karin
+            %span{class: 'glyphicon glyphicon-star'}
+            6
+          %th{'data-class' => 'compare-table-th'}
+            Karon
+            %span{class: 'glyphicon glyphicon-star'}
+            6
+      %tbody
+        %tr
+          %td
+        %tr
+          %td HP
+        %tr
+          %td A/M
+        %tr
+          %td DEF
+        %tr
+          %td SPD
+        %tr
+          %td Skill 1
+          %td
+            %strong 
+              Thunder Lord's Fury
+            %br
+            %span{class: 'glyphicon glyphicon-hourglass'} 
+            70s
+            %div{class: 'panel panel-warning condensed'} 
+              %div{class: 'panel-heading condensed'} Physical Attack
+              %div{class: 'panel-body condensed'}
+                %ul{class: 'list-unstyled condensed'}
+                  %li
+                    %span{class: 'glyphicon glyphicon-screenshot'}
+                    Enemy 1
+            %div{class: 'panel panel-primary condensed'} 
+              %div{class: 'panel-heading condensed'} Electrify
+              %div{class: 'panel-body condensed'}
+                %ul{class: 'list-unstyled condensed'}
+                  %li
+                    %span{class: 'glyphicon glyphicon-screenshot'}
+                    Enemy 1
+                  %li
+                    %span{class: 'glyphicon glyphicon-time'}
+                    2 turns
+                  %li
+                    %span{class: 'glyphicon glyphicon-filter'}
+                    Certain Rate
+        %tr
+          %td Skill 2
+        %tr
+          %td Passive
+        %tr
+          %td Awakening Skill
+
+    %table{id: 'stack-table'}
+      %thead
+        %tr
+          %th{class: 'col-xs-4', 'data-sortable' => 'true'} Effects
+          %th{class: 'col-xs-8'} Conflicts
+      %tbody
+        %tr
+          %td{class: 'stack-first-column'} Electrify
+          %td
+            %span{class: 'label label-primary label-stack'}
+              Eileene
+              %span{class: 'glyphicon glyphicon-star'}
+              4
+              %br
+              Thunder Lord's Fury
+            %span{class: 'label label-primary label-stack'}
+              Nia
+              %span{class: 'glyphicon glyphicon-star'}
+              4
+              %br
+              Megavolt
+        %tr
+          %td{class: 'stack-first-column'} Death Immunity
+          %td
+        %tr
+          %td{class: 'stack-first-column'}
+            Incoming Damage
+            %span{class: 'glyphicon glyphicon-arrow-up glyphicon-green'}
+          %td
+        %tr
+          %td{class: 'stack-first-column'}
+            Damage Output
+            %span{class: 'glyphicon glyphicon-arrow-down glyphicon-red'}
+          %td
+        %tr
+          %td{class: 'stack-first-column'}
+            Physical Attack
+            %span{class: 'glyphicon glyphicon-arrow-up glyphicon-green'}
+          %td
+      / %thead
+      /   %tr
+      /     %th Electrify
+      /     %th Death Immunity
+      /     %th 
+      /       Incoming Damage
+      /       %span{class: 'glyphicon glyphicon-arrow-up glyphicon-green'}
+      /     %th 
+      /       Damage Output
+      /       %span{class: 'glyphicon glyphicon-arrow-down glyphicon-red'}
+      /     %th
+      /       Physical Attack
+      /       %span{class: 'glyphicon glyphicon-arrow-up glyphicon-green'}
+      / %tbody
+      /   %tr
+      /     %td
+      /       %span{class: 'label label-primary'}
+      /         Eileene
+      /         %span{class: 'glyphicon glyphicon-star'}
+      /         4
+      /         %br
+      /         Thunder Lord's Fury
+
+:javascript
+  $('.tooltip-add-to-compare').tooltip({
+    placement: 'left'
+  });
+
+  $('#compare-table').bootstrapTable({
+  });
+
+  $('#stack-table').bootstrapTable({
+  })
