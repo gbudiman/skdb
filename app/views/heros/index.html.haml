@@ -2,11 +2,14 @@
   %div{id: 'left-bar', class: 'col-md-4'}
     %div{class: 'panel'}
       %div{class: 'panel-heading'}
-        %input{type: 'text', 
-               class: 'form-control input-lg', 
-               size: 64, 
-               placeholder: 'Try \'stun\'',
-               id: 'search-input'}
+        %div{class: 'input-group'}
+          %span{class: 'input-group-addon'}
+            %span{class: 'glyphicon glyphicon-search'}
+          %input{type: 'text', 
+                 class: 'form-control input-lg', 
+                 size: 64, 
+                 placeholder: 'Try \'stun\'',
+                 id: 'search-input'}
       %div{class: 'panel-body', id: 'panel-search-result-body'}
         %div{class: 'panel panel-primary'}
           %div{class: 'panel-heading'}

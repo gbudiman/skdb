@@ -33,7 +33,7 @@
 }
 
 .effect-hero-item, .effect-hero-skill-item {
-  padding-left: 1em;
+  //padding-left: 1em;
 }
 
 #panel-search-result-body {
@@ -82,4 +82,8 @@ span.label.label-primary.label-stack {
 
 .bootstrap-table {
   margin: 0.5em 0em 0.5em 0em;
+}
+
+.multi-line-vertical-centered {
+  vertical-align: center;
 }
