@@ -23,14 +23,13 @@ class Atb < ActiveRecord::Base
        .select('atbs.id            AS atb_id,
                 atbs.effect        AS atb_effect,
                 skill_atbs.target  AS skill_target,
-                COUNT(*)           AS count')
-       .group('atbs.effect,
-               skill_atbs.target')
+                COUNT(DISTINCT heros.id) AS count')
+       .group('atbs.effect, skill_atbs.target')
        .each do |r| 
       result.push({
         effect:        r.atb_effect,
         target:        SkillAtb.targets.keys[r.skill_target],
-        count:         r.count
+        count:         r.count,
       })
     end
 

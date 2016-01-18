@@ -21,6 +21,7 @@ class HerosController < ApplicationController
   end
 
   def fetch_having_atb_effect
-    render json: Hero.fetch_having_atb_effect(params[:n])
+    render json: Hero.fetch_having_atb_effect(effect: params[:e],
+                                              target: params[:r])
   end
 end
