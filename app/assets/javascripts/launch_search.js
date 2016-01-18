@@ -50,7 +50,7 @@ function repopulate_hero_search_result(d) {
   $.each(d, function(i, v) {
     $('#hero-result')
       .append('<li class="list-group-item">'
-            +   v.name
+            +   v.name.strip_hero_rank()
             +   '&nbsp;'
             +   '<span class="glyphicon glyphicon-star">'
             +   '</span>'
@@ -76,7 +76,7 @@ function repopulate_skill_search_result(d) {
             +   '</div>'
             +   '<div class="row">'
             +     '<div class="col-xs-12 small">'
-            +       v.hero_name
+            +       v.hero_name.strip_hero_rank()
             +       '&nbsp;'
             +       '<span class="glyphicon glyphicon-star"></span>'
             +       '&nbsp;'
@@ -101,10 +101,10 @@ function repopulate_atb_search_result(d) {
             +      'data-query-target="' + v.target + '" '
             +      'data-target="#' + composite_attribute + '" href="#">'
             +     '<div class="row">'
-            +       '<div class="col-xs-11">'
+            +       '<div class="col-xs-10">'
             +         v.effect  
             +       '</div>'
-            +       '<div class="col-xs-1 multi-line-vertical-centered">'
+            +       '<div class="col-xs-2 multi-line-vertical-centered">'
             +         '<span class="badge pull-right">' + v.count + '</span>'
             +       '</div>'
             +     '</div>'
@@ -171,7 +171,7 @@ function repopulate_hhae_search_result(d, element_target) {
   var s = '';
   $.each(d, function(i, v) {
     s += '<li class="list-group-item">'
-       +   '<span class="effect-hero-item">' + v.hero_name + '</span>&nbsp;'
+       +   '<span class="effect-hero-item">' + v.hero_name.strip_hero_rank() + '</span>&nbsp;'
        +   '<span class="glyphicon glyphicon-star"></span>&nbsp;' + v.hero_rank
        +   '<a href="#" class="addable-to-compare pull-right" data-hero-id=' + v.hero_id + '>'
        +     '<span class="addable-to-compare"></span>'
@@ -215,14 +215,36 @@ function attach_add_to_compare(el, type) {
     }
 
     target.on('mouseover', function() {
-      placeholder
-        .html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Compare');
+      var target_hero_id = placeholder.parent().attr('data-hero-id');
+      var in_compare_table = $('#compare-table').find('th[data-hero-id="' + target_hero_id + '"]');
+
+      if (in_compare_table.length == 0) {
+        placeholder
+          .html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Compare');
+
+        placeholder.parent().attr('disabled', false);
+      } else {
+        placeholder
+          .html('Already <span class="glyphicon glyphicon-chevron-right"></span>');
+
+        placeholder.parent().attr('disabled', true);
+      }
     }).on('mouseout', function() {
       placeholder.text('');
     });
   });
 
   $('a.addable-to-compare').off('click').on('click', function() {
-    console.log($(this).attr('data-hero-id'));
+    var placeholder = $(this);
+
+    if (!placeholder.attr('disabled')) {
+      $.ajax({
+        url: '/heros/fetch/' + $(this).attr('data-hero-id')
+      }).done(function(res) {
+        placeholder.children().empty();
+        compare_table_add(res);
+        stack_table_add(res);
+      })
+    }
   })
 }

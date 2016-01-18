@@ -26,5 +26,30 @@
             Effects
             %span{class: 'badge pull-right', id: 'effect-result-count'}
           %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
+  %div{id: 'right-bar', class: 'col-md-8'}
+    %table{id: 'compare-table'}
+      %thead
+        %tr
+          %th{'data-class' => 'compare-table-th'}
+      %tbody
+        %tr
+          %td Portrait
+        %tr
+          %td Skill 1
+        %tr
+          %td Skill 2
+        %tr
+          %td Passive
+        %tr
+          %td Awakening
+
+    %table{id: 'stack-table'}
+      %thead
+        %tr
+          %th{class: 'col-xs-4', 'data-sortable' => 'true'} Effects
+          %th{class: 'col-xs-8'} Contributors
+      %tbody
 
 = javascript_include_tag 'launch_search'
+= javascript_include_tag 'bst_interface_compare'
+= javascript_include_tag 'bst_interface_stack'

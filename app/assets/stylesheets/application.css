@@ -42,7 +42,9 @@
 }
 
 th.compare-table-th {
-  min-width: 12em;
+/*  min-width: 8em !important;
+  max-width: 8em !important;
+  width: 8em !important;*/
   text-align: center;
 }
 
@@ -86,4 +88,8 @@ span.label.label-primary.label-stack {
 
 .multi-line-vertical-centered {
   vertical-align: center;
+}
+
+.compare-table {
+  max-height: 50vh;
 }
