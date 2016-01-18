@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
-  root    'heros#index_fetch'
+  root    'heros#index'
+
+  get     'heros/mock'                         => 'heros#index_mock'
 
   get     'heros'                              => 'heros#index_fetch'
   get     'heros/:id'                          => 'heros#view'
   get     'heros/fetch/:id'                    => 'heros#view_fetch'
 
   get     'heros/search/:q'                    => 'heros#search'
-  get     'heros/fetch/having/atb/effect/:n'   => 'heros#fetch_having_atb_effect'
+  get     'heros/fetch/having/atb/effect/:e/target/:r'   => 'heros#fetch_having_atb_effect'
   get     'skills/search/:q'                   => 'skills#search'
   get     'attributes/search/:q'               => 'atbs#search'
   # The priority is based upon order of creation: first created -> highest priority.
