@@ -58,7 +58,7 @@ RSpec.describe HerosController, type: :controller do
 
   describe "GET having ATB effect" do
     before :each do
-      get :fetch_having_atb_effect, n: 'attack_physical'
+      get :fetch_having_atb_effect, e: 'attack_physical', r: 'enemy_one'
       @response = response
       @body_sample = JSON.parse(@response.body).first.deep_symbolize_keys
     end
