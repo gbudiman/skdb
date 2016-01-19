@@ -53,56 +53,34 @@ jQuery.fn.extend({
     var placeholder = $(this);
     var pivot = parseInt(_pivot);
     var allow_displace = false;
-    console.log(placeholder.find('th[data-header-index]').length);
+    var max_header_index = placeholder.find('th[data-header-index]').length - 1;
+    var lei, rei; // left-element index, right-element index
 
-    switch (dir) {
-      case 'left':  var left = $(this).find('th[data-header-index=' + (pivot - 1) + ']');
-                    var right = $(this).find('th[data-header-index=' + pivot + ']');
+    lei = (dir == 'left') ? pivot - 1 : pivot;
+    rei = (dir == 'left') ? pivot     : pivot + 1;
+    allow_displace = (dir == 'left') ? (pivot - 1 >= 0 ? true : false)
+                                     : (pivot + 1 <= max_header_index)
 
-                    right.insertBefore(left);
-                    if (pivot - 1 >= 0) {
-                      allow_displace = true;
-                      right.attr('data-header-index', pivot - 1);
-                      left.attr('data-header-index', pivot);
-                    }
+    if (!allow_displace) return false;
 
-                    break;
-      case 'right': var left = $(this).find('th[data-header-index=' + pivot + ']');
-                    var right = $(this).find('th[data-header-index=' + (pivot + 1) + ']');
+    // update header
+    var lh = placeholder.find('th[data-header-index=' + lei + ']');
+    var rh = placeholder.find('th[data-header-index=' + rei + ']');
 
-                    right.insertBefore(left);
-                    if (pivot + 1 <= placeholder.find('th[data-header-index]').length - 1) {
-                      allow_displace = true;
-                      right.attr('data-header-index', pivot);
-                      left.attr('data-header-index', pivot + 1);
-                    }
+    rh.insertBefore(lh);
+    rh.attr('data-header-index', lei);
+    lh.attr('data-header-index', rei);
 
-                    break;
-    }
+    // update body by iterating through rows
+    placeholder.find('tbody').find('tr').each(function() {
+      var r = $(this);
 
-    if (allow_displace) {
-      placeholder.find('tbody').find('tr').each(function() {
-        var r = $(this);
+      var lc = r.find('td[data-column-index=' + lei + ']');
+      var rc = r.find('td[data-column-index=' + rei + ']');
 
-        switch (dir) {
-          case 'left':  var left = r.find('td[data-column-index=' + (pivot - 1) + ']');
-                        var right = r.find('td[data-column-index=' + pivot + ']');
-
-                        right.insertBefore(left);
-                        right.attr('data-column-index', pivot - 1);
-                        left.attr('data-column-index', pivot);
-                        break;
-          case 'right': var left = r.find('td[data-column-index=' + pivot + ']');
-                        var right = r.find('td[data-column-index=' + (pivot + 1) + ']');
-
-                        right.insertBefore(left);
-                        right.attr('data-column-index', pivot);
-                        left.attr('data-column-index', pivot + 1);
-                        break;
-        }
-      });
-
-      allow_displace = false;
-    }
+      rc.insertBefore(lc);
+      rc.attr('data-column-index', lei);
+      lc.attr('data-column-index', rei);
+    })
   }
 });
