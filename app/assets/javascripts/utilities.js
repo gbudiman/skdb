@@ -6,7 +6,6 @@ jQuery.fn.extend({
   add_column_to_bst: function(data) {
     var last_column_index = $(this).find('tbody').find('tr').first().find('td').length - 1;
 
-    console.log(last_column_index);
     $(this).find('tbody').find('tr').each(function(i, r) {
       $(this).append('<td data-column-index=' + last_column_index + '>' + data[i] || '-' + '</td>');
     });

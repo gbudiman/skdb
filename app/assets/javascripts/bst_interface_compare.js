@@ -7,6 +7,7 @@ function attach_column_displace_left() {
     placement: 'bottom'
   }).off('click').on('click', function() {
     $(this).tooltip('hide');
+    $(this).parent().parent().find('a').hide();
     $('#compare-table').displace_bst_column($(this).parent().parent().attr('data-header-index'), 'left');
   });
 }
@@ -17,8 +18,32 @@ function attach_column_displace_right() {
     placement: 'bottom'
   }).off('click').on('click', function() {
     $(this).tooltip('hide');
+    $(this).parent().parent().find('a').hide();
     $('#compare-table').displace_bst_column($(this).parent().parent().attr('data-header-index'), 'right');
   });
+}
+
+function attach_column_activator() {
+  $('#compare-table').find('thead').find('tr').find('th').each(function(i, e) {
+    var placeholder = $(this);
+
+    placeholder.on('mouseover', function() {
+      var current_position = $(this).attr('data-header-index');
+      var last_column_index = $('#compare-table').find('th[data-header-index]').length - 1;
+
+      if (current_position != 0) {
+        placeholder.find('a.displace-left').show();
+      }
+
+      if (current_position != last_column_index) {
+        placeholder.find('a.displace-right').show();
+      }
+
+      placeholder.find('a.compare-remove').show();
+    }).on('mouseout', function() {
+      placeholder.find('a').hide();
+    })
+  })
 }
 
 function compare_table_add(d) {
@@ -30,6 +55,7 @@ function compare_table_add(d) {
   attach_column_remove();
   attach_column_displace_left();
   attach_column_displace_right();
+  attach_column_activator();
 }
 
 function expand_skills(d) {
@@ -41,16 +67,20 @@ function expand_skills(d) {
 }
 
 function stylify_hero(d) {
-  return '<a href="#" class="displace-left">'
+  return '<a href="#" hidden class="displace-left">'
        +   '<span class="glyphicon glyphicon-arrow-left"></span>'
-       + '</a>&nbsp;'
+       + '</a>'
+       + '&nbsp;'
        + d.hero_name.strip_hero_rank()
-       + '&nbsp;<span class="glyphicon glyphicon-star"></span>&nbsp;'
+       + '&nbsp;'
+       + '<span class="glyphicon glyphicon-star"></span>&nbsp;'
        + d.hero_rank
-       + '&nbsp;<a href="#" class="compare-remove" data-hero-id=' + d.hero_id + '>'
+       + '&nbsp;'
+       + '<a href="#" hidden class="compare-remove" data-hero-id=' + d.hero_id + '>'
        +   '<span class="glyphicon glyphicon-remove"></span>'
        + '</a>'
-       + '&nbsp;<a href="#" class="displace-right">'
+       + '&nbsp;'
+       + '<a href="#" hidden class="displace-right">'
        +   '<span class="glyphicon glyphicon-arrow-right"></span>'
        + '</a>';
 }

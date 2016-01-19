@@ -45,7 +45,7 @@ th.compare-table-th {
 /*  min-width: 8em !important;
   max-width: 8em !important;
   width: 8em !important;*/
-  //text-align: center;
+  text-align: center;
 }
 
 div.panel.panel-primary.condensed, div.panel.panel-warning.condensed {
