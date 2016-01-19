@@ -1,6 +1,26 @@
 $('#compare-table').bootstrapTable({
 });
 
+function attach_column_displace_left() {
+  $('a.displace-left').tooltip({
+    title: 'Move Left',
+    placement: 'bottom'
+  }).off('click').on('click', function() {
+    $(this).tooltip('hide');
+    $('#compare-table').displace_bst_column($(this).parent().parent().attr('data-header-index'), 'left');
+  });
+}
+
+function attach_column_displace_right() {
+  $('a.displace-right').tooltip({
+    title: 'Move Right',
+    placement: 'bottom'
+  }).off('click').on('click', function() {
+    $(this).tooltip('hide');
+    $('#compare-table').displace_bst_column($(this).parent().parent().attr('data-header-index'), 'right');
+  });
+}
+
 function compare_table_add(d) {
   $.each(d, function(index, d) {
     $('#compare-table').add_header_column_to_bst(stylify_hero(d), d.hero_id);
@@ -8,6 +28,8 @@ function compare_table_add(d) {
   })
 
   attach_column_remove();
+  attach_column_displace_left();
+  attach_column_displace_right();
 }
 
 function expand_skills(d) {
@@ -19,10 +41,17 @@ function expand_skills(d) {
 }
 
 function stylify_hero(d) {
-  return d.hero_name.strip_hero_rank()
+  return '<a href="#" class="displace-left">'
+       +   '<span class="glyphicon glyphicon-arrow-left"></span>'
+       + '</a>&nbsp;'
+       + d.hero_name.strip_hero_rank()
        + '&nbsp;<span class="glyphicon glyphicon-star"></span>&nbsp;'
        + d.hero_rank
-       + '<a href="#" class="compare-remove" data-hero-id=' + d.hero_id + '>DEL'
+       + '&nbsp;<a href="#" class="compare-remove" data-hero-id=' + d.hero_id + '>'
+       +   '<span class="glyphicon glyphicon-remove"></span>'
+       + '</a>'
+       + '&nbsp;<a href="#" class="displace-right">'
+       +   '<span class="glyphicon glyphicon-arrow-right"></span>'
        + '</a>';
 }
 
@@ -86,10 +115,6 @@ function remove_bst_column(el) {
   var hero_id = el.attr('data-hero-id');
 
   $('#compare-table').find('th').each(function(i, x) {
-    // console.log(hero_id);
-    // console.log(i);
-    // console.log($(this).attr('data-hero-id'));
-
     if (hero_id == $(this).attr('data-hero-id')) {
       $('#compare-table').remove_column_from_bst(i);
     }
