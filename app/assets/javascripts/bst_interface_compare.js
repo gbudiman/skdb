@@ -1,5 +1,4 @@
-$('#compare-table').bootstrapTable({
-});
+$('#compare-table').hide();
 
 function attach_column_displace_left() {
   $('a.displace-left').tooltip({

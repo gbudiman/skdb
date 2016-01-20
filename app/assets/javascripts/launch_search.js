@@ -2,6 +2,7 @@ $('#search-input').on('keyup', function() {
   var query = $(this).val();
 
   if (query.length > 0) {
+    $('.reveal-on-keyup').show();
     launch_search_hero(query);
     launch_search_skill(query);
     launch_search_atb(query);
@@ -236,6 +237,9 @@ function attach_add_to_compare(el, type) {
 
   $('a.addable-to-compare').off('click').on('click', function() {
     var placeholder = $(this);
+
+    $('#compare-table').show().bootstrapTable({
+    });
 
     if (!placeholder.attr('disabled')) {
       $.ajax({

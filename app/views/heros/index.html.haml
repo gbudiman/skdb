@@ -11,17 +11,17 @@
                  placeholder: 'Try \'stun\'',
                  id: 'search-input'}
       %div{class: 'panel-body', id: 'panel-search-result-body'}
-        %div{class: 'panel panel-primary'}
+        %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
           %div{class: 'panel-heading'}
             Hero
             %span{class: 'badge pull-right', id: 'hero-result-count'}
           %ul{class: 'list-group panel-search-result', id: 'hero-result'}
-        %div{class: 'panel panel-primary'}
+        %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
           %div{class: 'panel-heading'}
             Skills
             %span{class: 'badge pull-right', id: 'skill-result-count'}
           %ul{class: 'list-group panel-search-result', id: 'skill-result'}
-        %div{class: 'panel panel-primary'}
+        %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
           %div{class: 'panel-heading'}
             Effects
             %span{class: 'badge pull-right', id: 'effect-result-count'}
@@ -30,7 +30,7 @@
     %table{id: 'compare-table'}
       %thead
         %tr
-          %th{'data-class' => 'compare-table-th'}
+          %th Hero
       %tbody
         %tr
           %td Portrait
@@ -43,12 +43,12 @@
         %tr
           %td Awakening
 
-    %table{id: 'stack-table'}
-      %thead
-        %tr
-          %th{class: 'col-xs-4', 'data-sortable' => 'true'} Effects
-          %th{class: 'col-xs-8'} Contributors
-      %tbody
+    / %table{id: 'stack-table'}
+    /   %thead
+    /     %tr
+    /       %th{class: 'col-xs-4', 'data-sortable' => 'true'} Effects
+    /       %th{class: 'col-xs-8'} Contributors
+    /   %tbody
 
 = javascript_include_tag 'launch_search'
 = javascript_include_tag 'bst_interface_compare'
