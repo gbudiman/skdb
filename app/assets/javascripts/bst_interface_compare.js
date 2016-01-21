@@ -104,8 +104,7 @@ function stylify_skill(d) {
       +    '<div class="panel-body condensed">'
       +      '<ul class="list-unstyled condensed">'
       +        '<li>'
-      +          '<span class="glyphicon glyphicon-screenshot"></span>&nbsp;'
-      +           atb.target
+      +           $.prettify_target(atb.target)
       +        '</li>'
 
     $.each(atb.modifiers, function(mdf, val) {

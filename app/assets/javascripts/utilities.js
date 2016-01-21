@@ -83,3 +83,47 @@ jQuery.fn.extend({
     })
   }
 });
+
+jQuery.extend({
+  prettify_skill: function(_type, _cooldown) {
+    var type;
+    var cooldown = '<span class="label label-primary">'
+                 +   (_cooldown || '') + 's'
+                 + '</span>';
+
+    switch (_type) {
+      case 'active_0'  :
+      case 'active_1'  : type = '<span class="label label-lg label-primary">Active</span>';
+                         return '<span class="label-group">' + type + cooldown + '</span>'
+      case 'passive'   : type = '<span class="label label-default">Passive</span>'; 
+                         return type;
+      case 'awakening' : type = '<span class="label label-danger">Awakening</span>';
+                         return '<span class="label-group">' + type + cooldown + '</span>';
+    }
+  },
+
+  prettify_target: function(_text) {
+    var label_class, count;
+
+    switch(_text) {
+      case 'self'        : label_class = 'label-success'; count = 'Self';     break;
+      case 'ally_single' : label_class = 'label-primary'; count = '1';        break;
+      case 'ally_all'    : label_class = 'label-primary'; count = 'All';      break;
+      case 'enemy_one'   : label_class = 'label-danger';  count = '1';        break;
+      case 'enemy_two'   : label_class = 'label-danger';  count = '2';        break;
+      case 'enemy_three' : label_class = 'label-danger';  count = '3';        break;
+      case 'enemy_four'  : label_class = 'label-danger';  count = '4';        break;
+      case 'enemy_all'   : label_class = 'label-danger';  count = 'All';        break;
+      case 'attacker'    : label_class = 'label-danger';  count = 'Attacker'; break;
+    }
+
+    return '<span class="label-group">'
+         +   '<span class="label ' + label_class + '">'
+         +     '<span class="glyphicon glyphicon-screenshot"></span>'
+         +   '</span>'
+         +   '<span class="label ' + label_class + '">'
+         +     count
+         +   '</span>'
+         + '</span>';
+  }
+});

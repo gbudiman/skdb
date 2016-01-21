@@ -1,3 +1,7 @@
+$('#search-input').on('focus', function() {
+  $(this).select();
+})
+
 $('#search-input').on('keyup', function() {
   var query = $(this).val();
 
@@ -6,6 +10,8 @@ $('#search-input').on('keyup', function() {
     launch_search_hero(query);
     launch_search_skill(query);
     launch_search_atb(query);
+  } else {
+    $('.reveal-on-keyup').hide();
   }
 });
 
@@ -72,7 +78,7 @@ function repopulate_skill_search_result(d) {
             +   '<div class="row">'
             +     '<div class="col-xs-12">'
             +       v.skill_name
-            +       '<span class="pull-right">' + v.skill_category + '</span>'
+            +       '<span class="pull-right">' + $.prettify_skill(v.skill_category, v.skill_cooldown) + '</span>'
             +     '</div>'
             +   '</div>'
             +   '<div class="row">'
@@ -106,17 +112,19 @@ function repopulate_atb_search_result(d) {
             +         v.effect  
             +       '</div>'
             +       '<div class="col-xs-2 multi-line-vertical-centered">'
-            +         '<span class="badge pull-right">' + v.count + '</span>'
+            +         '<span class="badge pull-right">' 
+            +           v.count 
+            +         '</span>'
             +       '</div>'
             +     '</div>'
             +     '<div class="row">'
-            +       '<div class="col-xs-8">'
-            +         '<span class="glyphicon glyphicon-screenshot"></span>'
-            +         '&nbsp;'
-            +         v.target
-            +       '</div>'
             +       '<div class="col-xs-4">'
-            +         '<span class="pull-right expand-collapse"></span>'
+            +         $.prettify_target(v.target)
+            +       '</div>'
+            +       '<div class="col-xs-8">'
+            +         '<span class="pull-right">'
+            +           '<span class="expand-collapse"></span>'
+            +         '</span>'
             +       '</div>'
             +     '</div>'
             +   '</a>'
@@ -147,6 +155,7 @@ function attach_interactive_expand_button() {
     attach_expand_collapse_cosmetic($(this));
   }).on('mouseout', function() {
     $(this).find('.expand-collapse').text('');
+    $(this).find('.compare-all').text('');
   });
 
   $('ul.effect-hero-list').on('hide.bs.collapse show.bs.collapse', function() {
@@ -183,12 +192,14 @@ function repopulate_hhae_search_result(d, element_target) {
         if (effect_filter == v_atbs.effect && target_filter == v_atbs.target) {
           s += '<br />';
           s += '<span>' + v_skills.name + '</span>';
-          s += '<span class="pull-right">' + v_skills.category;
+          // s += '<span class="pull-right">' + v_skills.category;
 
-          if (v_skills.category != 'passive') {
-            s += '&nbsp;<span class="glyphicon glyphicon-hourglass"></span>&nbsp;';
-            s += v_skills.cooldown + 's';
-          }
+          // if (v_skills.category != 'passive') {
+          //   s += '&nbsp;<span class="glyphicon glyphicon-hourglass"></span>&nbsp;';
+          //   s += v_skills.cooldown + 's';
+          // }
+          s += '<span class="pull-right">'
+          s += $.prettify_skill(v_skills.category, v_skills.cooldown);
 
           s += '</span>';
         }

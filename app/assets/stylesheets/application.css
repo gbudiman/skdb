@@ -93,3 +93,16 @@ span.label.label-primary.label-stack {
 .compare-table {
   max-height: 50vh;
 }
+
+.label-group>.label:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: 0em;
+  opacity: 0.7;
+}
+    
+.label-group>.label:nth-child(2) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
+}
