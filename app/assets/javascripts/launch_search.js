@@ -15,6 +15,16 @@ $('#search-input').on('keyup', function() {
   }
 });
 
+$('#btn-execute-search').on('click', function() {
+  // var e = jQuery.Event('keypress');
+  // e.which = 13;
+  // e.keycode = 13;
+
+  // console.log('t');
+  // $('#search-input').val($('#search-input'));
+  $('#search-input').trigger('keyup');
+});
+
 function launch_search_hero(q) {
   $.ajax({
     url: '/heros/search/' + q

@@ -44,7 +44,6 @@ class Atb < ActiveRecord::Base
   def parse
     modifier_regexes = Atb.modifiers.keys.join('|')
     case self.name
-    #when /(fraction|amount|turns|probability|hit_count)/
     when /(#{modifier_regexes})/ 
       modifier = $1
 

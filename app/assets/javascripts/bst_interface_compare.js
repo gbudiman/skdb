@@ -58,11 +58,11 @@ function compare_table_add(d) {
 }
 
 function expand_skills(d) {
-  return [undefined,
+  return [stylify_flair(undefined, 'Flair Not Available'),
           stylify_skill(d.active_0),
           stylify_skill(d.active_1),
           stylify_skill(d.passive),
-          stylify_skill(d.awakening)];
+          stylify_skill(d.awakening, 'Not Awakened Hero')];
 }
 
 function stylify_hero(d) {
@@ -84,53 +84,21 @@ function stylify_hero(d) {
        + '</a>';
 }
 
-function stylify_skill(d) {
-  var s = '';
+function stylify_skill(d, err_na = 'Not Available') {
+  if (!d) {
+    return $.label_group(err_na, 'default');
+  };
 
-  if (!d) return undefined;
+  return '<strong>' + d['name'] + '</strong>'
+       + '<br />' 
+       + $.prettify_skill(d.category, d.cooldown)
+       + render_attributes(d.attributes);
+}
 
-  s += '<strong>' + d['name'] + '</strong>';
-
-  if (d.category != 'passive') {
-    s += '<span class="pull-right">'
-      +    '<span class="glyphicon glyphicon-hourglass"></span>&nbsp;'
-      +     d.cooldown + 's'
-      +  '</span>';
+function stylify_flair(d, err_na = 'Not Available') {
+  if (!d) {
+    return $.label_group(err_na, 'default');
   }
-
-  s += render_attributes(d.attributes);
-
-  return s;
-  // $.each(d.attributes, function(effect, atb) {
-  //   s += '<div class="panel panel-primary condensed">'
-  //     +    '<div class="panel-heading condensed">' + effect + '</div>'
-  //     +    '<div class="panel-body condensed">'
-  //     +      '<ul class="list-unstyled condensed">'
-  //     +        '<li>'
-  //     +           $.prettify_target(atb.target)
-  //     +        '</li>'
-
-  //   $.each(atb.modifiers, function(mdf, val) {
-  //     var glyph_mdf = (function(mdf) {
-  //       switch(mdf) {
-  //         case 'fraction':      return 'filter';        break;
-  //         case 'turns':         return 'refresh';       break;
-  //         case 'probability':   return 'equalizer';     break;
-  //         case 'hit_count':     return 'scissors';      break;
-  //         case 'amount':        return 'superscript';   break;
-  //         default:              return 'question-sign';  
-  //       }
-  //     })(mdf);
-  //     s +=     '<li>'
-  //       +        '<span class="glyphicon glyphicon-' + glyph_mdf + '"></span>&nbsp;' + val
-  //       +      '</li>';
-  //   })
-  //   s +=     '</ul>';
-  //   s +=   '</div>';
-  //   s += '</div>';
-  // })
-
-  // return s;
 }
 
 function attach_column_remove() {

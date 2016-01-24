@@ -3,13 +3,15 @@
     %div{class: 'panel'}
       %div{class: 'panel-heading'}
         %div{class: 'input-group'}
-          %span{class: 'input-group-addon'}
-            %span{class: 'glyphicon glyphicon-search'}
           %input{type: 'text', 
                  class: 'form-control input-lg', 
                  size: 64, 
                  placeholder: 'Try \'stun\'',
-                 id: 'search-input'}
+                 id: 'search-input',
+                 tabindex: 1}
+          %span{class: 'input-group-btn'}
+            %button{class: 'btn btn-success btn-lg', id: 'btn-execute-search'}
+              %span{class: 'glyphicon glyphicon-search'}
       %div{class: 'panel-body', id: 'panel-search-result-body'}
         %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
           %div{class: 'panel-heading'}
@@ -30,18 +32,12 @@
     %table{id: 'compare-table'}
       %thead
         %tr
-          %th{'data-class' => 'compare-table-th'} Hero
       %tbody
         %tr
-          %td Portrait
         %tr
-          %td Skill 1
         %tr
-          %td Skill 2
         %tr
-          %td Passive
         %tr
-          %td Awakening
 
     / %table{id: 'stack-table'}
     /   %thead

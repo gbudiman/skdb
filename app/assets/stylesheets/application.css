@@ -48,8 +48,9 @@ th.compare-table-th {
   text-align: center;
 }
 
-div.panel.panel-primary.condensed, div.panel.panel-warning.condensed {
-  margin-bottom: 0.5em;
+div.panel.panel-primary.condensed, div.panel.panel-default.condensed, div.panel.panel-warning.condensed {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 
 div.panel-heading.condensed {
@@ -93,6 +94,7 @@ span.label.label-primary.label-stack {
 .compare-table {
   max-height: 50vh;
 }
+
 
 .label-group>.label:first-child {
   border-top-right-radius: 0;
