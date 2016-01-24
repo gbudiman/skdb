@@ -149,5 +149,16 @@ jQuery.extend({
          +     count
          +   '</span>'
          + '</span>';
+  },
+
+  prettify_generic: function(_glyph, _text) {
+    return '<span class="label-group">'
+         +   '<span class="label label-default">'
+         +     '<span class="glyphicon glyphicon-' + _glyph + '"></span>'
+         +   '</span>'
+         +   '<span class="label label-default">'
+         +     _text
+         +   '</span>'
+         + '</span>';
   }
 });
