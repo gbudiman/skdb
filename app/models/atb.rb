@@ -6,7 +6,12 @@ class Atb < ActiveRecord::Base
                    :debuffs,
                    :revivals,
                    :stat_modifiers]
-  enum modifier: [ :fraction, :amount, :turns, :probability, :hit_count ]
+  enum modifier: [ :fraction, :amount, :turns, :probability, :hit_count,
+                   :continuous_physical_damage_fraction,
+                   :continuous_magical_damage_fraction,
+                   :aftershock_physical_damage_fraction,
+                   :aftershock_magical_damage_fraction,
+                   :add_damage_fraction_of_target_max_hp ]
 
   before_validation :parse
 
@@ -37,8 +42,10 @@ class Atb < ActiveRecord::Base
   end
 
   def parse
+    modifier_regexes = Atb.modifiers.keys.join('|')
     case self.name
-    when /(fraction|amount|turns|probability|hit_count)/
+    #when /(fraction|amount|turns|probability|hit_count)/
+    when /(#{modifier_regexes})/ 
       modifier = $1
 
       sanitize = case self.name \

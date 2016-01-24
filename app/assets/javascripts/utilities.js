@@ -2,6 +2,13 @@ Array.prototype.last = function() { return this[this.length-1]; }
 
 String.prototype.strip_hero_rank = function() { return this.split(/\s/).last(); }
 
+function getScrollBarWidth () {
+    var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
+        widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
+    $outer.remove();
+    return 100 - widthWithScroll;
+};
+
 jQuery.fn.extend({
   add_column_to_bst: function(data) {
     var last_column_index = $(this).find('tbody').find('tr').first().find('td').length - 1;
@@ -22,6 +29,23 @@ jQuery.fn.extend({
             +     data
             +   '</div>'
             + '</th>');
+
+    // var target_width = $(this).find('td[data-column-index]').width();
+    // var leading_width = $(this).find('tr[data-index]').first().find('td').first().width();
+    // var scrollbar_width = getScrollBarWidth();
+
+    // $(this).parent().parent().find('.fixed-table-header').find('tr')
+    //   .append('<th class="compare-table-th" '
+    //         +      'data-hero-id=' + hero_id + ' '
+    //         +      'data-header-index=' + last_header_index + '>'
+    //         +   '<div class="th-inner">'
+    //         +     data
+    //         +   '</div>'
+    //         + '</th>');
+
+    // $('.fht-cell').remove();
+    // $('.fixed-table-header').find('tr').find('th[data-header-index]').css('width', target_width + 'px');
+    // $('.fixed-table-header').find('tr').find('th').first().css('width', leading_width + scrollbar_width + 'px');
   },
 
   remove_column_from_bst: function(ord) {

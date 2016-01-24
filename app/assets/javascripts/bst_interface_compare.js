@@ -47,8 +47,8 @@ function attach_column_activator() {
 
 function compare_table_add(d) {
   $.each(d, function(index, d) {
-    $('#compare-table').add_header_column_to_bst(stylify_hero(d), d.hero_id);
     $('#compare-table').add_column_to_bst(expand_skills(d.skills));
+    $('#compare-table').add_header_column_to_bst(stylify_hero(d), d.hero_id);
   })
 
   attach_column_remove();
@@ -110,11 +110,12 @@ function stylify_skill(d) {
     $.each(atb.modifiers, function(mdf, val) {
       var glyph_mdf = (function(mdf) {
         switch(mdf) {
-          case 'fraction':      return 'filter';
-          case 'turns':         return 'refresh';
-          case 'probability':   return 'equalizer';
-          case 'hit_count':     return 'scissors';
-          case 'amount':        return 'superscript';
+          case 'fraction':      return 'filter';        break;
+          case 'turns':         return 'refresh';       break;
+          case 'probability':   return 'equalizer';     break;
+          case 'hit_count':     return 'scissors';      break;
+          case 'amount':        return 'superscript';   break;
+          default:              return 'question-sign';  
         }
       })(mdf);
       s +=     '<li>'
