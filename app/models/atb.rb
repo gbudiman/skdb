@@ -6,12 +6,25 @@ class Atb < ActiveRecord::Base
                    :debuffs,
                    :revivals,
                    :stat_modifiers]
-  enum modifier: [ :fraction, :amount, :turns, :probability, :hit_count,
+  enum modifier: [ :as_invincible_magical_damage_increase_fraction,
+                   :as_invincible_physical_damage_increase_fraction,
+                   :as_invincible_turns,
+                   :proportional_increase_fraction,
+                   :proportional_limit_fraction,
                    :continuous_physical_damage_fraction,
                    :continuous_magical_damage_fraction,
                    :aftershock_physical_damage_fraction,
                    :aftershock_magical_damage_fraction,
-                   :add_damage_fraction_of_target_max_hp ]
+                   :add_damage_target_max_hp_fraction,
+                   :with_ignore_defense_probability,
+                   :on_counter_attack_amount,
+                   :on_regular_attack_amount,
+                   :on_regular_attack_turns,
+                   :on_speed_attack_amount,
+                   :extra_damage_fraction,
+                   :extra_damage_probability,
+                   :ally_hp_fraction,
+                   :fraction, :amount, :turns, :probability, :hit_count, ]
 
   before_validation :parse
 
@@ -41,23 +54,22 @@ class Atb < ActiveRecord::Base
     return result
   end
 
-  def parse
-    modifier_regexes = Atb.modifiers.keys.join('|')
-    case self.name
-    when /(#{modifier_regexes})/ 
-      modifier = $1
-
-      sanitize = case self.name \
-      when /\_of\_/
-        "_#{modifier}_of"
-      else
-        "_#{modifier}"
-      end
-
-      self.modifier = Atb.modifiers[modifier.to_sym]
-      self.effect = self.name.gsub(/#{sanitize}/i, '')
-    else
-      raise ActiveRecord::StatementInvalid, "Unenumerated attribute in #{self.name}"
+  def self.dump_effects
+    Atb.all.pluck(:effect).uniq.each do |e|
+      puts "  #{e}: ,"
     end
+  end
+
+  def parse
+    Atb.modifiers.keys.each do |regex_key|
+      if self.name =~ /#{regex_key}/
+        self.modifier = Atb.modifiers[regex_key.to_sym]
+        self.effect = self.name.gsub(/\_?#{modifier}/i, '')
+
+        return self
+      end
+    end
+
+    raise ActiveRecord::StatementInvalid, "Unenumerated attribute in #{self.name}"
   end
 end

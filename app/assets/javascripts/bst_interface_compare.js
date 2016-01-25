@@ -55,6 +55,7 @@ function compare_table_add(d) {
   attach_column_displace_left();
   attach_column_displace_right();
   attach_column_activator();
+  attach_modifier_tooltip();
 }
 
 function expand_skills(d) {

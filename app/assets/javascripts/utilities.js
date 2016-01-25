@@ -102,34 +102,34 @@ jQuery.extend({
   },
 
   prettify_target: function(_text) {
-    var label_class, count;
+    var label_class, count, help;
 
     switch(_text) {
-      case 'self'        : label_class = 'success'; count = 'Self';     break;
-      case 'ally_single' : label_class = 'primary'; count = '1';        break;
-      case 'ally_all'    : label_class = 'primary'; count = 'All';      break;
-      case 'enemy_one'   : label_class = 'danger';  count = '1';        break;
-      case 'enemy_two'   : label_class = 'danger';  count = '2';        break;
-      case 'enemy_three' : label_class = 'danger';  count = '3';        break;
-      case 'enemy_four'  : label_class = 'danger';  count = '4';        break;
-      case 'enemy_all'   : label_class = 'danger';  count = 'All';        break;
-      case 'attacker'    : label_class = 'danger';  count = 'Attacker'; break;
+      case 'self'        : label_class = 'success'; count = 'Self';     help = 'Self'; break;
+      case 'ally_single' : label_class = 'primary'; count = '1';        help = 'One Ally'; break;
+      case 'ally_all'    : label_class = 'primary'; count = 'All';      help = 'All Allies';break;
+      case 'enemy_one'   : label_class = 'danger';  count = '1';        help = '1 Enemy'; break;
+      case 'enemy_two'   : label_class = 'danger';  count = '2';        help = '2 Enemies'; break;
+      case 'enemy_three' : label_class = 'danger';  count = '3';        help = '3 Enemies'; break;
+      case 'enemy_four'  : label_class = 'danger';  count = '4';        help = '4 Enemies'; break;
+      case 'enemy_all'   : label_class = 'danger';  count = 'All';      help = 'All Enemies'; break;
+      case 'attacker'    : label_class = 'danger';  count = 'Attacker'; help = 'Attacker'; break;
     }
 
     var glyph_sym = '<span class="glyphicon glyphicon-screenshot"></span>';
-    return $.label_group([glyph_sym, count], label_class);
+    return $.label_group([glyph_sym, count], label_class, 'Targets ' + help);
   },
 
-  prettify_generic: function(_glyph, _text) {
+  prettify_generic: function(_glyph, _text, _title = '') {
     var glyph_sym = '<span class="glyphicon glyphicon-' + _glyph + '"></span>';
-    return $.label_group([glyph_sym, _text], 'default');
+    return $.label_group([glyph_sym, _text], 'default', _title);
   },
 
-  label_group: function(_data, _class) {
+  label_group: function(_data, _class, _title = '') {
     if (_data.constructor === Array && _data.length > 1) {
       var s = '';
 
-      s += '<span class="label-group">';
+      s += '<span class="label-group" title="' + _title + '">';
       $.each(_data, function(i, x) {
         s += '<span class="label label-' + _class + '">'
           +     x
@@ -140,7 +140,17 @@ jQuery.extend({
       return s;
     } else {
       var d = (_data.constructor === Array ? _data[0] : _data);
-      return '<span class="label label-' + _class + '">' + d + '</span>';
+      return '<span class="label label-' + _class + '" title="' + _title + '">' 
+           +   d 
+           + '</span>';
     }
   }
 });
+
+function attach_modifier_tooltip() {
+  $('.label-group[title][title!=""]')
+    .hover(function() { $(this).css('cursor', 'help') })
+    .tooltip({
+
+  });
+}
