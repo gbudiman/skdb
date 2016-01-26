@@ -93,7 +93,7 @@ function stylify_skill(d, err_na = 'Not Available') {
   return '<strong>' + d['name'] + '</strong>'
        + '<br />' 
        + $.prettify_skill(d.category, d.cooldown)
-       + render_attributes(d.attributes);
+       + _render_attributes(d.attributes);
 }
 
 function stylify_flair(d, err_na = 'Not Available') {

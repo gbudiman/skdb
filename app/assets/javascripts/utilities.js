@@ -1,6 +1,16 @@
 Array.prototype.last = function() { return this[this.length-1]; }
 
-String.prototype.strip_hero_rank = function() { return this.split(/\s/).last(); }
+String.prototype.strip_hero_rank = function(_mute_rank = false) { 
+  var arr_s = this.split(/\s/);
+  var name = arr_s.pop();
+  var rank = arr_s.join(' ');
+  
+  if (_mute_rank == 'mute_rank') {
+    return '<span class="text-muted">' + rank + '</span> ' + name;
+  } else {
+    return name; 
+  }
+}
 
 function getScrollBarWidth () {
     var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
@@ -144,13 +154,20 @@ jQuery.extend({
            +   d 
            + '</span>';
     }
-  }
+  },
+
+  render_attributes: function(x) { _render_attributes(x); },
+  render_effect: function(x) { _render_effect(x); },
+  render_modifier: function(x) { _render_modifier(x); },
+  render_stat: function(x) { _render_stat(x); },
+  render_immunity: function(x) { _render_immunity(x); },
+  render_inflict: function(x) { _render_inflict(x); }
 });
 
 function attach_modifier_tooltip() {
   $('.label-group[title][title!=""]')
     .hover(function() { $(this).css('cursor', 'help') })
     .tooltip({
-
+      container: 'body'
   });
 }

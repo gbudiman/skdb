@@ -16,12 +16,6 @@ $('#search-input').on('keyup', function() {
 });
 
 $('#btn-execute-search').on('click', function() {
-  // var e = jQuery.Event('keypress');
-  // e.which = 13;
-  // e.keycode = 13;
-
-  // console.log('t');
-  // $('#search-input').val($('#search-input'));
   $('#search-input').trigger('keyup');
 });
 
@@ -67,7 +61,7 @@ function repopulate_hero_search_result(d) {
   $.each(d, function(i, v) {
     $('#hero-result')
       .append('<li class="list-group-item">'
-            +   v.name.strip_hero_rank()
+            +   v.name.strip_hero_rank('mute_rank')
             +   '&nbsp;'
             +   '<span class="glyphicon glyphicon-star">'
             +   '</span>'
@@ -119,7 +113,7 @@ function repopulate_atb_search_result(d) {
             +      'data-target="#' + composite_attribute + '" href="#">'
             +     '<div class="row">'
             +       '<div class="col-xs-10">'
-            +         v.effect  
+            +         $.render_effect(v.effect)
             +       '</div>'
             +       '<div class="col-xs-2 multi-line-vertical-centered">'
             +         '<span class="badge pull-right">' 
@@ -202,15 +196,8 @@ function repopulate_hhae_search_result(d, element_target) {
         if (effect_filter == v_atbs.effect && target_filter == v_atbs.target) {
           s += '<br />';
           s += '<span>' + v_skills.name + '</span>';
-          // s += '<span class="pull-right">' + v_skills.category;
-
-          // if (v_skills.category != 'passive') {
-          //   s += '&nbsp;<span class="glyphicon glyphicon-hourglass"></span>&nbsp;';
-          //   s += v_skills.cooldown + 's';
-          // }
           s += '<span class="pull-right">'
-          s += $.prettify_skill(v_skills.category, v_skills.cooldown);
-
+          s +=   $.prettify_skill(v_skills.category, v_skills.cooldown);
           s += '</span>';
         }
 
