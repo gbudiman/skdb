@@ -250,13 +250,17 @@ function attach_add_to_compare(el, type) {
     });
 
     if (!placeholder.attr('disabled')) {
-      $.ajax({
-        url: '/heros/fetch/' + $(this).attr('data-hero-id')
-      }).done(function(res) {
-        placeholder.children().empty();
-        compare_table_add(res);
-        stack_table_add(res);
-      })
+      add_to_compare_table($(this).attr('data-hero-id'), placeholder);
     }
   })
+}
+
+function add_to_compare_table(id, placeholder = null) {
+  $.ajax({
+    url: '/heros/fetch/' + id
+  }).done(function(res) {
+    if (placeholder != null) placeholder.children().empty();
+    compare_table_add(res);
+    stack_table_add(res);
+  }); 
 }

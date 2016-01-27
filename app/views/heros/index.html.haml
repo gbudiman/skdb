@@ -46,7 +46,11 @@
     /       %th{class: 'col-xs-8'} Contributors
     /   %tbody
 
+:javascript
+  window.preload = #{@preload.to_json};
+
 = javascript_include_tag 'launch_search'
 = javascript_include_tag 'bst_interface_compare'
 = javascript_include_tag 'bst_interface_stack'
 = javascript_include_tag 'render_attributes'
+= javascript_include_tag 'preload_compare'

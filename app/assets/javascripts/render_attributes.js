@@ -70,8 +70,6 @@ function _render_attributes(a) {
 			+  '</div>';
 	})
 
-  console.log(s);
-
 	return s;
 }
 

@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get     'skills/search/:q'                   => 'skills#search'
   get     'attributes/search/:q'               => 'atbs#search'
 
+  get     'compare'                            => 'heros#index'
+  get     'compare/*ids'                       => 'heros#compare', constraint: { ids: /\d+/ }
+
   get     'heros/debug/:n'                     => 'heros#debug'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

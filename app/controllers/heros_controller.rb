@@ -1,5 +1,6 @@
 class HerosController < ApplicationController
   def index
+    @preload = nil
   end
 
   def index_mock
@@ -27,5 +28,10 @@ class HerosController < ApplicationController
 
   def debug
     render json: Hero.details(Hero.where('name LIKE :n', n: "%#{params[:n]}%").ids)
+  end
+
+  def compare
+    @preload = params[:ids].split(/\//)
+    render :index
   end
 end
