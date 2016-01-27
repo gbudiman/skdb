@@ -19,6 +19,11 @@ class XlsxInterface
     data.commit!
   end
 
+  def self.rebuild_database!
+    Atb.destroy_all
+    update_database!
+  end
+
 private
   def process _d
     result = Array.new

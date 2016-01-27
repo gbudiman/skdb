@@ -62,7 +62,7 @@ function expand_skills(d) {
   return [stylify_flair(undefined, 'Flair Not Available'),
           stylify_skill(d.active_0),
           stylify_skill(d.active_1),
-          stylify_skill(d.passive),
+          stylify_skill(d.passive, 'No Passive Aura'),
           stylify_skill(d.awakening, 'Not Awakened Hero')];
 }
 

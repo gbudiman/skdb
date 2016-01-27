@@ -17,13 +17,20 @@ class Atb < ActiveRecord::Base
                    :aftershock_magical_damage_fraction,
                    :add_damage_target_max_hp_fraction,
                    :with_ignore_defense_probability,
+                   :with_critical_hit_probability,
                    :on_counter_attack_amount,
+                   :on_regular_attack_probability,
                    :on_regular_attack_amount,
                    :on_regular_attack_turns,
                    :on_speed_attack_amount,
+                   :on_enemy_death_fraction,
+                   :on_enemy_death_turns,
                    :extra_damage_fraction,
                    :extra_damage_probability,
-                   :ally_hp_fraction,
+                   :hp_fraction,
+                   :fraction_of_defense,
+                   :on_hp_below_threshold_fraction,
+                   :from_5_target_aoe_fraction,
                    :fraction, :amount, :turns, :probability, :hit_count, ]
 
   before_validation :parse

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get     'heros/fetch/having/atb/effect/:e/target/:r'   => 'heros#fetch_having_atb_effect'
   get     'skills/search/:q'                   => 'skills#search'
   get     'attributes/search/:q'               => 'atbs#search'
+
+  get     'heros/debug/:n'                     => 'heros#debug'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

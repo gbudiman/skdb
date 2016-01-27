@@ -24,4 +24,8 @@ class HerosController < ApplicationController
     render json: Hero.fetch_having_atb_effect(effect: params[:e],
                                               target: params[:r])
   end
+
+  def debug
+    render json: Hero.details(Hero.where('name LIKE :n', n: "%#{params[:n]}%").ids)
+  end
 end

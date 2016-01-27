@@ -156,12 +156,12 @@ jQuery.extend({
     }
   },
 
-  render_attributes: function(x) { _render_attributes(x); },
-  render_effect: function(x) { _render_effect(x); },
-  render_modifier: function(x) { _render_modifier(x); },
-  render_stat: function(x) { _render_stat(x); },
-  render_immunity: function(x) { _render_immunity(x); },
-  render_inflict: function(x) { _render_inflict(x); }
+  render_attributes:      function(x) { return _render_attributes(x); },
+  render_effect:          function(x) { return _render_effect(x); },
+  render_modifier:        function(x) { return _render_modifier(x); },
+  render_stat:            function(x) { return _render_stat(x); },
+  render_immunity:        function(x) { return _render_immunity(x); },
+  render_inflict:         function(x) { return _render_inflict(x); }
 });
 
 function attach_modifier_tooltip() {

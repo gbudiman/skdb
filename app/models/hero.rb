@@ -34,7 +34,7 @@ class Hero < ActiveRecord::Base
     return result
   end
 
-  def self.details _id
+  def self.details _ids
     result = Hash.new
 
     Hero.joins('INNER JOIN skills AS sk
@@ -43,7 +43,7 @@ class Hero < ActiveRecord::Base
                    ON           sk.id = sa.skill_id
                 INNER JOIN atbs
                    ON         atbs.id = sa.atb_id')
-        .where('heros.id IN(:id)', id: _id)
+        .where('heros.id IN(:id)', id: _ids)
         .select('heros.id           AS hero_id,
                  heros.name         AS hero_name,
                  heros.rank         AS hero_rank,
