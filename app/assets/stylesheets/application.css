@@ -24,7 +24,6 @@
 
 #right-bar {
   resize: horizontal;
-  overflow-x: visible;
 }
 
 .panel-search-result {
@@ -46,6 +45,14 @@ th.compare-table-th {
   max-width: 8em !important;
   width: 8em !important;*/
   text-align: center;
+}
+
+#right-bar .fixed-table-body {
+  max-height: 75vh !important;
+}
+
+#right-bar .th-inner {
+  min-width: 12em !important;
 }
 
 div.panel.panel-primary.condensed, div.panel.panel-default.condensed, div.panel.panel-warning.condensed {

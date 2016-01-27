@@ -1,6 +1,9 @@
 .container-fluid
   %div{id: 'left-bar', class: 'col-md-4'}
-    %div{class: 'panel'}
+    %div{class: 'minimized', hidden: true}
+      %button{class: 'btn btn-default btn-block', id: 'btn-restore-search', title: 'Restore Search Panel'}
+        %span{class: 'glyphicon glyphicon-arrow-right'}
+    %div{class: 'panel minimizable'}
       %div{class: 'panel-heading'}
         %div{class: 'input-group'}
           %input{type: 'text', 
@@ -29,6 +32,17 @@
             %span{class: 'badge pull-right', id: 'effect-result-count'}
           %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
   %div{id: 'right-bar', class: 'col-md-8'}
+    %div{id: 'toolbar', hidden: true, class: 'row'}
+      %div{class: 'col-xs-6'}
+        %a{id: 'btn-maximize-compare', href: '#'} &laquo; Maximize This Table
+      %div{class: 'col-xs-6 pull-right'}
+        %span{class: 'input-group'}
+          %span{class: 'input-group-addon', 
+                id: 'permalink-addon',
+                title: 'Use this link to share your team setup'} Permalink
+          %input{type: 'text', class: 'form-control', 
+                 id: 'permalink', 
+                 readonly: true}
     %table{id: 'compare-table'}
       %thead
         %tr
@@ -54,3 +68,4 @@
 = javascript_include_tag 'bst_interface_stack'
 = javascript_include_tag 'render_attributes'
 = javascript_include_tag 'preload_compare'
+= javascript_include_tag 'permalink'

@@ -63,6 +63,8 @@ jQuery.fn.extend({
         }
       })
     })
+
+    update_permalink();
   },
 
   displace_bst_column: function(_pivot, dir) {
@@ -97,7 +99,9 @@ jQuery.fn.extend({
       rc.insertBefore(lc);
       rc.attr('data-column-index', lei);
       lc.attr('data-column-index', rei);
-    })
+    });
+
+    update_permalink();
   }
 });
 
@@ -155,6 +159,22 @@ jQuery.extend({
            + '</span>';
     }
   },
+
+  maximize_compare: function() {
+    $('#left-bar').removeClass('col-md-4').addClass('col-md-1');
+    $('#left-bar').find('.minimizable').hide();
+    $('#left-bar').find('.minimized').show();
+    $('#right-bar').removeClass('col-md-8').addClass('col-md-11');
+    $('#btn-maximize-compare').hide();
+  },
+
+  normalize_compare: function() {
+    $('#left-bar').removeClass('col-md-1').addClass('col-md-4');
+    $('#left-bar').find('.minimizable').show();
+    $('#left-bar').find('.minimized').hide();
+    $('#right-bar').removeClass('col-md-11').addClass('col-md-8');
+    $('#btn-maximize-compare').show();
+  },  
 
   render_attributes:      function(x) { return _render_attributes(x); },
   render_effect:          function(x) { return _render_effect(x); },

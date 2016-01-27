@@ -19,6 +19,26 @@ $('#btn-execute-search').on('click', function() {
   $('#search-input').trigger('keyup');
 });
 
+$('#btn-restore-search').tooltip({
+  container: 'body',
+  placement: 'right'
+}).on('click', function() {
+  $.normalize_compare();
+  $('#btn-restore-search').tooltip('hide');
+  $('#search-input').focus();
+})
+
+$('#permalink').on('click', function() {
+  $(this).select();
+})
+
+$('#permalink-addon').tooltip({
+  container: 'body',
+  placement: 'bottom'
+});
+
+$('#btn-maximize-compare').on('click', function() { $.maximize_compare(); });
+
 function launch_search_hero(q) {
   $.ajax({
     url: '/heros/search/' + q
@@ -246,8 +266,7 @@ function attach_add_to_compare(el, type) {
   $('a.addable-to-compare').off('click').on('click', function() {
     var placeholder = $(this);
 
-    $('#compare-table').show().bootstrapTable({
-    });
+    initialize_compare_table_bst();
 
     if (!placeholder.attr('disabled')) {
       add_to_compare_table($(this).attr('data-hero-id'), placeholder);
@@ -262,5 +281,13 @@ function add_to_compare_table(id, placeholder = null) {
     if (placeholder != null) placeholder.children().empty();
     compare_table_add(res);
     stack_table_add(res);
+    update_permalink();
   }); 
+}
+
+function initialize_compare_table_bst() {
+  $('#compare-table').show().bootstrapTable({
+  });
+
+  $('#toolbar').show();
 }
