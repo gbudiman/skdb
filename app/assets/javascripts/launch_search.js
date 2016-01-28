@@ -133,7 +133,7 @@ function repopulate_atb_search_result(d) {
             +      'data-target="#' + composite_attribute + '" href="#">'
             +     '<div class="row">'
             +       '<div class="col-xs-10">'
-            +         $.render_effect(v.effect)
+            +         $.render_effect(v.effect, v.target)
             +       '</div>'
             +       '<div class="col-xs-2 multi-line-vertical-centered">'
             +         '<span class="badge pull-right">' 

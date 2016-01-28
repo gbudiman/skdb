@@ -28,20 +28,20 @@ var modifier_translation = {
   remove_debuffs: 'Remove Debuffs',
   revive: 'Resurrect',
   skills_power_up: 'Power Up Skills',
-  stat_block_rate_increase: _render_stat('up'),
-  stat_counter_attack_rate_decrease: _render_stat('down', 'Counter Rate', 'inverse'),
-  stat_counter_attack_rate_increase: _render_stat('up', 'Counter Rate', 'inverse'),
+  stat_block_rate_increase: _render_stat('up', 'Block Rate'),
+  stat_counter_attack_rate_decrease: _render_stat('down', 'Counter Rate'),
+  stat_counter_attack_rate_increase: _render_stat('up', 'Counter Rate'),
   stat_critical_rate_decrease: _render_stat('down', 'Critical Rate'),
   stat_critical_rate_increase: _render_stat('up', 'Critical Rate'),
   stat_damage_output_decrease: _render_stat('down', 'Damage Output'),
   stat_damage_output_increase: _render_stat('up', 'Damage Output'),
-  stat_defense_decrease: _render_stat('up', 'Defense', 'inverse'),
-  stat_defense_increase: _render_stat('down', 'Defense', 'inverse'),
+  stat_defense_decrease: _render_stat('down', 'Defense'),
+  stat_defense_increase: _render_stat('up', 'Defense'),
   stat_healing_potency_decrease: _render_stat('down', 'Healing Potency', 'inverse'),
   stat_hp_increase: _render_stat('up', 'HP'),
-  stat_incoming_damage_decrease: _render_stat('down', 'Damage Received'),
-  stat_incoming_damage_increase: _render_stat('up', 'Damage Received'),
-  stat_incoming_physical_damage_decrease: _render_stat('down', 'Physical Damage Received'),
+  stat_incoming_damage_decrease: _render_stat('down', 'Damage Received', 'inverse'),
+  stat_incoming_damage_increase: _render_stat('up', 'Damage Received', 'inverse'),
+  stat_incoming_physical_damage_decrease: _render_stat('down', 'Physical Damage Received', 'inverse'),
   stat_lethal_rate_increase: _render_stat('up', 'Lethal Rate'),
   stat_magical_attack_increase: _render_stat('up', 'Magical Attack'),
   stat_magical_attack_increase_on_enemy_death: _render_stat('up', 'Magical Attack on Enemy Death'),
@@ -57,7 +57,7 @@ function _render_attributes(a) {
 	$.each(a, function(effect, atb) {
 		s += '<div class="panel panel-default condensed">'
 			+    '<div class="panel-heading condensed" data-raw-effect="' + effect + '">' 
-			+      _render_effect(effect)
+			+      _render_effect(effect, atb.target)
 			+    '</div>'
 			+    '<div class="panel-body condensed">'
 			+      '<div class="row">'
@@ -73,8 +73,18 @@ function _render_attributes(a) {
 	return s;
 }
 
-function _render_effect(x) {
-	return modifier_translation[x] || x;
+function _render_effect(x, target) {
+	var raw_render_wrap = modifier_translation[x] || x;
+
+	if (raw_render_wrap.match(/text-danger/) && target.match(/^enemy/)) {
+		if (raw_render_wrap.match(/text-danger/)) {
+			raw_render_wrap = raw_render_wrap.replace(/text-danger/, 'text-success');
+		} else if (raw_render_wrap.match(/text-success/)) {
+			raw_render_wrap = raw_render_wrap.replace(/text-success/, 'text-danger');
+		}
+	}
+
+	return raw_render_wrap;
 }
 
 function _render_modifier(mdfs) {
@@ -119,7 +129,7 @@ function _render_stat(_x, _stat, _inverse = false) {
 		case 'up': color_class = inverse ? 'text-danger' : 'text-success'; break;
 		case 'down': color_class = inverse ? 'text-success' : 'text-danger'; break;
 	}
-	return '<span class="' + color_class + '">'
+	return '<span class="' + color_class + ' realignable-arrow">'
 	     +   '<span class="glyphicon glyphicon-arrow-' + _x + '"></span>'
        +   '&nbsp;'
        +   _stat
