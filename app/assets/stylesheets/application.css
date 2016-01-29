@@ -184,3 +184,13 @@ div.synergy-closing {
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+.btn.synergy-bottom {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.btn.synergy-top {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
