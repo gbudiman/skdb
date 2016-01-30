@@ -43,7 +43,7 @@
           %input{type: 'text', class: 'form-control', 
                  id: 'permalink', 
                  readonly: true}
-    %table{id: 'compare-table'}
+    %table{id: 'compare-table', hidden: true}
       %thead
         %tr
       %tbody
@@ -54,12 +54,6 @@
         %tr
 
     = render partial: 'stack_table'
-    / %table{id: 'stack-table'}
-    /   %thead
-    /     %tr
-    /       %th{class: 'col-xs-4', 'data-sortable' => 'true'} Effects
-    /       %th{class: 'col-xs-8'} Contributors
-    /   %tbody
 
 :javascript
   window.preload = #{@preload.to_json};

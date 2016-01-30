@@ -290,4 +290,5 @@ function initialize_compare_table_bst() {
   });
 
   $('#toolbar').show();
+  $('.stack-table').show();
 }

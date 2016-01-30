@@ -1,4 +1,4 @@
-%div{class: 'row'}
+%div{class: 'row stack-table', hidden: true}
   %div{class: 'col-xs-2 synergy-leading'} 
     %button{class: 'btn btn-primary active btn-block synergy-leading-top synergy-span'}
       Offensive Synergy
@@ -28,7 +28,7 @@
     %button{class: 'btn btn-default disabled btn-block synergy-closing-top synergy-span', id: 'def-down'} 
       Defense Down
 
-%div{class: 'row'}
+%div{class: 'row stack-table', hidden: true}
   %div{class: 'col-xs-2 synergy-leading'} 
     %button{class: 'btn btn-default disabled btn-block synergy-leading-bottom synergy-span', id: 'def-up'}
       Defense Up
@@ -60,18 +60,29 @@
 %br
 
 - stack_tables.each do |e|
-  %div{class: 'row'}
+  %div{class: 'row stack-table', hidden: true}
     %div{class: 'col-xs-1'}
     - if e[0] == nil
       %div{class: 'col-xs-6'}
     - else
-      = generate_ii_stack(position: e[2], side: 'leading', stat: 'Immune', name: e[0])
+      = generate_ii_stack(position: e[2], 
+                          side: 'leading', 
+                          stat: 'Immune', 
+                          name: e[0],
+                          name_id: e[4])
       %div{class: 'col-xs-2 synergy-mid'}
         %button{class: 'btn btn-default disabled btn-block synergy-mid'}
           = e[0]
-      = generate_ii_stack(position: e[2], side: 'closing', stat: 'Inflict', name: e[0])
+      = generate_ii_stack(position: e[2], 
+                          side: 'closing', 
+                          stat: 'Inflict', 
+                          name: e[0],
+                          name_id: e[4])
 
-    
-    %div{class: 'col-xs-4'}
-      - if e[1] != nil
-        = generate_ss_stack side: e[3], name: e[1]
+    - if e[1] == nil
+      %div{class: 'col-xs-4'}
+    - else
+      = generate_ss_stack(side: e[3], 
+                          name: e[1],
+                          name_id: e[5],
+                          bidir: e[6])
