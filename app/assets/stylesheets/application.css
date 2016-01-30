@@ -19,11 +19,12 @@
 }
 
 #left-bar {
-  resize: horizontal;
+  //resize: horizontal;
 }
 
 #right-bar {
-  resize: horizontal;
+  //resize: horizontal;
+  max-height: 90vh;
 }
 
 .panel-search-result {
@@ -37,7 +38,7 @@
 
 #panel-search-result-body {
   overflow-y: auto;
-  max-height: 75vh;
+  max-height: 83vh;
 }
 
 th.compare-table-th {
