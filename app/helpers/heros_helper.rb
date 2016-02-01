@@ -1,18 +1,18 @@
 module HerosHelper
 	def stack_tables
 		return \
-			[['Blind'				, 'Block Rate'	   						, :top				, :top		, :inflict_blind, :stat_block_rate, :bidir],
-			 ['Electrify'		, 'Lethal Rate'		   		  		, nil					, nil   	, :inflict_electrify, :stat_lethal_rate, :bidir],
-			 ['Paralyze'		, 'Critical Rate'		     			, nil					, :bottom	, :inflict_paralyze, :stat_critical_rate, :bidir],
-			 ['Petrify'			, nil                         , nil					, nil 		, :inflict_petrify],
-			 ['Silence'			, 'Debuff Immunity'						, nil					, :top		, :inflict_silence, :immunity_to_all_debuff],
-			 ['Stun'				, 'Damage Immunity'						, :bottom			, nil  		, :inflict_stun, :immunity_to_all_damage],
+			[['Blind'				, 'Block Rate'	   						, :top				, :top		, :blind, :stat_block_rate, :bidir],
+			 ['Electrify'		, 'Lethal Rate'		   		  		, nil					, nil   	, :electrify, :stat_lethal_rate, :bidir],
+			 ['Paralyze'		, 'Critical Rate'		     			, nil					, :bottom	, :paralyze, :stat_critical_rate, :bidir],
+			 ['Petrify'			, nil                         , nil					, nil 		, :petrify],
+			 ['Silence'			, 'Debuff Immunity'						, nil					, :top		, :silence, :immunity_to_all_debuff],
+			 ['Stun'				, 'Damage Immunity'						, :bottom			, nil  		, :stun, :immunity_to_all_damage],
 			 [nil						, 'Physical Immunity'         , nil					, nil			, nil, :immunity_to_physical_damage],
-			 ['Bleed'				, 'Magical Immunity'					, :top				, :bottom	, :inflict_bleed, :immunity_to_magical_damage],
-			 ['Burn'				, nil													, nil					, nil   	, :inflict_burn],
-			 ['Chill'				, 'Buff Removal'							, nil 				, :top		, :inflict_chill, :remove_buffs],
-			 ['Death'				, 'Buff Duration Reduction'		, nil					, nil  		, :inflict_death, :buff_duration_reduction],
-			 ['Poison'			, 'Debuff Removal'						, :bottom			, :bottom	, :inflict_poison, :remove_debuffs]]
+			 ['Bleed'				, 'Magical Immunity'					, :top				, :bottom	, :bleed, :immunity_to_magical_damage],
+			 ['Burn'				, nil													, nil					, nil   	, :burn],
+			 ['Chill'				, 'Buff Removal'							, nil 				, :top		, :chill, :remove_buffs],
+			 ['Death'				, 'Buff Duration Reduction'		, nil					, nil  		, :death, :buff_duration_reduction],
+			 ['Poison'			, 'Debuff Removal'						, :bottom			, :bottom	, :poison, :remove_debuffs]]
 	end
 
 	def generate_ii_stack _h
@@ -26,7 +26,7 @@ module HerosHelper
 
 				haml_tag :button, 
 								 class: "btn btn-default disabled btn-block #{r}", 
-								 id: "stack_#{_h[:name_id]}" do
+								 id: "stack_#{_h[:stat]}_#{_h[:name_id]}" do
 					haml_concat _h[:stat]
 				end
 			end
