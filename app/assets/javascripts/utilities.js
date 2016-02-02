@@ -20,6 +20,10 @@ function getScrollBarWidth () {
 };
 
 jQuery.fn.extend({
+  update_stack_cell: function() {
+    update_stack_cell($(this));
+  },
+
   add_column_to_bst: function(data) {
     var last_column_index = $(this).find('tbody').find('tr').first().find('td').length;
 

@@ -49,7 +49,7 @@ th.compare-table-th {
 }
 
 #right-bar .fixed-table-body {
-  max-height: 75vh !important;
+  max-height: 83vh !important;
 }
 
 #right-bar .th-inner {
@@ -100,7 +100,7 @@ span.label.label-primary.label-stack {
 }
 
 .compare-table {
-  max-height: 50vh;
+  //max-height: 50vh;
 }
 
 
@@ -194,4 +194,8 @@ div.synergy-closing {
 .btn.synergy-top {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.no-wrap {
+  white-space nowrap: 
 }

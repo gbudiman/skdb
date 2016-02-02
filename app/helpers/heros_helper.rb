@@ -16,6 +16,7 @@ module HerosHelper
 	end
 
 	def generate_ii_stack _h
+		stat = { immunity_to: 'Immunity', inflict: 'Inflict'}
 		return capture_haml do
 			haml_tag :div, class: "col-xs-2 synergy-#{_h[:side]}" do
 				r = case _h[:position]
@@ -27,7 +28,7 @@ module HerosHelper
 				haml_tag :button, 
 								 class: "btn btn-default disabled btn-block #{r}", 
 								 id: "stack_#{_h[:stat]}_#{_h[:name_id]}" do
-					haml_concat _h[:stat]
+					haml_concat stat[_h[:stat].to_sym]
 				end
 			end
 		end
@@ -40,7 +41,7 @@ module HerosHelper
 					synergy_class = _h[:side] ? "synergy-leading-#{_h[:side]}" : 'synergy-mid'
 					haml_tag :button,
 									 class: "btn btn-default disabled btn-block #{synergy_class}",
-									 id: "#{_h[:name_id]}_increase" do
+									 id: "stack_#{_h[:name_id]}_increase" do
 						haml_tag :span, class: 'glyphicon glyphicon-arrow-up'
 					end
 				end
@@ -56,7 +57,7 @@ module HerosHelper
 					synergy_class = _h[:side] ? "synergy-closing-#{_h[:side]}" : 'synergy-mid'
 					haml_tag :button,
 									 class: "btn btn-default disabled btn-block #{synergy_class}",
-									 id: "#{_h[:name_id]}_decrease" do
+									 id: "stack_#{_h[:name_id]}_decrease" do
 						haml_tag :span, class: 'glyphicon glyphicon-arrow-down'
 					end
 				end

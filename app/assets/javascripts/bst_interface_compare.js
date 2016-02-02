@@ -117,5 +117,7 @@ function remove_bst_column(el) {
     if (hero_id == $(this).attr('data-hero-id')) {
       $('#compare-table').remove_column_from_bst(i);
     }
-  })
+  });
+
+  stack_table_remove(hero_id);
 }
