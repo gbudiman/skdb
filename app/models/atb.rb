@@ -18,6 +18,7 @@ class Atb < ActiveRecord::Base
                    :add_damage_target_max_hp_fraction,
                    :with_ignore_defense_probability,
                    :with_critical_hit_probability,
+                   :with_piercing_probability,
                    :on_counter_attack_amount,
                    :on_regular_attack_probability,
                    :on_regular_attack_amount,
@@ -31,6 +32,7 @@ class Atb < ActiveRecord::Base
                    :fraction_of_defense,
                    :on_hp_below_threshold_fraction,
                    :from_5_target_aoe_fraction,
+                   :stat_original_fraction,
                    :fraction, :amount, :turns, :probability, :hit_count, ]
 
   before_validation :parse
