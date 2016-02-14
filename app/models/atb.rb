@@ -28,9 +28,10 @@ class Atb < ActiveRecord::Base
                    :on_enemy_death_turns,
                    :extra_damage_fraction,
                    :extra_damage_probability,
-                   :hp_fraction,
                    :fraction_of_defense,
                    :on_hp_below_threshold_fraction,
+                   :on_hp_below_threshold,
+                   :hp_fraction,
                    :from_5_target_aoe_fraction,
                    :stat_original_fraction,
                    :fraction, :amount, :turns, :probability, :hit_count, ]
