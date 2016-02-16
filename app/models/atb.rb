@@ -24,8 +24,6 @@ class Atb < ActiveRecord::Base
                    :on_regular_attack_amount,
                    :on_regular_attack_turns,
                    :on_speed_attack_amount,
-                   :on_enemy_death_fraction,
-                   :on_enemy_death_turns,
                    :extra_damage_fraction,
                    :extra_damage_probability,
                    :fraction_of_defense,
@@ -68,6 +66,11 @@ class Atb < ActiveRecord::Base
     Atb.all.pluck(:effect).uniq.each do |e|
       puts "  #{e}: ,"
     end
+  end
+
+  def self.find_heros_having _x
+    Atb.where(_x).joins(skill_atbs: [skill: :hero])
+       .pluck('heros.name', 'skills.name', 'atbs.name')
   end
 
   def parse
