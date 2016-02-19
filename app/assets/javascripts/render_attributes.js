@@ -66,6 +66,45 @@ var modifier_translation = {
   untargettable: 'Untargettable',
 };
 
+// Use http://localhost:2000/compare/52/61/157/55/166 to test
+var modifier_title = {
+  as_invincible_magical_damage_increase_fraction: '',
+  as_invincible_physical_damage_increase_fraction: '',
+  as_invincible_turns: '',
+  proportional_increase_fraction: '',
+  proportional_limit_fraction: '',
+  continuous_physical_damage_fraction: '',
+  continuous_magical_damage_fraction: '',
+  aftershock_physical_damage_fraction: '',
+  aftershock_magical_damage_fraction: '',
+  add_damage_target_max_hp_fraction: '',
+  with_ignore_defense_probability: '',
+  with_critical_hit_probability: '',
+  with_piercing_probability: '',
+  on_counter_attack_amount: '',
+  on_regular_attack_probability: '',
+  on_regular_attack_amount: '',
+  on_regular_attack_turns: '',
+  on_speed_attack_amount: '',
+  extra_damage_fraction: '',
+  extra_damage_probability: '',
+  fraction_of_defense: 'Fraction of DEF',
+  on_hp_below_threshold_fraction: 'When HP drops below %',
+  on_hp_below_threshold: 'Restores up to % of Max HP',
+  hp_fraction: 'Fraction of Max HP',
+  from_5_target_aoe_fraction: '',
+  stat_original_fraction: '',
+  fraction: 'Fraction of Stat',
+  amount: 'Amount',
+  turns: 'Turn Duration',
+  probability: 'Probability',
+  hit_count: 'Hit Count'
+}
+
+function _render_modifier_title (x) {
+  return modifier_title[x] || x;
+}
+
 function _render_attributes(a) {
 	var s = '';
 
@@ -106,6 +145,8 @@ function _render_modifier(mdfs) {
 	var s = '';
 
 	$.each(mdfs, function(mdf, val) {
+    var s_mdf = _render_modifier_title(mdf);
+
 	  var glyph_mdf = (function(mdf) {
 	    switch(mdf) {
 	      case 'fraction':      return 'filter';        break;
@@ -129,7 +170,7 @@ function _render_modifier(mdfs) {
 	  })(val);
 
 	  s += '<div class="col-xs-6">'
-	  	+    $.prettify_generic(glyph_mdf, s_val, mdf)
+	  	+    $.prettify_generic(glyph_mdf, s_val, s_mdf)
 		  +  '</div>';
 	});
 

@@ -14,15 +14,21 @@ class XlsxInterface
   end
 
   def self.update_database!
-    xlsx = XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
-    data = Importer.new(xlsx.result)
-    data.commit!
+    Utility.shut_up do
+      xlsx = XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
+      data = Importer.new(xlsx.result)
+      data.commit!
+    end
   end
 
   def self.rebuild_database!
-    Atb.destroy_all
-    update_database!
+    Utility.shut_up do
+      Atb.destroy_all
+      update_database!
+    end
   end
+
+
 
 private
   def process _d

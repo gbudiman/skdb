@@ -67,7 +67,7 @@ function stack_table_remove(id) {
 function update_stack_cell(el) {
   if (el.attr('data-contributor') != '{}') {
     el.popover({
-      container: '#right-bar',
+      container: 'body',
       //content: _expand_stack_cell_content(el),
       html: true,
       placement: 'top',

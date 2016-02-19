@@ -172,6 +172,10 @@ jQuery.extend({
     $('#btn-maximize-compare').hide();
   },
 
+  remove_all_compare: function() {
+    $('a.compare-remove').trigger('click');
+  },
+
   normalize_compare: function() {
     $('#left-bar').removeClass('col-md-1').addClass('col-md-4');
     $('#left-bar').find('.minimizable').show();

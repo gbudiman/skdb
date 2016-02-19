@@ -28,17 +28,6 @@ $('#btn-restore-search').tooltip({
   $('#search-input').focus();
 })
 
-$('#permalink').on('click', function() {
-  $(this).select();
-})
-
-$('#permalink-addon').tooltip({
-  container: 'body',
-  placement: 'bottom'
-});
-
-$('#btn-maximize-compare').on('click', function() { $.maximize_compare(); });
-
 function launch_search_hero(q) {
   $.ajax({
     url: '/heros/search/' + q
@@ -283,12 +272,4 @@ function add_to_compare_table(id, placeholder = null) {
     stack_table_add(res);
     update_permalink();
   }); 
-}
-
-function initialize_compare_table_bst() {
-  $('#compare-table').show().bootstrapTable({
-  });
-
-  $('#toolbar').show();
-  $('.stack-table').show();
 }

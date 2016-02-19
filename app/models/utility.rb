@@ -11,6 +11,17 @@ class Utility
     return r[:hero] + '_x_' + r[:skill]
   end
 
+  def self.shut_up
+    t = Rails.logger.level
+    Rails.logger.level = 1
+    puts "Temporarily setting Rails.logger.level to 1"
+
+    yield
+    
+    Rails.logger.level = t
+    puts "Rails.logger.level to set back to #{t}"
+  end
+
 private
   def self.ensure_proper_static_name! _x
     raise NameError unless _x =~ /\A([A-Za-z\_]+)\_(\d)\_(\d)\z/

@@ -1,8 +1,35 @@
-function attach_column_displace_left() {
-  $('a.displace-left').tooltip({
-    title: 'Move Left',
+function initialize_compare_table_bst() {
+  $('#compare-table').show().bootstrapTable({
+  });
+
+  $('#toolbar').show();
+  $('.stack-table').show();
+
+  $('#permalink').on('click', function() {
+    $(this).select();
+  })
+
+  $('#permalink-addon').tooltip({
+    container: 'body',
     placement: 'bottom'
-  }).off('click').on('click', function() {
+  });
+
+  $('#btn-maximize-compare').on('click', function() { $.maximize_compare(); });
+  $('#btn-remove-all-compare').on('click', function() { $.remove_all_compare(); });
+}
+
+function attach_column_remove() {
+  $('a.compare-remove').each(function() {
+    var placeholder = $(this);
+
+    placeholder.attr('title', 'Remove').off('click').on('click', function() {
+      remove_bst_column(placeholder);
+    });
+  });
+}
+
+function attach_column_displace_left() {
+  $('a.displace-left').attr('title', 'Move Left').off('click').on('click', function() {
     $(this).tooltip('hide');
     $(this).parent().parent().find('a').hide();
     $('#compare-table').displace_bst_column($(this).parent().parent().attr('data-header-index'), 'left');
@@ -10,10 +37,7 @@ function attach_column_displace_left() {
 }
 
 function attach_column_displace_right() {
-  $('a.displace-right').tooltip({
-    title: 'Move Right',
-    placement: 'bottom'
-  }).off('click').on('click', function() {
+  $('a.displace-right').attr('title', 'Move Right').off('click').on('click', function() {
     $(this).tooltip('hide');
     $(this).parent().parent().find('a').hide();
     $('#compare-table').displace_bst_column($(this).parent().parent().attr('data-header-index'), 'right');
@@ -98,16 +122,6 @@ function stylify_flair(d, err_na = 'Not Available') {
   if (!d) {
     return $.label_group(err_na, 'default');
   }
-}
-
-function attach_column_remove() {
-  $('a.compare-remove').each(function() {
-    var placeholder = $(this);
-
-    placeholder.off('click').on('click', function() {
-      remove_bst_column(placeholder);
-    });
-  });
 }
 
 function remove_bst_column(el) {
