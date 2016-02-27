@@ -7,8 +7,8 @@ RSpec.describe Skill, type: :model do
 
   context "inline parsing should be able to" do
     {"inflict_turns_something" => ["turns", "inflict_something"],
-     "inflict_fraction_of_magical_attack" => ["fraction", "inflict_magical_attack"],
-     "inflict_amount_of_whatever" => ["amount", "inflict_whatever"],
+     "inflict_burn_continous_magical_damage_fraction" => ["fraction", "inflict_burn_continous_magical_damage"],
+     "inflict_whatever_amount" => ["amount", "inflict_whatever"],
      "inflict_burn_probability" => ["probability", "inflict_burn"],
      "inflict_whatever_hit_count" => ["hit_count", "inflict_whatever"]}.each do |k, r|
       

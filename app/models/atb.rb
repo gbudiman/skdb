@@ -17,6 +17,7 @@ class Atb < ActiveRecord::Base
                    :aftershock_magical_damage_fraction,
                    :add_damage_target_max_hp_fraction,
                    :with_ignore_defense_probability,
+                   :with_lethal_attack_probability,
                    :with_critical_hit_probability,
                    :with_piercing_probability,
                    :on_counter_attack_amount,

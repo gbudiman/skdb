@@ -19,7 +19,7 @@ class Utility
     yield
     
     Rails.logger.level = t
-    puts "Rails.logger.level to set back to #{t}"
+    puts "Rails.logger.level set back to #{t}"
   end
 
 private

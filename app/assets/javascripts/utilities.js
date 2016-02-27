@@ -131,7 +131,6 @@ jQuery.extend({
       case 'enemy_three' : label_class = 'danger';  count = '3';        help = '3 Enemies'; break;
       case 'enemy_four'  : label_class = 'danger';  count = '4';        help = '4 Enemies'; break;
       case 'enemy_all'   : label_class = 'danger';  count = 'All';      help = 'All Enemies'; break;
-      case 'enemy_oom'   : label_class = 'danger';  count = '1+';       help = 'One or More Enemies'; break;
       case 'attacker'    : label_class = 'danger';  count = 'Attacker'; help = 'Attacker'; break;
     }
 
