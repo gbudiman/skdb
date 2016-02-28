@@ -80,11 +80,13 @@ function update_stack_cell(el) {
     el.attr('data-content', expand.content);
   }
 
-  if (expand.count > 1) {
-    //console.log('appended to ' + el);
-    el.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-  } else {
-    el.find('.glyphicon-exclamation-sign').remove();
+  mark_stacking_attributes(el, expand);
+}
+
+function mark_stacking_attributes(_el, _expand) {
+  _el.find('.glyphicon-exclamation-sign').remove();
+  if (_expand.count > 1) {
+    _el.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
   }
 }
 

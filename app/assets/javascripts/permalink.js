@@ -6,8 +6,8 @@ function update_permalink() {
                 + (window.location.port ? ':' + window.location.port : '')
                 + '/compare/';
 
-  $('#compare-table').find('th[data-hero-id]').each(function() {
-    ids.push($(this).attr('data-hero-id'));
+  $('#compare-table').find('th[data-hero-name-url-friendly]').each(function() {
+    ids.push($(this).attr('data-hero-name-url-friendly'));
   })
 
   permalink += ids.join('/');

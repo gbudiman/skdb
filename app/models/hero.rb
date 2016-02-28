@@ -45,6 +45,7 @@ class Hero < ActiveRecord::Base
                    ON         atbs.id = sa.atb_id')
         .where('heros.id IN(:id)', id: _ids)
         .select('heros.id           AS hero_id,
+                 heros.static_name  AS hero_static_name,
                  heros.name         AS hero_name,
                  heros.rank         AS hero_rank,
                  sk.id              AS skill_id,
@@ -65,6 +66,7 @@ class Hero < ActiveRecord::Base
       hero[:hero_id]      = r.hero_id
       hero[:hero_name]    = r.hero_name
       hero[:hero_rank]    = r.hero_rank.to_i
+      hero[:url_friendly] = r.hero_static_name.split(/\_/).first
       hero[:skills]     ||= Hash.new
 
       # Skill sub-member ######

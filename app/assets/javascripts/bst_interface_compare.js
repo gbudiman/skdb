@@ -70,7 +70,7 @@ function attach_column_activator() {
 function compare_table_add(d) {
   $.each(d, function(index, d) {
     $('#compare-table').add_column_to_bst(expand_skills(d.skills));
-    $('#compare-table').add_header_column_to_bst(stylify_hero(d), d.hero_id);
+    $('#compare-table').add_header_column_to_bst(stylify_hero(d), d.hero_id, d.url_friendly);
   })
 
   attach_column_remove();

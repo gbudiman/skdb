@@ -32,12 +32,13 @@ jQuery.fn.extend({
     });
   },
 
-  add_header_column_to_bst: function(data, hero_id) {
+  add_header_column_to_bst: function(data, hero_id, hero_name_url_friendly) {
     var last_header_index = $(this).find('th').length;
 
     $(this).find('thead').find('tr')
       .append('<th class="compare-table-th" '
             +      'data-hero-id=' + hero_id + ' '
+            +      'data-hero-name-url-friendly=' + hero_name_url_friendly + ' '
             +      'data-header-index=' + last_header_index + '>'
             +   '<div class="th-inner">'
             +     data

@@ -8,9 +8,9 @@ module HerosHelper
 			 ['Silence'			, 'Debuff Immunity'						, nil					, :top		, :silence, :immunity_to_all_debuff],
 			 ['Stun'				, 'Damage Immunity'						, :bottom			, nil  		, :stun, :immunity_to_all_damage],
 			 [nil						, 'Physical Immunity'         , nil					, nil			, nil, :immunity_to_physical_damage],
-			 ['Bleed'				, 'Magical Immunity'					, :top				, :bottom	, :bleed, :immunity_to_magical_damage],
-			 ['Burn'				, nil													, nil					, nil   	, :burn],
-			 ['Chill'				, 'Buff Removal'							, nil 				, :top		, :chill, :remove_buffs],
+			 ['Bleed'				, 'Magical Immunity'					, nil 				, nil   	, :bleed, :immunity_to_magical_damage],
+			 ['Burn'				, '5-target AOE Immunity'     , nil					, nil   	, :burn, :immunity_to_5_target_aoe],
+			 ['Chill'				, 'Buff Removal'							, nil 				, nil 		, :chill, :remove_buffs],
 			 ['Death'				, 'Buff Duration Reduction'		, nil					, nil  		, :death, :buff_duration_reduction],
 			 ['Poison'			, 'Debuff Removal'						, :bottom			, :bottom	, :poison, :remove_debuffs]]
 	end
