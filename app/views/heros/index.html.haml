@@ -49,6 +49,11 @@
           %input{type: 'text', class: 'form-control', 
                  id: 'permalink', 
                  readonly: true}
+      %div{class: 'col-xs-12'}
+        %br
+        %div{class: 'alert alert-warning', role: 'alert'}
+          %span{class: 'glyphicon glyphicon-exclamation-sign'} 
+          %span{id: 'mismatched-preloads'}
     %table{id: 'compare-table', hidden: true}
       %thead
         %tr
@@ -63,11 +68,11 @@
 
 :javascript
   window.preload = #{@preload.to_json};
-  window.url_friendly = #{@url_firendly.to_json};
+  window.mismatches = #{@mismatches.to_json};
 
 = javascript_include_tag 'launch_search'
 = javascript_include_tag 'bst_interface_compare'
 = javascript_include_tag 'bst_interface_stack'
 = javascript_include_tag 'render_attributes'
-= javascript_include_tag 'preload_compare'
 = javascript_include_tag 'permalink'
+= javascript_include_tag 'preload_compare'

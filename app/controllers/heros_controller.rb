@@ -48,8 +48,7 @@ class HerosController < ApplicationController
         end
       end
     end
-
-    #@preload = params[:ids].split(/\//)
+    
     render :index
   end
 end

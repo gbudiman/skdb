@@ -1,4 +1,6 @@
 function initialize_compare_table_bst() {
+  $('#mismatched-preloads').parent().parent().hide();
+  
   $('#compare-table').show().bootstrapTable({
   });
 

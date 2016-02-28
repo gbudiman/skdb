@@ -13,4 +13,15 @@ function update_permalink() {
   permalink += ids.join('/');
 
   $('#permalink').val(permalink);
+
+  //console.log(window.mismatches);
+
+  if ((window.mismatches != undefined) && window.mismatches.length > 0) {
+    $('#mismatched-preloads').parent().parent().show();
+    $('#mismatched-preloads')
+      .html('Hero <b>' + window.mismatches.join(', ') + '</b> '
+          + 'not found and will not be included in Permalink.');
+  } else {
+    $('#mismatched-preloads').parent().parent().hide();
+  }
 }
