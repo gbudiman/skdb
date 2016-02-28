@@ -1,5 +1,6 @@
 class HerosController < ApplicationController
   def index
+    log
     @preload = nil
   end
 
@@ -7,6 +8,7 @@ class HerosController < ApplicationController
   end
 
   def index_fetch
+    log
     render json: Hero.all
   end
 
@@ -19,10 +21,12 @@ class HerosController < ApplicationController
   end
 
   def search
+    log
     render json: Hero.search(params[:q])
   end
 
   def fetch_having_atb_effect
+    log
     render json: Hero.fetch_having_atb_effect(effect: params[:e],
                                               target: params[:r])
   end
@@ -32,6 +36,7 @@ class HerosController < ApplicationController
   end
 
   def compare
+    log
     @preload = Array.new
     @url_friendly = Hash.new
     @mismatches = Array.new

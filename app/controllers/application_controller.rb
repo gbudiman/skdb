@@ -4,6 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def log
-    ap request.remote_ip
+    Visitor.log address: request.remote_ip
   end
 end
