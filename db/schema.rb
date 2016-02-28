@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112165912) do
+ActiveRecord::Schema.define(version: 20160228221914) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -62,5 +62,16 @@ ActiveRecord::Schema.define(version: 20160112165912) do
 
   add_index "skills", ["hero_id", "name"], name: "hero_unique_skill_name", unique: true, using: :btree
   add_index "skills", ["hero_id", "static_name"], name: "hero_unique_skill_static_name", unique: true, using: :btree
+
+  create_table "visitors", force: :cascade do |t|
+    t.string  "address",      limit: 255,             null: false
+    t.integer "todays_count", limit: 4,   default: 0
+    t.date    "todays_date",                          null: false
+  end
+
+  add_index "visitors", ["address", "todays_date"], name: "visitors_timelime", unique: true, using: :btree
+  add_index "visitors", ["address"], name: "index_visitors_on_address", using: :btree
+  add_index "visitors", ["todays_date", "address"], name: "todays_visitors", unique: true, using: :btree
+  add_index "visitors", ["todays_date"], name: "index_visitors_on_todays_date", using: :btree
 
 end

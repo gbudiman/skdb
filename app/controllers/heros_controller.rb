@@ -14,6 +14,7 @@ class HerosController < ApplicationController
   end
 
   def view_fetch
+    log
     render json: Hero.details(params[:id])
   end
 
@@ -48,7 +49,7 @@ class HerosController < ApplicationController
         end
       end
     end
-    
+
     render :index
   end
 end
