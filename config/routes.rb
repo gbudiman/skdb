@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get     'attributes/search/:q'               => 'atbs#search'
 
   get     'compare'                            => 'heros#index'
-  get     'compare/*ids'                       => 'heros#compare', constraint: { ids: /\d+/ }
+  get     'compare/*ids'                       => 'heros#compare' #, constraint: { ids: /\d+/ }
 
   get     'heros/debug/:n'                     => 'heros#debug'
   # The priority is based upon order of creation: first created -> highest priority.

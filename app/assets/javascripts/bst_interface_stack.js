@@ -42,7 +42,7 @@ function stack_table_remove(id) {
     var target = $(this);
     var that = $.parseJSON(target.attr('data-contributor'));
 
-    console.log('cycling through ' + target.text() + ' hunting for ' + id);
+    //console.log('cycling through ' + target.text() + ' hunting for ' + id);
 
     if (that[id]) {
       delete that[id];
@@ -52,8 +52,8 @@ function stack_table_remove(id) {
       target.attr('data-contributor', overwrite);
       target.update_stack_cell();
 
-      console.log('eliminated and updated');
-      console.log($.parseJSON(target.attr('data-contributor')));
+      //console.log('eliminated and updated');
+      //console.log($.parseJSON(target.attr('data-contributor')));
 
       if (overwrite == '{}') {
         target
@@ -65,6 +65,8 @@ function stack_table_remove(id) {
 }
 
 function update_stack_cell(el) {
+  var expand = { count: 0 };
+
   if (el.attr('data-contributor') != '{}') {
     el.popover({
       container: 'body',
@@ -74,15 +76,25 @@ function update_stack_cell(el) {
       trigger: 'hover'
     });
 
-    el.attr('data-content', _expand_stack_cell_content(el));
+    expand = _expand_stack_cell_content(el)
+    el.attr('data-content', expand.content);
+  }
+
+  if (expand.count > 1) {
+    //console.log('appended to ' + el);
+    el.append('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+  } else {
+    el.find('.glyphicon-exclamation-sign').remove();
   }
 }
 
 function _expand_stack_cell_content(d) {
   var content = $.parseJSON(d.attr('data-contributor'));
   var s_content = '<div class="list-group">';
+  var count = 0;
 
   $.each(content, function(i, x) {
+    count++;
     $.each(x, function(skill_name, skill_data) {
       s_content += '<a href="#" class="list-group-item">'
                 +    '<div class="row">'
@@ -104,5 +116,6 @@ function _expand_stack_cell_content(d) {
   })
 
   s_content += '</div>';
-  return s_content;
+
+  return { count: count, content: s_content }
 }
