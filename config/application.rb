@@ -4,7 +4,7 @@ require 'rails/all'
 require 'hirb'
 require 'roo'
 require 'roo-xls'
-require 'hirb'
+require 'hirb' unless Rails.env.production?
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -27,6 +27,6 @@ module Skdb
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
-    Hirb.enable
+    Hirb.enable unless Rails.env.production?
   end
 end
