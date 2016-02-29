@@ -23,8 +23,8 @@ class Utility
   end
 
   def self.query_like
-    case connection.adapter_name.downcase.to_sym
-    when :postgresql
+    case ActiveRecord::Base.connection.adapter_name.downcase.to_sym
+    when :postgresql, :pg, :psql, :pgsql
       return 'ILIKE'
     end
 

@@ -58,8 +58,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
-  
-
   # Use rspec
   gem 'rspec-rails'
 
@@ -74,8 +72,6 @@ group :development, :test do
 
   # sextant for routes
   gem 'sextant'
-
-  gem 'mysql2'
 end
 
 group :production do
