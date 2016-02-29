@@ -16,6 +16,8 @@ $('#search-input').on('keyup', function() {
   if (query.length > 0) {
     delay(function() {
       $('.reveal-on-keyup').show();
+
+      query = $('#search-input').val(); // refresh query
       launch_search_hero(query);
       launch_search_skill(query);
       launch_search_atb(query);
