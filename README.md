@@ -9,13 +9,13 @@ Bugs? Problems? Use [Issue Trackers](https://github.com/gbudiman/skdb/issues)
 ## Screenshot
 
 1. Search anything<br />
-<img src="public/readme_img/search.png" alt="Search Anything" width="256" />
+<img src="public/readme_img/search.png" alt="Search Anything" width="256" target="_skdb"/>
 
 2. Compare heroes and skills<br />
-<img src="public/readme_img/compare_table.png" alt="Compare Table" width="640" />
+<img src="public/readme_img/compare_table.png" alt="Compare Table" width="640" target="_skdb"/>
 
 3. Synergies and duplicates<br />
-<img src="public/readme_img/stack_table.png" alt="Stack Table" width="640" />
+<img src="public/readme_img/stack_table.png" alt="Stack Table" width="640" target="_skdb"/>
 
 ## Limitation
 - Scoped to GA release, currently only 6* heroes
