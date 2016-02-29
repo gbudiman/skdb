@@ -20,7 +20,7 @@ class Skill < ActiveRecord::Base
     result = Array.new
 
     Skill.joins(:hero)
-         .where('skills.name LIKE :q', q: "%#{_q}%")
+         .where("skills.name #{Utility.query_like} :q", q: "%#{_q}%")
          .select('skills.id AS skill_id,
                   skills.name AS skill_name,
                   skills.cooldown AS skill_cooldown,

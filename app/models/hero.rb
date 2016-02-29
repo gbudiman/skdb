@@ -23,7 +23,7 @@ class Hero < ActiveRecord::Base
   def self.search _q
     result = Array.new
 
-    Hero.where('name LIKE :q', q: "%#{_q}%").each do |h|
+    Hero.where("name #{Utility.query_like} :q", q: "%#{_q}%").each do |h|
       result.push({
         id: h.id,
         name: h.name,

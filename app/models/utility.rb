@@ -22,6 +22,15 @@ class Utility
     puts "Rails.logger.level set back to #{t}"
   end
 
+  def self.query_like
+    case connection.adapter_name.downcase.to_sym
+    when :postgresql
+      return 'ILIKE'
+    end
+
+    return 'LIKE'
+  end
+
 private
   def self.ensure_proper_static_name! _x
     raise NameError unless _x =~ /\A([A-Za-z\_]+)\_(\d)\_(\d)\z/
