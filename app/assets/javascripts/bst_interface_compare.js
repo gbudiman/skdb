@@ -109,7 +109,10 @@ function stylify_hero(d) {
        + '</a>';
 }
 
-function stylify_skill(d, err_na = 'Not Available') {
+function stylify_skill(d, err_na) {
+  // IE hax
+  err_na = err_na || 'Not Available';
+
   if (!d) {
     return $.label_group(err_na, 'default');
   };
@@ -120,7 +123,7 @@ function stylify_skill(d, err_na = 'Not Available') {
        + _render_attributes(d.attributes);
 }
 
-function stylify_flair(d, err_na = 'Not Available') {
+function stylify_flair(d, err_na) {
   if (!d) {
     return $.label_group(err_na, 'default');
   }

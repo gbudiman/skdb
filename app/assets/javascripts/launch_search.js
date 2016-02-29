@@ -263,7 +263,8 @@ function attach_add_to_compare(el, type) {
   })
 }
 
-function add_to_compare_table(id, placeholder = null) {
+function add_to_compare_table(id, placeholder) {
+  placeholder = placeholder || null;
   $.ajax({
     url: '/heros/fetch/' + id
   }).done(function(res) {

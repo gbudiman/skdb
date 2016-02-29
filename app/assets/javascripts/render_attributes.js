@@ -177,7 +177,10 @@ function _render_modifier(mdfs) {
 	return s;
 }
 
-function _render_stat(_x, _stat, _inverse = false) {
+function _render_stat(_x, _stat, _inverse) {
+  // IE hax
+  _inverse = _inverse || false;
+
 	var color_class;
 	var inverse = _inverse == 'inverse' ? true : false
 

@@ -1,6 +1,9 @@
 Array.prototype.last = function() { return this[this.length-1]; }
 
-String.prototype.strip_hero_rank = function(_mute_rank = false) { 
+String.prototype.strip_hero_rank = function(_mute_rank) { 
+  // IE hax
+  _mute_rank = _mute_rank || false;
+
   var arr_s = this.split(/\s/);
   var name = arr_s.pop();
   var rank = arr_s.join(' ');
@@ -139,12 +142,18 @@ jQuery.extend({
     return $.label_group([glyph_sym, count], label_class, 'Targets ' + help);
   },
 
-  prettify_generic: function(_glyph, _text, _title = '') {
+  prettify_generic: function(_glyph, _text, _title) {
+    // IE hax
+    _title = _title || '';
+
     var glyph_sym = '<span class="glyphicon glyphicon-' + _glyph + '"></span>';
     return $.label_group([glyph_sym, _text], 'default', _title);
   },
 
-  label_group: function(_data, _class, _title = '') {
+  label_group: function(_data, _class, _title) {
+    // IE hax
+    _title = _title || '';
+
     if (_data.constructor === Array && _data.length > 1) {
       var s = '';
 
