@@ -1,7 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require 'hirb'
 require 'roo'
 require 'roo-xls'
 require 'hirb' unless Rails.env.production?
