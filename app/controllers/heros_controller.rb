@@ -33,7 +33,7 @@ class HerosController < ApplicationController
   end
 
   def debug
-    render json: Hero.details(Hero.where('name LIKE :n', n: "%#{params[:n]}%").ids)
+    render json: Hero.details(Hero.where("name #{Utility.query_like} :n", n: "%#{params[:n]}%").ids)
   end
 
   def compare
@@ -46,7 +46,7 @@ class HerosController < ApplicationController
       case e
       when /\A\d+\z/ then @preload.push e.to_i
       else
-        matches = Hero.where('static_name LIKE :name', name: "#{e}%")
+        matches = Hero.where("static_name #{Utility.query_like} :name", name: "#{e}%")
 
         case matches.count
         when 0 then @mismatches.push e
