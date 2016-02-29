@@ -22,6 +22,7 @@ class HerosController < ApplicationController
 
   def search
     log
+    ap Hero.search(params[:q])
     render json: Hero.search(params[:q])
   end
 
