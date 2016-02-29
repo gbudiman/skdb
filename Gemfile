@@ -3,8 +3,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
-# Use MySQL adapter as the database for Active Record
-gem 'mysql2'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -66,11 +65,15 @@ group :development, :test do
 
   # sextant for routes
   gem 'sextant'
+
+  gem 'mysql2'
 end
 
 group :production do
   # Heroku requirement
   gem 'rails_12factor'
+
+  gem 'pg'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
