@@ -47,8 +47,7 @@ class Atb < ActiveRecord::Base
     
     Atb.where('atbs.name LIKE :q', q: "%#{_q}%")
        .joins(skills: :hero)
-       .select('atbs.id            AS atb_id,
-                atbs.effect        AS atb_effect,
+       .select('atbs.effect        AS atb_effect,
                 skill_atbs.target  AS skill_target,
                 COUNT(DISTINCT heros.id) AS count')
        .group('atbs.effect, skill_atbs.target')
