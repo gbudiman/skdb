@@ -22,6 +22,7 @@ Bugs? Problems? Use [Issue Trackers](https://github.com/gbudiman/skdb/issues)
 - No hero portraits yet
 - No hero stats (HP, ATK/MAG, DEF, SPD)
 - Some skill attributes have not been labeled properly (need to use localization instead of hardcoding)
+- Need better symbols for attributes. Any designers out there?
 - No support for IE (probably never will, use it at your own risk)
 
 ## Technical Specification
