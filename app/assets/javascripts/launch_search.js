@@ -1,3 +1,11 @@
+var delay = (function() {
+  var timer = 0;
+  return function(callback, ms) {
+    clearTimeout(timer);
+    timer = setTimeout(callback, ms);
+  }
+})();
+
 $('#search-input').on('focus', function() {
   $(this).select();
 })
@@ -6,10 +14,12 @@ $('#search-input').on('keyup', function() {
   var query = $(this).val();
 
   if (query.length > 0) {
-    $('.reveal-on-keyup').show();
-    launch_search_hero(query);
-    launch_search_skill(query);
-    launch_search_atb(query);
+    delay(function() {
+      $('.reveal-on-keyup').show();
+      launch_search_hero(query);
+      launch_search_skill(query);
+      launch_search_atb(query);
+    }, 250);
   } else {
     $('.reveal-on-keyup').hide();
   }
