@@ -36,7 +36,10 @@
         %div{class: 'navbar-collapse'}
           %ul{class: 'nav navbar-nav navbar-right'}
             %li
-              %a{href: '#'} #{ApplicationHelper::app_version}
+              %a{href: '#', id: 'versioning'} 
+                #{ApplicationHelper::CLIENT}
+                &nbsp;|&nbsp;
+                #{ApplicationHelper::VERSION}
             %li
               %a{class: 'navbar-brand pull-right', 
                  href: 'https://github.com/gbudiman/skdb',

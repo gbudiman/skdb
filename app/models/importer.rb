@@ -43,7 +43,12 @@ class Importer
           end
         end 
       end
+
+      puts "#{@stat[:attributes].keys.count} attributes updated"
+      puts "#{@stat[:heros].keys.count} heroes updated"
     end
+
+    puts "Commit completed"
   end
 
 private
