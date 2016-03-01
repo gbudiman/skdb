@@ -45,7 +45,7 @@ class Atb < ActiveRecord::Base
   def self.search _q
     result = Array.new
     
-    Atb.where('atbs.name LIKE :q', q: "%#{_q}%")
+    Atb.where("atbs.name #{Utility.query_like} :q", q: "%#{_q}%")
        .joins(skills: :hero)
        .select('atbs.effect        AS atb_effect,
                 skill_atbs.target  AS skill_target,
