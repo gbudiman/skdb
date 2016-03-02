@@ -11,7 +11,7 @@ Bugs? Problems? Use [Issue Trackers](https://github.com/gbudiman/skdb/issues)
 1. Search anything<br />
 <img src="public/readme_img/search.png" alt="Search Anything" width="256" target="_skdb"/>
 
-2. Compare heroes and skills<br />
+2. Compare heroes' skills and stats<br />
 <img src="public/readme_img/compare_table.png" alt="Compare Table" width="640" target="_skdb"/>
 
 3. Synergies and duplicates<br />
@@ -20,7 +20,7 @@ Bugs? Problems? Use [Issue Trackers](https://github.com/gbudiman/skdb/issues)
 ## Limitation
 - Scoped to GA release, currently only 6* heroes
 - No hero portraits yet
-- No hero stats (HP, ATK/MAG, DEF, SPD)
+- Partial hero stats (SPD included since 0.2.0. The rest will follow pretty soon)
 - Some skill attributes have not been labeled properly (need to use localization instead of hardcoding)
 - Need better symbols for attributes. Any designers out there?
 - No small-screen (mobile-phone) support yet. Low priority as of now
