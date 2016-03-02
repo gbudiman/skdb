@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get     'compare/*ids'                       => 'heros#compare' #, constraint: { ids: /\d+/ }
 
   get     'heros/debug/:n'                     => 'heros#debug'
+
+  get     'visitors/fetch/stats'               => 'visitor#stats_fetch'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
