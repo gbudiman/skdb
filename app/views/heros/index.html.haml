@@ -49,6 +49,15 @@
           %input{type: 'text', class: 'form-control', 
                  id: 'permalink', 
                  readonly: true}
+      %div{class: 'col-xs-12', id: 'team-stats'}
+        %h3
+          %span{class: 'label-group'}
+            %span{class: 'label label-success'} Cumulative SPD
+            %span{class: 'label label-success', id: 'compare-cumulative-spd'} 0
+
+          %span{class: 'label-group'}
+            %span{class: 'label label-primary'} Team Members
+            %span{class: 'label label-primary', id: 'compare-team-members-count'} 0
       %div{class: 'col-xs-12'}
         %br
         %div{class: 'alert alert-warning', role: 'alert'}

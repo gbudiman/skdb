@@ -71,7 +71,7 @@ function attach_column_activator() {
 
 function compare_table_add(d) {
   $.each(d, function(index, d) {
-    $('#compare-table').add_column_to_bst(expand_skills(d.skills));
+    $('#compare-table').add_column_to_bst(expand_stats_and_skills(d));
     $('#compare-table').add_header_column_to_bst(stylify_hero(d), d.hero_id, d.url_friendly);
   })
 
@@ -80,14 +80,50 @@ function compare_table_add(d) {
   attach_column_displace_right();
   attach_column_activator();
   attach_modifier_tooltip();
+  recalculate_team_speed();
+  recalculate_team_members();
 }
 
-function expand_skills(d) {
+function recalculate_team_speed() {
+  var total = 0;
+  $('span.label-group[data-original-title="Speed"]').each(function() {
+    total += parseInt($(this).children().last().text());
+  });
+
+  console.log(total);
+  $('#compare-cumulative-spd').text(total); 
+}
+
+function recalculate_team_members() {
+  var members_s = $('.compare-table-th').length;
+  var members = parseInt(members_s);
+
+  
+
+  if (members > 5) {
+    $('#compare-team-members-count').parent().children().each(function() {
+      $(this).removeClass('label-primary');
+      $(this).addClass('label-danger');
+    })
+
+    members_s += ' <span class="glyphicon glyphicon-exclamation-sign"></span>';
+  } else {
+    $('#compare-team-members-count').parent().children().each(function() {
+      $(this).removeClass('label-danger');
+      $(this).addClass('label-primary');
+    })
+  }
+
+  $('#compare-team-members-count').html(members_s);
+}
+
+function expand_stats_and_skills(s) {
   return [stylify_flair(undefined, 'Flair Not Available'),
-          stylify_skill(d.active_0),
-          stylify_skill(d.active_1),
-          stylify_skill(d.passive, 'No Passive Aura'),
-          stylify_skill(d.awakening, 'Not Awakened Hero')];
+          stylify_stats(s.stats),
+          stylify_skill(s.skills.active_0),
+          stylify_skill(s.skills.active_1),
+          stylify_skill(s.skills.passive, 'No Passive Aura'),
+          stylify_skill(s.skills.awakening, 'Not Awakened Hero')];
 }
 
 function stylify_hero(d) {
@@ -129,6 +165,25 @@ function stylify_flair(d, err_na) {
   }
 }
 
+function stylify_stats(d) {
+  var s = '';
+
+  $.each(d, function(stat, ds) {
+    var value = extrapolate(ds);
+    s += $.label_group([stat.toUpperCase(), value], 'default', 'Speed');
+  });
+
+  return s;
+}
+
+function extrapolate(ds) {
+  if (ds.forty === undefined) {
+    return ds.thirty;
+  } else {
+    // TODO: Write extrapolation fuction here
+  }
+}
+
 function remove_bst_column(el) {
   var hero_id = el.attr('data-hero-id');
 
@@ -139,4 +194,6 @@ function remove_bst_column(el) {
   });
 
   stack_table_remove(hero_id);
+  recalculate_team_speed();
+  recalculate_team_members();
 }

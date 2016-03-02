@@ -1,31 +1,34 @@
 class Importer
-  attr_reader :stat
+  attr_reader :result_skills, :result_stats
 
   def initialize _data, **_opts
-    @data = _data
+    @skills = _data.skills if _data
+    @stats = _data.stats if _data
+
     @opts = _opts # allow_hero_name_overwrite
                   # allow_skill_name_overwrite
-    @stat = get_statistics
+    @result_skills = get_skills_statistics if _data
+    @result_stats = get_stats_statistics if _data
 
     return self
   end
 
   def commit!
     ActiveRecord::Base.transaction do
-      @stat[:attributes].keys.each do |atb|
+      @result_skills[:attributes].keys.each do |atb|
         Atb.find_or_create_by!(name: atb)
       end
 
-      @stat[:heros].each do |hero_key, hero_val|
+      @result_skills[:heros].each do |hero_key, hero_val|
         hero = Hero.find_or_initialize_by(static_name: hero_key)
         hero.name = hero_val
         hero.save!
 
-        @stat[:skill_attributes].select{|skill_key, skill_val| skill_key.match(/\A#{hero_key}/)}.each do |sk, sv|
+        @result_skills[:skill_attributes].select{|skill_key, skill_val| skill_key.match(/\A#{hero_key}/)}.each do |sk, sv|
           skill = Skill.find_or_initialize_by(static_name: sk)
           skill.hero_id = hero.id
-          skill.name = @stat[:skills][sk]
-          skill.cooldown = @stat[:cooldown][sk] || 0
+          skill.name = @result_skills[:skills][sk]
+          skill.cooldown = @result_skills[:cooldown][sk] || 0
           skill.save!
 
           # ensure to clean-up existing SkillAttributes
@@ -44,15 +47,78 @@ class Importer
         end 
       end
 
-      puts "#{@stat[:attributes].keys.count} attributes updated"
-      puts "#{@stat[:heros].keys.count} heroes updated"
+      puts "#{@result_skills[:attributes].keys.count} attributes updated"
+      puts "#{@result_skills[:heros].keys.count} heroes updated"
+
+      @stats.each do |row|
+        hero = Hero.find_by static_name: row[:static_data]
+        raise IndexError, "Fatal error: Hero #{row[:static_data]} not found" if hero == nil
+
+        offensive = row[:type]
+        row[:datapoints].each do |datapoint|
+          datapoint.each do |_name, value|
+            next if value == nil
+
+            name = _name == :atk ? offensive : _name
+            Stat.save_or_update name: name, datapoint: name, hero_id: hero.id, value: value
+          end
+        end
+
+        next unless row[:spd]
+        Stat.save_or_update name: :spd, datapoint: :thirty, hero_id: hero.id, value: row[:spd]
+      end
+
+      #puts "#{@result_stats[:row_count]} heroes in stats sheet"
+      puts "#{@result_stats[:hero_partial]} hero stats partially completed"
+      puts "#{@result_stats[:hero_completed]} heroes have complete stats"
     end
 
     puts "Commit completed"
   end
 
+  def test_attach_stub_skills _r
+    @skills = _r
+    @result_skills = get_skills_statistics
+  end
+
+  def test_attach_stub_stats _r
+    @stats = _r
+    @result_stats = get_stats_statistics
+  end
+
+  def self.test_stub_skills _r
+    i = Importer.new nil
+    i.test_attach_stub_skills _r
+    i.test_attach_stub_stats []
+
+    return i
+  end
+
 private
-  def get_statistics
+  def get_stats_statistics
+    stat = {
+      row_count: 0,
+      hero_partial: 0,
+      hero_completed: 0,
+      expected_row_change: 0
+    }
+
+    @stats.each do |row|
+      stat[:row_count] += 1
+      next unless row[:type] # immediately skip if :type has not been populated
+
+      stat[:hero_partial] += 1
+      stat[:expected_row_change] += 1
+      next unless row[:datapoints][:forty_5][:hp]
+
+      stat[:hero_partial] -= 1
+      stat[:hero_completed] += 1
+    end
+
+    return stat
+  end
+
+  def get_skills_statistics
     stat = {
       row_count: 0,
       heros: {},
@@ -66,7 +132,7 @@ private
       skill_attribute_count: 0
     }
 
-    @data.each do |row|
+    @skills.each do |row|
       stat[:row_count] += 1
 
       stat[:cooldown][row[:static_data]] = row[:cooldown]

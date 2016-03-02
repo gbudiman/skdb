@@ -1,37 +1,43 @@
 class XlsxInterface
-  attr_reader :result
+  attr_reader :skills, :stats
 
   def initialize _path
-    raw_data = RemoteTable.new(_path, sheet: 'data')
-    @result = process raw_data
+    @skills = process_skill RemoteTable.new(_path, sheet: 'skills')
+    @stats = process_stat RemoteTable.new(_path, sheet: 'stats')
 
     return self
   end
 
   def self.mock_test
-    xlsx = XlsxInterface.new(Rails.root.join('spec', 'xlsx', 'test.xlsx').to_s)
-    data = Importer.new(xlsx.result)
+    data = Importer.new(_load_xlsx :mock)
   end
 
   def self.update_database!
     Utility.shut_up do
-      xlsx = XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
-      data = Importer.new(xlsx.result)
+      data = Importer.new(_load_xlsx :real_shit)
       data.commit!
     end
   end
 
   def self.rebuild_database!
     Utility.shut_up do
+      Hero.destroy_all
       Atb.destroy_all
       update_database!
     end
   end
 
-
-
 private
-  def process _d
+  def self._load_xlsx _type
+    xlsx = case _type
+    when :mock then XlsxInterface.new(Rails.root.join('spec', 'xlsx', 'test.xlsx').to_s)
+    else            XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
+    end
+
+    return xlsx
+  end
+
+  def process_skill _d
     result = Array.new
 
     _d.each do |row|
@@ -61,5 +67,43 @@ private
     end
 
     return result
+  end
+
+  def process_stat _d
+    result = Array.new
+
+    _d.each do |row|
+      has_data = !row['Type'].blank?
+      type = has_data ? row['Type'].downcase.to_sym : nil
+      raise RuntimeError, 'Hero\'s attack type must either be :phy or :mag' if has_data and not [:phy, :mag].include? type
+
+      h = { static_data:    row['Static Name'],
+            type:           type,
+            spd:            nbti(row['SPD']),
+            datapoints: {
+              thirty:         { hp: nbti(row['HP 30+0']),
+                                atk: nbti(row['ATK 30+0']),
+                                def: nbti(row['DEF 30+0'])
+                              },
+              forty:          { hp: nbti(row['HP 40+0']),
+                                atk: nbti(row['ATK 40+0']),
+                                def: nbti(row['DEF 40+0'])
+                              },
+              forty_5:        { hp: nbti(row['HP 40+5']),
+                                atk: nbti(row['ATK 40+5']),
+                                def: nbti(row['DEF 40+5'])
+                              },
+            }
+          }
+
+      result.push h
+    end
+
+    return result
+  end
+
+  def nbti _x
+    # Not blank? Convert to integer
+    return _x.blank? ? nil : _x.to_i
   end
 end

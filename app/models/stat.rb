@@ -22,4 +22,9 @@ class Stat < ActiveRecord::Base
       self.save
     end
   end
+
+  def self.save_or_update **_h
+    s = Stat.new _h
+    s.save_or_update
+  end
 end

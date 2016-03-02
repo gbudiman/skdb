@@ -103,6 +103,13 @@ span.label.label-primary.label-stack {
   //max-height: 50vh;
 }
 
+/*span.label {
+  padding-top: 4px;
+}*/
+
+div#toolbar .label-group>.label:nth-child(2) {
+  margin-left: -0.4em;
+}
 
 .label-group>.label:first-child {
   border-top-right-radius: 0;
@@ -114,7 +121,7 @@ span.label.label-primary.label-stack {
 .label-group>.label:nth-child(2) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  margin-left: 0;
+  margin-left: 0em;
 }
 
 div.synergy-leading {
@@ -198,4 +205,8 @@ div.synergy-closing {
 
 .no-wrap {
   white-space: nowrap;
+}
+
+div#team-stats {
+  text-align: right;
 }

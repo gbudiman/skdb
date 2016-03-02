@@ -43,12 +43,17 @@ class Hero < ActiveRecord::Base
                 INNER JOIN skill_atbs AS sa
                    ON           sk.id = sa.skill_id
                 INNER JOIN atbs
-                   ON         atbs.id = sa.atb_id')
+                   ON         atbs.id = sa.atb_id
+                LEFT OUTER JOIN stats
+                   ON        heros.id = stats.hero_id')
         .where('heros.id IN(:id)', id: _ids)
         .select('heros.id           AS hero_id,
                  heros.static_name  AS hero_static_name,
                  heros.name         AS hero_name,
                  heros.rank         AS hero_rank,
+                 stats.name         AS stat_name,
+                 stats.datapoint    AS stat_datapoint,
+                 stats.value        AS stat_value,
                  sk.id              AS skill_id,
                  sk.static_name     AS static_name,
                  sk.name            AS skill_name,
@@ -69,6 +74,16 @@ class Hero < ActiveRecord::Base
       hero[:hero_rank]    = r.hero_rank.to_i
       hero[:url_friendly] = r.hero_static_name.split(/\_/).first
       hero[:skills]     ||= Hash.new
+      hero[:stats]      ||= Hash.new
+
+      # Stat sub-member #####
+      if r.stat_name
+        stat_name = Stat.names.keys[r.stat_name]
+        stat_datapoint = Stat.datapoints.keys[r.stat_datapoint]
+
+        hero[:stats][stat_name] ||= Hash.new
+        hero[:stats][stat_name][stat_datapoint] = r.stat_value
+      end
 
       # Skill sub-member ######
       category = Skill.categories.keys[r.skill_category]
