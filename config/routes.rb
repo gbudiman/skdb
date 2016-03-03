@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   get     'heros/debug/:n'                     => 'heros#debug'
 
   get     'visitors/fetch/stats'               => 'visitor#stats_fetch'
+
+  get     'stat'                               => 'stat#index'
+  get     'stat/fetch'                         => 'stat#index_fetch'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,0 +1,18 @@
+%div{class: 'col-xs-12'}
+	%table{id: 'stat-table', 'data-height' => '90vh'}
+		%thead
+			%tr
+				%th{'data-field' => 'name', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-formatter' => 'format_mute_name', 'data-sort-name' => 'stripped_name'} Name
+				%th{'data-field' => 'rank', 'data-sortable' => 'true'}
+					%span{class: 'glyphicon glyphicon-star'}
+				%th{'data-field' => 'spd', 'data-sortable' => 'true', 'data-order' => 'desc'} SPD
+		%tbody
+
+= javascript_include_tag 'stat_table'
+
+:javascript
+	$('#stat-table').bootstrapTable({
+		url: '/stat/fetch',
+		search: true
+	});
+

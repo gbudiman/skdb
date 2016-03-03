@@ -6,7 +6,6 @@
     %title Seven Knights Database
     /= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     /= javascript_include_tag 'application', 'data-turbolinks-track' => true
-
     = javascript_include_tag 'jquery.min'
     = javascript_include_tag 'jquery-ui.min'
     = javascript_include_tag 'bootstrap.min'
@@ -35,9 +34,16 @@
           %a{class: 'navbar-brand', href: '/'} Seven Knights Database
 
         %div{class: 'navbar-collapse'}
+          %ul{class: 'nav navbar-nav navbar-left'}
+            %li
+              %a{href: '/stat'} 
+                Tabular
+                %sup{class: 'glyphicon-red'} NEW
           %ul{class: 'nav navbar-nav navbar-right'}
             %li
-              %a{href: '#', id: 'versioning'} 
+              %a{href: 'https://github.com/gbudiman/skdb/commits/master',
+                 target: '_github_blank',
+                 id: 'versioning'} 
                 #{ApplicationHelper::CLIENT}
                 &nbsp;|&nbsp;
                 #{ApplicationHelper::VERSION}

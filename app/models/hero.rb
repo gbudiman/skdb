@@ -21,6 +21,50 @@ class Hero < ActiveRecord::Base
     Hero.details(hero_superset)
   end
 
+  def self.fetch_with_stats
+    result = Hash.new
+    denorm = Array.new
+
+    Hero.joins('LEFT OUTER JOIN stats
+                  ON         heros.id = stats.hero_id')
+        .select('heros.id           AS hero_id,
+                 heros.name         AS hero_name,
+                 heros.rank         AS hero_rank,
+                 stats.name         AS stat_name,
+                 stats.datapoint    AS stat_datapoint,
+                 stats.value        AS stat_value').each do |r|
+      result[r.hero_id] ||= Hash.new
+      result[r.hero_id][:name] = r.hero_name
+      result[r.hero_id][:rank] = r.hero_rank
+      result[r.hero_id][:stats] ||= Hash.new
+
+      if r.stat_name
+        stat_name = Stat.names.keys[r.stat_name].to_sym
+        stat_datapoint = Stat.datapoints.keys[r.stat_datapoint].to_sym
+
+        result[r.hero_id][:stats][stat_name] = Hash.new
+        result[r.hero_id][:stats][stat_name][stat_datapoint] = r.stat_value
+      end
+    end
+
+    result.each do |id, r|
+      h = Hash.new
+      h[:id] = r[:hero_id]
+      h[:name] = r[:name]
+      h[:stripped_name] = r[:name].split(/\s+/).last
+      h[:rank] = r[:rank]
+      r[:stats].each do |stat, sid|
+        if sid.keys.length == 1
+          h[stat] = sid.values.first
+        end
+      end
+
+      denorm.push h
+    end
+
+    return denorm
+  end
+
   def self.search _q
     result = Array.new
 

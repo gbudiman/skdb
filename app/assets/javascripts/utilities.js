@@ -15,6 +15,14 @@ String.prototype.strip_hero_rank = function(_mute_rank) {
   }
 }
 
+String.prototype.mute_hero_banner = function() {
+  var arr_s = this.split(/\s/);
+  var name = arr_s.pop();
+  var banner = arr_s.join(' ');
+
+  return '<span class="text-muted">' + banner + '</span> ' + name;
+}
+
 function getScrollBarWidth () {
     var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
         widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
