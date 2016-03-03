@@ -1,5 +1,6 @@
 class StatController < ApplicationController
 	def index
+		log
 	end
 
 	def index_fetch
