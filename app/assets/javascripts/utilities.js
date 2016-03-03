@@ -207,10 +207,10 @@ jQuery.extend({
 
   maximize_compare: function() {
     $('#left-bar').removeClass('col-md-4').addClass('col-md-1');
-    $('#left-bar').find('.minimizable').hide();
-    $('#left-bar').find('.minimized').show();
+    $('#left-bar').find('.minimizable').fadeOut();
+    $('#left-bar').find('.minimized').fadeIn();
     $('#right-bar').removeClass('col-md-8').addClass('col-md-11');
-    $('#btn-maximize-compare').hide();
+    $('#btn-maximize-compare').fadeOut();
   },
 
   remove_all_compare: function() {

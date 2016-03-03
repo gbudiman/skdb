@@ -4,13 +4,13 @@
       %button{class: 'btn btn-default btn-block', id: 'btn-restore-search', title: 'Restore Search Panel'}
         %span{class: 'glyphicon glyphicon-arrow-right'}
 
-    %ul{class: 'nav nav-tabs'}
+    %ul{class: 'nav nav-tabs minimizable'}
       %li{class: 'active'}
         %a{'data-toggle' => 'tab', href: '#tab-search'} Search
       %li
         %a{'data-toggle' => 'tab', href: '#tab-tabular'} Tabular
 
-    %div{class: 'tab-content'}
+    %div{class: 'tab-content minimizable'}
       %div{id: 'tab-search', class: 'tab-pane fade in active'}
         %div{class: 'panel minimizable', id: 'tab-search'}
           %div{class: 'panel-heading'}

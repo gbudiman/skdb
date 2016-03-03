@@ -38,6 +38,7 @@ class HerosController < ApplicationController
 
   def compare
     log
+    @compact_tabular = true
     @preload = Array.new
     @url_friendly = Hash.new
     @mismatches = Array.new
