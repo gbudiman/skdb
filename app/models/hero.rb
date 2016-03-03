@@ -49,7 +49,7 @@ class Hero < ActiveRecord::Base
 
     result.each do |id, r|
       h = Hash.new
-      h[:id] = r[:hero_id]
+      h[:id] = id
       h[:name] = r[:name]
       h[:stripped_name] = r[:name].split(/\s+/).last
       h[:rank] = r[:rank]

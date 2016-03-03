@@ -31,6 +31,12 @@ function getScrollBarWidth () {
 };
 
 jQuery.fn.extend({
+  has_hero: function(hero_id) {
+    var count = $(this).find('th[data-hero-id="' + hero_id + '"]').length;
+
+    return (count > 0) ? true : false;
+  },
+
   update_stack_cell: function() {
     update_stack_cell($(this));
   },
@@ -81,6 +87,23 @@ jQuery.fn.extend({
     })
 
     update_permalink();
+  },
+
+  find_ord_by_hero_id: function(id) {
+    var result;
+    this.find('thead').find('th').each(function(i, x) {
+      if ($(this).attr('data-hero-id') == id) {
+        result = $(this).attr('data-header-index');
+        return false;
+      }
+    })
+
+    return result;
+  },
+
+  uncompare_hero_by_id: function(id) {
+    var ord = this.find_ord_by_hero_id(id);
+    this.remove_column_from_bst(ord);
   },
 
   displace_bst_column: function(_pivot, dir) {

@@ -36,9 +36,13 @@
   //padding-left: 1em;
 }
 
+#tab-tabular>div {
+  height: 83vh;
+}
+
 #panel-search-result-body {
   overflow-y: auto;
-  max-height: 83vh;
+  max-height: 72vh;
 }
 
 th.compare-table-th {

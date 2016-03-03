@@ -2,6 +2,7 @@ class HerosController < ApplicationController
   def index
     log
     @preload = nil
+    @compact_tabular = true
   end
 
   def index_mock

@@ -7,7 +7,7 @@ function initialize_compare_table_bst() {
   $('#toolbar').show();
   $('.stack-table').show();
 
-  $('#permalink').on('click', function() {
+  $('#permalink').off('click').on('click', function() {
     $(this).select();
   })
 
@@ -16,8 +16,8 @@ function initialize_compare_table_bst() {
     placement: 'bottom'
   });
 
-  $('#btn-maximize-compare').on('click', function() { $.maximize_compare(); });
-  $('#btn-remove-all-compare').on('click', function() { $.remove_all_compare(); });
+  $('#btn-maximize-compare').off('click').on('click', function() { $.maximize_compare(); });
+  $('#btn-remove-all-compare').off('click').on('click', function() { $.remove_all_compare(); });
 }
 
 function attach_column_remove() {
@@ -90,7 +90,6 @@ function recalculate_team_speed() {
     total += parseInt($(this).children().last().text());
   });
 
-  console.log(total);
   $('#compare-cumulative-spd').text(total); 
 }
 
