@@ -8,12 +8,16 @@
 							'data-searchable' => 'true', 
 							'data-formatter' => 'format_compact_name_with_dynamic_buttons', 
 							'data-sort-name' => 'stripped_name'} Name
-					%th{'data-field' => 'spd', 'data-sortable' => 'true', 'data-order' => 'desc'} SPD
 				- else
 					%th{'data-field' => 'name', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-formatter' => 'format_mute_name', 'data-sort-name' => 'stripped_name'} Name
 					%th{'data-field' => 'rank', 'data-sortable' => 'true'}
 						%span{class: 'glyphicon glyphicon-star'}
-					%th{'data-field' => 'spd', 'data-sortable' => 'true', 'data-order' => 'desc'} SPD
+
+				%th{'data-sortable' => 'true', 'data-formatter' => 'format_hp', 'data-align' => 'right', 'data-sort-name' => 'hp'} HP
+				%th{'data-sortable' => 'true', 'data-formatter' => 'format_phy', 'data-align' => 'right', 'data-visible' => 'false', 'data-sort-name' => 'atk'} PHY
+				%th{'data-sortable' => 'true', 'data-formatter' => 'format_mag', 'data-align' => 'right', 'data-visible' => 'false', 'data-sort-name' => 'mag'} MAG
+				%th{'data-sortable' => 'true', 'data-formatter' => 'format_defensive', 'data-align' => 'right', 'data-visible' => 'false', 'data-sort-name' => 'def'} DEF
+				%th{'data-field' => 'spd', 'data-sortable' => 'true', 'data-order' => 'desc', 'data-align' => 'right'} SPD
 		%tbody
 
 = javascript_include_tag 'stat_table'
@@ -21,6 +25,7 @@
 :javascript
 	$('#stat-table').bootstrapTable({
 		url: '/stat/fetch',
+		showColumns: true,
 		onPostBody: function() { 
 			resize_once('#stat-table'); 
 			activate_links('#stat-table');
