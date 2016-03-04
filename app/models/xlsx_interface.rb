@@ -81,17 +81,17 @@ private
             type:           type,
             spd:            nbti(row['SPD']),
             datapoints: {
-              thirty:         { hp: nbti(row['HP 30+0']),
-                                atk: nbti(row['ATK 30+0']),
-                                def: nbti(row['DEF 30+0'])
+              thirty:         { hp: nbti(row['HP_thirty']),
+                                atk: nbti(row['ATK_thirty']),
+                                def: nbti(row['DEF_thirty'])
                               },
-              forty:          { hp: nbti(row['HP 40+0']),
-                                atk: nbti(row['ATK 40+0']),
-                                def: nbti(row['DEF 40+0'])
+              forty:          { hp: nbti(row['HP_forty']),
+                                atk: nbti(row['ATK_forty']),
+                                def: nbti(row['DEF_forty'])
                               },
-              forty_5:        { hp: nbti(row['HP 40+5']),
-                                atk: nbti(row['ATK 40+5']),
-                                def: nbti(row['DEF 40+5'])
+              forty_5:        { hp: nbti(row['HP_forty_5']),
+                                atk: nbti(row['ATK_forty_5']),
+                                def: nbti(row['DEF_forty_5'])
                               },
             }
           }

@@ -48,7 +48,6 @@ function render_contextual_control(el) {
   var in_compare_table = $('#compare-table').find('th[data-hero-id="' + hero_id + '"]');
   var glyph = el.find('span.glyphicon');
 
-  //if (in_compare_table.length == 0) {
   if (!$('#compare-table').has_hero(hero_id)) {
     glyph.removeClass('glyphicon-remove').addClass('glyphicon-add');
   } else {
@@ -66,6 +65,17 @@ function resize_once(id) {
   $(id).parent().css('height', '70vh');
   $(id).parent().parent().css('padding-bottom', 0);
 }
+
+function get_extrapolation_parameters(obj) {
+  if (obj.thirty == undefined && obj.forty == undefined && obj.forty_5 == undefined) {
+    throw 'Extrapolation requires object with .thirty, .forty, and .forty_5 attribute';
+  } else {
+    return {
+      level_gradient: (obj.forty - obj.thirty) / 10,
+      plus_gradient: (obj.forty_5 - obj.forty) / 5
+    };
+  }
+};
 
 $(window).on('resize', function() {
   resize_bst_area('#stat-table');

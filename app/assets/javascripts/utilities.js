@@ -21,7 +21,8 @@ String.prototype.mute_hero_banner = function() {
   var banner = arr_s.join(' ');
 
   return '<span class="text-muted">' + banner + '</span> ' + name;
-}
+};
+
 
 function getScrollBarWidth () {
     var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),

@@ -55,12 +55,15 @@ class Importer
         raise IndexError, "Fatal error: Hero #{row[:static_data]} not found" if hero == nil
 
         offensive = row[:type]
-        row[:datapoints].each do |datapoint|
-          datapoint.each do |_name, value|
+        row[:datapoints].each do |datapoint_key, datapoint_data|
+          datapoint_data.each do |_name, value|
             next if value == nil
 
-            name = _name == :atk ? offensive : _name
-            Stat.save_or_update name: name, datapoint: name, hero_id: hero.id, value: value
+            #name = _name == :atk ? offensive : _name
+            Stat.save_or_update name: Stat.names[_name], 
+                                datapoint: Stat.datapoints[datapoint_key], 
+                                hero_id: hero.id, 
+                                value: value
           end
         end
 
