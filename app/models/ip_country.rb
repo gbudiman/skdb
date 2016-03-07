@@ -15,6 +15,16 @@ class IpCountry < ActiveRecord::Base
 
   end
 
+  def self.parse_integer _s
+    quads = _s.split(/\./)
+    x = 0
+    quads.reverse.each_with_index do |q, i|
+      x += q.to_i * (0x100**i)
+    end
+
+    return x
+  end
+
   def self.rebuild_database!
     addresses = Hash.new
     countries = Hash.new
