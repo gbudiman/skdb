@@ -21,6 +21,10 @@ Rails.application.routes.draw do
 
   get     'stat'                               => 'stat#index'
   get     'stat/fetch'                         => 'stat#index_fetch'
+  # get     'stat/fetch/:level'                  => 'stat#index_fetch'
+  # get     'stat/fetch/:level/:plus'            => 'stat#index_fetch'
+  # get     'stat/fetch/update/:level'           => 'stat#index_fetch_update'
+  # get     'stat/fetch/update/:level/:plus'     => 'stat#index_fetch_update'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

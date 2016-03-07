@@ -1,37 +1,43 @@
-%div{class: 'col-xs-12'}
-	%table{id: 'stat-table', 'data-height' => '32em'}
-		%thead
-			%tr
-				- if defined? @compact_tabular
-					%th{'data-field' => 'name', 
-							'data-sortable' => 'true', 
-							'data-searchable' => 'true', 
-							'data-formatter' => 'format_compact_name_with_dynamic_buttons', 
-							'data-sort-name' => 'stripped_name'} Name
-				- else
-					%th{'data-field' => 'name', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-formatter' => 'format_mute_name', 'data-sort-name' => 'stripped_name'} Name
-					%th{'data-field' => 'rank', 'data-sortable' => 'true'}
-						%span{class: 'glyphicon glyphicon-star'}
+%div{class: 'tabular-toolbar'}
+	%div{class: 'col-xs-12'}
+		Level
+		%span{id: 'lv-text'} 30
 
-				%th{'data-sortable' => 'true', 'data-formatter' => 'format_hp', 'data-align' => 'right', 'data-sort-name' => 'hp'} HP
-				%th{'data-sortable' => 'true', 'data-formatter' => 'format_phy', 'data-align' => 'right', 'data-visible' => 'false', 'data-sort-name' => 'atk'} PHY
-				%th{'data-sortable' => 'true', 'data-formatter' => 'format_mag', 'data-align' => 'right', 'data-visible' => 'false', 'data-sort-name' => 'mag'} MAG
-				%th{'data-sortable' => 'true', 'data-formatter' => 'format_defensive', 'data-align' => 'right', 'data-visible' => 'false', 'data-sort-name' => 'def'} DEF
-				%th{'data-field' => 'spd', 'data-sortable' => 'true', 'data-order' => 'desc', 'data-align' => 'right'} SPD
-		%tbody
+		&nbsp;
+		&nbsp;
+		%span
+			%input{id: 'lv'}
+		&nbsp;
+		&nbsp;
+		&nbsp;
+		%span
+			%input{id: 'plus'}
+		&nbsp;
+		+
+		%span{id: 'plus-text'} 0
+
+%div{class: 'row'}
+	%div{class: 'col-xs-12'}
+		%table{id: 'stat-table', 'data-height' => '32em'}
+			%thead
+				%tr
+					- if defined? @compact_tabular
+						%th{'data-field' => 'name', 
+								'data-sortable' => 'true', 
+								'data-searchable' => 'true', 
+								'data-formatter' => 'format_compact_name_with_dynamic_buttons', 
+								'data-sort-name' => 'stripped_name'} Name
+					- else
+						%th{'data-field' => 'name', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-formatter' => 'format_mute_name', 'data-sort-name' => 'stripped_name'} Name
+						%th{'data-field' => 'rank', 'data-sortable' => 'true'}
+							%span{class: 'glyphicon glyphicon-star'}
+
+					%th{'data-field' => 'hp_calc', 'data-sortable' => 'true', 'data-align' => 'right'} HP
+					%th{'data-field' => 'atk_calc', 'data-sortable' => 'true', 'data-align' => 'right', 'data-visible' => 'false'} PHY
+					%th{'data-field' => 'mag_calc', 'data-sortable' => 'true', 'data-align' => 'right', 'data-visible' => 'false'} MAG
+					%th{'data-field' => 'def_calc', 'data-sortable' => 'true', 'data-align' => 'right', 'data-visible' => 'false'} DEF
+					%th{'data-field' => 'spd_calc', 'data-sortable' => 'true', 'data-order' => 'desc', 'data-align' => 'right'} SPD
+			%tbody
 
 = javascript_include_tag 'stat_table'
-
-:javascript
-	$('#stat-table').bootstrapTable({
-		url: '/stat/fetch',
-		showColumns: true,
-		onPostBody: function() { 
-			resize_once('#stat-table'); 
-			activate_links('#stat-table');
-		},
-		onSort: function() {
-			resize_bst_area('#stat-table');
-			activate_links('#stat-table');
-		}
-	});
+= javascript_include_tag 'stat_initializer'

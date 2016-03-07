@@ -27,4 +27,15 @@ class Stat < ActiveRecord::Base
     s = Stat.new _h
     s.save_or_update
   end
+
+  def self.extrapolate d
+    result = { base: d.values.first }
+
+    if d.keys.length > 1
+      result[:level_gradient] = (d[:forty] - d[:thirty]) / 10
+      result[:plus_gradient] = (d[:forty_5] - d[:forty]) / 5
+    end
+
+    return result
+  end
 end

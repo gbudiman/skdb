@@ -4,45 +4,47 @@
       %button{class: 'btn btn-default btn-block', id: 'btn-restore-search', title: 'Restore Search Panel'}
         %span{class: 'glyphicon glyphicon-arrow-right'}
 
-    %ul{class: 'nav nav-tabs minimizable'}
-      %li{class: 'active'}
-        %a{'data-toggle' => 'tab', href: '#tab-search'} Search
-      %li
-        %a{'data-toggle' => 'tab', href: '#tab-tabular'} Tabular
+    %div{class: 'row'}
+      %ul{class: 'nav nav-tabs minimizable'}
+        %li{class: 'active'}
+          %a{'data-toggle' => 'tab', href: '#tab-search'} Search
+        %li
+          %a{'data-toggle' => 'tab', href: '#tab-tabular'} Tabular
 
-    %div{class: 'tab-content minimizable'}
-      %div{id: 'tab-search', class: 'tab-pane fade in active'}
-        %div{class: 'panel minimizable', id: 'tab-search'}
-          %div{class: 'panel-heading'}
-            %div{class: 'input-group'}
-              %input{type: 'text', 
-                     class: 'form-control input-lg', 
-                     size: 64, 
-                     placeholder: 'Try \'stun\'',
-                     id: 'search-input',
-                     tabindex: 1}
-              %span{class: 'input-group-btn'}
-                %button{class: 'btn btn-success btn-lg', id: 'btn-execute-search'}
-                  %span{class: 'glyphicon glyphicon-search'}
-          %div{class: 'panel-body', id: 'panel-search-result-body'}
-            %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
-              %div{class: 'panel-heading'}
-                Hero
-                %span{class: 'badge pull-right', id: 'hero-result-count'}
-              %ul{class: 'list-group panel-search-result', id: 'hero-result'}
-            %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
-              %div{class: 'panel-heading'}
-                Skills
-                %span{class: 'badge pull-right', id: 'skill-result-count'}
-              %ul{class: 'list-group panel-search-result', id: 'skill-result'}
-            %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
-              %div{class: 'panel-heading'}
-                Effects
-                %span{class: 'badge pull-right', id: 'effect-result-count'}
-              %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
+    %div{class: 'row'}
+      %div{class: 'tab-content minimizable'}
+        %div{id: 'tab-search', class: 'tab-pane fade in active'}
+          %div{class: 'panel minimizable', id: 'tab-search'}
+            %div{class: 'panel-heading'}
+              %div{class: 'input-group'}
+                %input{type: 'text', 
+                       class: 'form-control input-lg', 
+                       size: 64, 
+                       placeholder: 'Try \'stun\'',
+                       id: 'search-input',
+                       tabindex: 1}
+                %span{class: 'input-group-btn'}
+                  %button{class: 'btn btn-success btn-lg', id: 'btn-execute-search'}
+                    %span{class: 'glyphicon glyphicon-search'}
+            %div{class: 'panel-body', id: 'panel-search-result-body'}
+              %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
+                %div{class: 'panel-heading'}
+                  Hero
+                  %span{class: 'badge pull-right', id: 'hero-result-count'}
+                %ul{class: 'list-group panel-search-result', id: 'hero-result'}
+              %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
+                %div{class: 'panel-heading'}
+                  Skills
+                  %span{class: 'badge pull-right', id: 'skill-result-count'}
+                %ul{class: 'list-group panel-search-result', id: 'skill-result'}
+              %div{class: 'panel panel-primary reveal-on-keyup', hidden: true}
+                %div{class: 'panel-heading'}
+                  Effects
+                  %span{class: 'badge pull-right', id: 'effect-result-count'}
+                %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
 
-      %div{id: 'tab-tabular', class: 'tab-pane fade in'}
-        = render template: 'stat/index'
+        %div{id: 'tab-tabular', class: 'tab-pane fade in'}
+          = render template: 'stat/index'
 
   %div{id: 'right-bar', class: 'col-md-8'}
     %div{id: 'toolbar', hidden: true, class: 'row'}

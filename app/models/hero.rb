@@ -21,7 +21,7 @@ class Hero < ActiveRecord::Base
     Hero.details(hero_superset)
   end
 
-  def self.fetch_with_stats
+  def self.fetch_with_stats **_h
     result = Hash.new
     denorm = Array.new
 
@@ -42,7 +42,7 @@ class Hero < ActiveRecord::Base
         stat_name = Stat.names.keys[r.stat_name].to_sym
         stat_datapoint = Stat.datapoints.keys[r.stat_datapoint].to_sym
 
-        result[r.hero_id][:stats][stat_name] = Hash.new
+        result[r.hero_id][:stats][stat_name] ||= Hash.new
         result[r.hero_id][:stats][stat_name][stat_datapoint] = r.stat_value
       end
     end
@@ -53,10 +53,9 @@ class Hero < ActiveRecord::Base
       h[:name] = r[:name]
       h[:stripped_name] = r[:name].split(/\s+/).last
       h[:rank] = r[:rank]
-      r[:stats].each do |stat, sid|
-        if sid.keys.length == 1
-          h[stat] = sid.values.first
-        end
+
+      r[:stats].each do |stat, d|
+        h[stat] = Stat.extrapolate d
       end
 
       denorm.push h
