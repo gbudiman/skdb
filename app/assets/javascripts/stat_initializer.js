@@ -1,7 +1,6 @@
 $('#stat-table').bootstrapTable({
   url: '/stat/fetch',
   showColumns: true,
-  showRefresh: true,
   uniqueId: 'id',
   toolbar: '.tabular-toolbar',
   rowAttributes: 'format_row_stat',

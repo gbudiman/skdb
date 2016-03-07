@@ -2,6 +2,9 @@ function initialize_compare_table_bst() {
   $('#mismatched-preloads').parent().parent().hide();
   
   $('#compare-table').show().bootstrapTable({
+    onPostBody: function() {
+      $('#compare-table').parent().css('height', '64vh');
+    }
   });
 
   $('#toolbar').show();
