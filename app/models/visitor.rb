@@ -25,7 +25,9 @@ class Visitor < ActiveRecord::Base
   def self.unique_visit_by_country
     h = Hash.new
     Visitor.group(:address).sum(:todays_count).each do |address, sum|
-      h[address] = { country: IpCountry.seek_address(address).country_full_name, sum: sum }
+      country = IpCountry.seek_address(address)
+      country_full_name = country ? country.country_full_name : '<< Unknown >>'
+      h[address] = { country: country_full_name, sum: sum }
     end
 
     return h

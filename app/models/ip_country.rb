@@ -10,7 +10,7 @@ class IpCountry < ActiveRecord::Base
     end
 
     IpCountry.joins(:country)
-             .select('COALESCE(countries.long, "--") AS country_full_name')
+             .select('countries.long AS country_full_name')
              .find_by('address_start < :x AND address_end > :x', x: x)
 
   end
