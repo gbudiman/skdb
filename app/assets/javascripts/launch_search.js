@@ -293,9 +293,11 @@ function attach_add_to_compare(el, type) {
 }
 
 function add_to_compare_table(id, placeholder) {
+  var p = get_growth_parameter();
+
   placeholder = placeholder || null;
   $.ajax({
-    url: '/heros/fetch/' + id
+    url: '/heros/fetch/' + id + '/' + p.level + '/' + p.plus
   }).done(function(res) {
     if (placeholder != null) placeholder.children().empty();
     compare_table_add(res);

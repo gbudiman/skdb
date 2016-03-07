@@ -80,13 +80,14 @@ function compare_table_add(d) {
   attach_column_displace_right();
   attach_column_activator();
   attach_modifier_tooltip();
+  activate_growth_control();
   recalculate_team_speed();
   recalculate_team_members();
 }
 
 function recalculate_team_speed() {
   var total = 0;
-  $('span.label-group[data-original-title="Speed"]').each(function() {
+  $('span.label-group[data-original-title="spd"]').each(function() {
     total += parseInt($(this).children().last().text());
   });
 
@@ -96,8 +97,6 @@ function recalculate_team_speed() {
 function recalculate_team_members() {
   var members_s = $('.compare-table-th').length;
   var members = parseInt(members_s);
-
-  
 
   if (members > 5) {
     $('#compare-team-members-count').parent().children().each(function() {
@@ -116,9 +115,69 @@ function recalculate_team_members() {
   $('#compare-team-members-count').html(members_s);
 }
 
+function activate_growth_control() {
+  $('.level-decr').off('click').on('click', function() {
+    var that = $(this);
+    adjust_growth_level(that.parent().find('.level-text'), -1);
+  });
+
+  $('.level-incr').off('click').on('click', function() {
+    var that = $(this);
+    adjust_growth_level(that.parent().find('.level-text'), 1);
+  })
+
+  $('.plus-decr').off('click').on('click', function() {
+    var that = $(this);
+    adjust_growth_plus(that.parent().find('.plus-text'), -1);
+  })
+
+  $('.plus-incr').off('click').on('click', function() {
+    var that = $(this);
+    adjust_growth_plus(that.parent().find('.plus-text'), 1);
+  })
+}
+
+function adjust_growth_level(el, val) {
+  var current_value = parseInt(el.text());
+  if (current_value + val < 30 || current_value + val > 40) {
+    return;
+  } else {
+    el.text(current_value + val);
+  }
+
+  adjust_stats(el.parent());
+}
+
+function adjust_growth_plus(el, val) {
+  var current_value = parseInt(el.text());
+  if (current_value + val < 0 || current_value + val > 5) {
+    return;
+  } else {
+    el.text(current_value + val);
+  }
+
+  adjust_stats(el.parent());
+}
+
+function adjust_stats(el) {
+  var level = parseInt(el.find('.level-text').text());
+  var plus = parseInt(el.find('.plus-text').text());
+
+  $.each(['hp', 'atk', 'mag', 'def'], function(i, x) {
+    var formula = el.find('.formula-' + x);
+    var target = el.find('.label-group[data-original-title="' + x + '"]');
+    var level_gradient = parseInt(formula.attr('data-level-gradient'));
+    var plus_gradient = parseInt(formula.attr('data-plus-gradient'));
+    var base = parseInt(formula.attr('data-base'));
+
+    var result = base + level_gradient * (level - 30) + plus_gradient * plus;
+    target.children().last().text(result);
+  });
+}
+
 function expand_stats_and_skills(s) {
   return [stylify_flair(undefined, 'Flair Not Available'),
-          stylify_stats(s.stats),
+          stylify_stats(s.stats, s.level, s.plus),
           stylify_skill(s.skills.active_0),
           stylify_skill(s.skills.active_1),
           stylify_skill(s.skills.passive, 'No Passive Aura'),
@@ -164,21 +223,62 @@ function stylify_flair(d, err_na) {
   }
 }
 
-function stylify_stats(d) {
-  var s = '';
+function stylify_stats(d, _level, _plus) {
+  var s = attach_growth_control(_level, _plus);
 
   $.each(d, function(stat, ds) {
-    var value = extrapolate(ds);
-    s += $.label_group([stat.toUpperCase(), value], 'default', 'Speed');
+    var g = derive_gradients(ds);
+    var value = extrapolate(g, ds);
+    s += $.label_group([stat.toUpperCase(), value], 'default', stat);
+    s += '</br >';
+    if (g) {
+      s += '<span class="formula-' + stat + '" '
+        +  '  data-level-gradient=' + g.level_gradient + ' '
+        +  '  data-plus-gradient=' + g.plus_gradient + ' '
+        +  '  data-base=' + g.base + '></span>';
+    }
   });
 
   return s;
 }
 
-function extrapolate(ds) {
+function attach_growth_control(_level, _plus) {
+  var s;
+
+  s = '<a class="level-decr" href="#"><span class="glyphicon glyphicon-minus"></span></a> '
+    + '<span class="level-text">' + _level + '</span>'
+    + ' <a class="level-incr" href="#"><span class="glyphicon glyphicon-plus"></span></a> '
+    + ' | '
+    + '<a class="plus-decr" href="#"><span class="glyphicon glyphicon-minus"></span></a> '
+    + '+<span class="plus-text">' + _plus + '</span>'
+    + ' <a class="plus-incr" href="#"><span class="glyphicon glyphicon-plus"></span></a> '
+    + '<br />';
+
+  return s;
+}
+
+function derive_gradients(ds) {
+  if (ds.forty === undefined) {
+    return undefined;
+  } else {
+    return {
+      level_gradient: parseInt((ds.forty - ds.thirty) / 10),
+      plus_gradient: parseInt((ds.forty_5 - ds.forty) / 5),
+      base: ds.thirty
+    }
+  }
+}
+
+function extrapolate(g, ds) {
   if (ds.forty === undefined) {
     return ds.thirty;
   } else {
+    var p = get_growth_parameter();
+    // return ds.thirty + parseInt((ds.forty - ds.thirty) / 10) * (p.level - 30)
+    //                  + parseInt((ds.forty_5 - ds.forty) / 5) * (p.plus);
+
+    return ds.thirty + g.level_gradient * (p.level - 30)
+                     + g.plus_gradient * p.plus;
     // TODO: Write extrapolation fuction here
   }
 }

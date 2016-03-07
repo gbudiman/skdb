@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get     'heros'                              => 'heros#index_fetch'
   get     'heros/:id'                          => 'heros#view'
   get     'heros/fetch/:id'                    => 'heros#view_fetch'
+  get     'heros/fetch/:id/:level/:plus'       => 'heros#view_fetch'
 
   get     'heros/search/:q'                    => 'heros#search'
   get     'heros/fetch/having/atb/effect/:e/target/:r'   => 'heros#fetch_having_atb_effect'
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
   get     'compare/*ids'                       => 'heros#compare' #, constraint: { ids: /\d+/ }
 
   get     'heros/debug/:n'                     => 'heros#debug'
+  get     'heros/debug/:n/:level/:plus'        => 'heros#debug'
 
   get     'visitors/fetch/stats'               => 'visitor#stats_fetch'
 

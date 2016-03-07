@@ -18,7 +18,9 @@ class HerosController < ApplicationController
 
   def view_fetch
     log
-    render json: Hero.details(params[:id])
+    render json: Hero.details(params[:id], 
+                              params[:level] ? params[:level].to_i : 30, 
+                              params[:plus] ? params[:plus].to_i : 0)
   end
 
   def search
@@ -33,7 +35,9 @@ class HerosController < ApplicationController
   end
 
   def debug
-    render json: Hero.details(Hero.where("name #{Utility.query_like} :n", n: "%#{params[:n]}%").ids)
+    render json: Hero.details(Hero.where("name #{Utility.query_like} :n", n: "%#{params[:n]}%").ids,
+                              params[:level] ? params[:level].to_i : 30, 
+                              params[:plus] ? params[:plus].to_i : 0)
   end
 
   def compare

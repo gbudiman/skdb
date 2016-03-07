@@ -38,4 +38,7 @@ class Stat < ActiveRecord::Base
 
     return result
   end
+
+  def self.scale d, _level, _plus
+  end
 end

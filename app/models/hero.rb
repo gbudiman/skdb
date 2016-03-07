@@ -78,7 +78,7 @@ class Hero < ActiveRecord::Base
     return result
   end
 
-  def self.details _ids
+  def self.details _ids, _level, _plus
     result = Hash.new
 
     Hero.joins('INNER JOIN skills AS sk
@@ -118,6 +118,8 @@ class Hero < ActiveRecord::Base
       hero[:url_friendly] = r.hero_static_name.split(/\_/).first
       hero[:skills]     ||= Hash.new
       hero[:stats]      ||= Hash.new
+      hero[:level]        = _level
+      hero[:plus]         = _plus
 
       # Stat sub-member #####
       if r.stat_name
