@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get     'heros/debug/:n/:level/:plus'        => 'heros#debug'
 
   get     'visitors/fetch/stats'               => 'visitor#stats_fetch'
+  get     'visitors/fetch/stats/:limit'        => 'visitor#stats_fetch'
 
   get     'stat'                               => 'stat#index'
   get     'stat/fetch'                         => 'stat#index_fetch'
