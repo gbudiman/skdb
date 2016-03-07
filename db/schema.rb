@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(version: 20160307144037) do
   add_index "heros", ["static_name"], name: "hero_unique_static_name", unique: true, using: :btree
 
   create_table "ip_countries", force: :cascade do |t|
-    t.integer "address_start", limit: 4, null: false
-    t.integer "address_end",   limit: 4, null: false
+    t.integer "address_start", limit: 8, null: false
+    t.integer "address_end",   limit: 8, null: false
     t.integer "country_id",    limit: 4, null: false
   end
 

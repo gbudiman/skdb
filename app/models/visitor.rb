@@ -22,6 +22,15 @@ class Visitor < ActiveRecord::Base
     Visitor.new(_h).log
   end
 
+  def self.unique_visit_by_country
+    h = Hash.new
+    Visitor.group(:address).sum(:todays_count).each do |address, sum|
+      h[address] = { country: IpCountry.seek_address(address).country_full_name, sum: sum }
+    end
+
+    return h
+  end
+
 private
   def set_default_date
     self.todays_date ||= Date.today

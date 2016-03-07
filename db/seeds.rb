@@ -7,3 +7,4 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 XlsxInterface.rebuild_database!
+IpCountry.rebuild_database!
