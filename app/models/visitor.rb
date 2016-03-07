@@ -22,9 +22,10 @@ class Visitor < ActiveRecord::Base
     Visitor.new(_h).log
   end
 
-  def self.unique_visit_by_country
+  def self.total_visit_by_country
     h = Hash.new
-    Visitor.group(:address).sum(:todays_count).each do |address, sum|
+
+    Hash[Visitor.group(:address).sum(:todays_count).sort_by { |k, v| -v }.first(16)].each do |address, sum|
       country = IpCountry.seek_address(address)
       country_full_name = country ? country.country_full_name : '<< Unknown >>'
       h[address] = { country: country_full_name, sum: sum }
