@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe IpCountry, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should properly translate IP address" do
+    IpCountry._test_parse_address
+  end
 end

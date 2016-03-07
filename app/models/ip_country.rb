@@ -25,6 +25,34 @@ class IpCountry < ActiveRecord::Base
     return x
   end
 
+  def self.to_quad _i
+    x = _i
+    quads = Array.new
+    4.times do |i|
+      quads.push(sprintf("%02X", x & 0xFF))
+      x = x >> 8
+    end
+
+    return quads.reverse.join('.')
+  end
+
+  def self._test_parse_address
+    result = Hash.new
+
+    IpCountry.joins(:country).select('countries.long AS country_full_name, 
+                                      address_start,
+                                      address_end').each do |c|
+      # puts "#{IpCountry.to_quad c.address_start} -> #{IpCountry.to_quad c.address_end}: #{c.country_full_name}"
+      result[IpCountry.to_quad c.address_start] = { end_address: IpCountry.to_quad(c.address_end),
+                                                    country: c.country_full_name,
+                                                    numeric: c.address_start }
+    end
+
+    result.sort_by{ |k, v| v[:numeric] }.each do |start_address, d|
+      puts "#{start_address} -> #{d[:end_address]}: #{d[:country]}"
+    end
+  end
+
   def self.rebuild_database!
     addresses = Hash.new
     countries = Hash.new
