@@ -6,7 +6,7 @@ class VisitorController < ApplicationController
     # s[:most_active] = Hash[Visitor.group(:address).sum(:todays_count).sort_by { |k, v| -v }.first(16)]
     s[:unique_visit_to_date] = Visitor.distinct(:address).count(:address)
     s[:total_visit_to_date] = Visitor.sum(:todays_count)
-    s[:total_visit_by_country] = Visitor.total_visit_by_country params[:limit]
+    s[:total_visit_by_country] = Visitor.total_visit_by_country params[:limit].to_i
 
     render json: s
   end
