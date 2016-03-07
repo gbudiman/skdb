@@ -32,7 +32,8 @@ class Hero < ActiveRecord::Base
                  heros.rank         AS hero_rank,
                  stats.name         AS stat_name,
                  stats.datapoint    AS stat_datapoint,
-                 stats.value        AS stat_value').each do |r|
+                 stats.value        AS stat_value')
+        .where('heros.rank = 6').each do |r|
       result[r.hero_id] ||= Hash.new
       result[r.hero_id][:name] = r.hero_name
       result[r.hero_id][:rank] = r.hero_rank

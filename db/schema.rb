@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301180251) do
+ActiveRecord::Schema.define(version: 20160307144037) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20160301180251) do
   add_index "atbs", ["effect"], name: "index_atbs_on_effect", using: :btree
   add_index "atbs", ["name", "modifier"], name: "unique_attribute_name_modifier", unique: true, using: :btree
 
+  create_table "countries", force: :cascade do |t|
+    t.string "short", limit: 255, null: false
+    t.string "mid",   limit: 255, null: false
+    t.string "long",  limit: 255, null: false
+  end
+
+  add_index "countries", ["long"], name: "index_countries_on_long", unique: true, using: :btree
+  add_index "countries", ["mid"], name: "index_countries_on_mid", unique: true, using: :btree
+  add_index "countries", ["short"], name: "index_countries_on_short", unique: true, using: :btree
+
   create_table "heros", force: :cascade do |t|
     t.string   "static_name", limit: 255, null: false
     t.string   "name",        limit: 255, null: false
@@ -36,6 +46,16 @@ ActiveRecord::Schema.define(version: 20160301180251) do
   add_index "heros", ["name"], name: "hero_unique_name", unique: true, using: :btree
   add_index "heros", ["static_name", "name", "rank"], name: "hero_unique_name_rank", unique: true, using: :btree
   add_index "heros", ["static_name"], name: "hero_unique_static_name", unique: true, using: :btree
+
+  create_table "ip_countries", force: :cascade do |t|
+    t.integer "address_start", limit: 4, null: false
+    t.integer "address_end",   limit: 4, null: false
+    t.integer "country_id",    limit: 4, null: false
+  end
+
+  add_index "ip_countries", ["address_end"], name: "index_ip_countries_on_address_end", unique: true, using: :btree
+  add_index "ip_countries", ["address_start"], name: "index_ip_countries_on_address_start", unique: true, using: :btree
+  add_index "ip_countries", ["country_id"], name: "index_ip_countries_on_country_id", using: :btree
 
   create_table "skill_atbs", force: :cascade do |t|
     t.string   "value",      limit: 255, null: false
