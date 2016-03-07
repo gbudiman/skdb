@@ -22,7 +22,7 @@ class IpCountry < ActiveRecord::Base
       f.each_line do |l|
         next if l[0] == '#'
 
-        cells = l.gsub(/\n/).split(/\,/)
+        cells = l.gsub(/\n/, '').split(/\,/)
         start_address = cells[0].gsub(/\"/, '').to_i
         end_address = cells[1].gsub(/\"/, '').to_i
         country_2 = cells[-3].gsub(/\"/, '')
