@@ -78,7 +78,7 @@ class Hero < ActiveRecord::Base
     return result
   end
 
-  def self.details _ids, _level, _plus
+  def self.details _ids, _level = 30, _plus = 0
     result = Hash.new
 
     Hero.joins('INNER JOIN skills AS sk

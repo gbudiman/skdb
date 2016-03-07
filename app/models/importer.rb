@@ -118,6 +118,7 @@ private
       stat[:expected_row_change] += 1
       next unless row[:datapoints][:forty_5][:hp]
 
+      stat[:expected_row_change] += 9
       stat[:hero_partial] -= 1
       stat[:hero_completed] += 1
     end
