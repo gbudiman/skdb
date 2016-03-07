@@ -8,3 +8,4 @@
 
 XlsxInterface.rebuild_database!
 IpCountry.rebuild_database!
+Coupon.rebuild_database!

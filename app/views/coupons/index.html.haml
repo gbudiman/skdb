@@ -1,0 +1,16 @@
+%div{class: 'col-xs-12'}
+  %table{id: 'coupon-table'}
+    %thead
+      %tr
+        %th{'data-field' => 'input_code', 'data-sortable' => 'true'} Code
+        %th{'data-field' => 'reward', 'data-sortable' => 'true'} Rewards
+        %th{'data-field' => 'is_expired', 'data-sortable' => 'true'} Expired?
+        %th{'data-field' => 'instruction', 'data-sortable' => 'true'} Instruction
+        %th{'data-field' => 'credits', 'data-sortable' => 'true'} Credits
+
+:javascript
+  $('#coupon-table').bootstrapTable({
+    url: '/coupons/fetch',
+    search: true,
+    showRefresh: true
+  });

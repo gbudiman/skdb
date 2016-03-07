@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307144037) do
+ActiveRecord::Schema.define(version: 20160307214831) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 20160307144037) do
   add_index "countries", ["long"], name: "index_countries_on_long", unique: true, using: :btree
   add_index "countries", ["mid"], name: "index_countries_on_mid", unique: true, using: :btree
   add_index "countries", ["short"], name: "index_countries_on_short", unique: true, using: :btree
+
+  create_table "coupons", force: :cascade do |t|
+    t.string  "input_code",  limit: 255,                   null: false
+    t.string  "reward",      limit: 255,                   null: false
+    t.boolean "is_expired",                default: false
+    t.text    "instruction", limit: 65535,                 null: false
+    t.text    "credits",     limit: 65535,                 null: false
+  end
+
+  add_index "coupons", ["input_code", "reward"], name: "index_coupons_on_input_code_and_reward", unique: true, using: :btree
 
   create_table "heros", force: :cascade do |t|
     t.string   "static_name", limit: 255, null: false
