@@ -4,6 +4,7 @@ class StatController < ApplicationController
 	end
 
 	def index_fetch
+		log
 		render json: Hero.fetch_with_stats
 	end
 
