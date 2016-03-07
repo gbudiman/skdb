@@ -10,6 +10,7 @@ Bugs? Problems? Use [Issue Trackers](https://github.com/gbudiman/skdb/issues)
 
 1. Search anything<br />
 <img src="public/readme_img/search.png" alt="Search Anything" width="256" target="_skdb"/>
+<img src="public/readme_img/tabular.png" alt="Search Anything" width="256" target="_skdb"/>
 
 2. Compare heroes' skills and stats<br />
 <img src="public/readme_img/compare_table.png" alt="Compare Table" width="640" target="_skdb"/>
