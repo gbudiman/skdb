@@ -6,7 +6,7 @@ class IpCountry < ActiveRecord::Base
     quads = _s.split(/\./)
     x = 0
     quads.reverse.each_with_index do |q, i|
-      x += q.to_i * (0xFF**i)
+      x += q.to_i * (0x100**i)
     end
 
     IpCountry.joins(:country)
