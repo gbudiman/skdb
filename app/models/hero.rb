@@ -1,6 +1,8 @@
 class Hero < ActiveRecord::Base
   before_validation :parse
 
+  enum element: [:earth, :light, :water, :dark, :fire]
+
   validates :name, :static_name, :rank, presence: true, strict: ActiveRecord::StatementInvalid
   validates :static_name, format: { with: /\A[A-Za-z\_]+\_\d\z/ }, strict: ActiveRecord::StatementInvalid
   validates :rank, numericality: { only_integer: true,
@@ -30,6 +32,8 @@ class Hero < ActiveRecord::Base
         .select('heros.id           AS hero_id,
                  heros.name         AS hero_name,
                  heros.rank         AS hero_rank,
+                 heros.category     AS hero_category,
+                 heros.element      AS hero_element,
                  stats.name         AS stat_name,
                  stats.datapoint    AS stat_datapoint,
                  stats.value        AS stat_value')
@@ -37,6 +41,8 @@ class Hero < ActiveRecord::Base
       result[r.hero_id] ||= Hash.new
       result[r.hero_id][:name] = r.hero_name
       result[r.hero_id][:rank] = r.hero_rank
+      result[r.hero_id][:category] = r.hero_category
+      result[r.hero_id][:element] = Hero.elements.keys[r.hero_element]
       result[r.hero_id][:stats] ||= Hash.new
 
       if r.stat_name
@@ -54,6 +60,8 @@ class Hero < ActiveRecord::Base
       h[:name] = r[:name]
       h[:stripped_name] = r[:name].split(/\s+/).last
       h[:rank] = r[:rank]
+      h[:category] = r[:category]
+      h[:element] = r[:element]
 
       r[:stats].each do |stat, d|
         h[stat] = Stat.extrapolate d
@@ -95,6 +103,8 @@ class Hero < ActiveRecord::Base
                  heros.static_name  AS hero_static_name,
                  heros.name         AS hero_name,
                  heros.rank         AS hero_rank,
+                 heros.category     AS hero_category,
+                 heros.element      AS hero_element,
                  stats.name         AS stat_name,
                  stats.datapoint    AS stat_datapoint,
                  stats.value        AS stat_value,
@@ -116,6 +126,8 @@ class Hero < ActiveRecord::Base
       hero[:hero_id]      = r.hero_id
       hero[:hero_name]    = r.hero_name
       hero[:hero_rank]    = r.hero_rank.to_i
+      hero[:hero_category] = r.hero_category
+      hero[:hero_element] = Hero.elements.keys[r.hero_element]
       hero[:url_friendly] = r.hero_static_name.split(/\_/).first
       hero[:skills]     ||= Hash.new
       hero[:stats]      ||= Hash.new

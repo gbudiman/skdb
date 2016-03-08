@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307214831) do
+ActiveRecord::Schema.define(version: 20160308080048) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 20160307214831) do
     t.integer  "rank",        limit: 4,   null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "element",     limit: 4
+    t.string   "category",    limit: 255
   end
 
   add_index "heros", ["name"], name: "hero_unique_name", unique: true, using: :btree

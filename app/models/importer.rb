@@ -54,6 +54,9 @@ class Importer
         hero = Hero.find_by static_name: row[:static_data]
         raise IndexError, "Fatal error: Hero #{row[:static_data]} not found" if hero == nil
 
+        hero.category = row[:category]
+        hero.element = row[:element]
+        hero.save!
         row[:datapoints].each do |datapoint_key, datapoint_data|
           datapoint_data.each do |_name, value|
             next if value == nil

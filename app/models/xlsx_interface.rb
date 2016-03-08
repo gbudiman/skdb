@@ -80,6 +80,8 @@ private
       h = { static_data:    row['Static Name'],
             type:           type,
             spd:            nbti(row['SPD']),
+            element:        row['element'],
+            category:       row['class'],
             datapoints: {
               thirty:         { hp: nbti(row['HP_thirty']),
                                 atk: nbti(row['ATK_thirty']),
