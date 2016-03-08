@@ -192,10 +192,13 @@ function stylify_hero(d) {
        +   '<span class="glyphicon glyphicon-arrow-left"></span>'
        + '</a>'
        + '&nbsp;'
-       + d.hero_name.strip_hero_rank()
+       + '<img src="/assets/element_' + d.hero_element + '.png" style="margin-top: -0.4em">'
        + '&nbsp;'
-       + '<span class="glyphicon glyphicon-star"></span>&nbsp;'
        + d.hero_rank
+       + '&nbsp;'
+       + '<span class="glyphicon glyphicon-star"></span>'
+       + '&nbsp;'
+       + d.hero_name.strip_hero_rank()
        + '&nbsp;'
        + '<a href="#" hidden class="compare-remove" data-hero-id=' + d.hero_id + '>'
        +   '<span class="glyphicon glyphicon-remove"></span>'

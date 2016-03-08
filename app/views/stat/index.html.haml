@@ -21,6 +21,7 @@
 	%table{id: 'stat-table', 'data-height' => '32em'}
 		%thead
 			%tr
+				%th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
 				- if defined? @compact_tabular
 					%th{'data-field' => 'name', 
 							'data-sortable' => 'true', 

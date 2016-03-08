@@ -16,6 +16,11 @@ function format_compact_name_with_dynamic_buttons(value, row, index) {
   return s;
 }
 
+function format_hero_element(value, row, index) {
+  return '<img src="/assets/element_' + value + '.png">';
+  //return row.element;
+}
+
 function activate_links(id) {
   $(id).find('.dynamic-add').each(function() {
     var o = $(this).parent().parent();

@@ -85,6 +85,11 @@ ul.list-unstyled.condensed {
   color: #D9534F;
 }
 
+.stack-wide {
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+}
+
 span.label.label-primary.label-stack {
   display:inline-block;
   line-height: 150%;

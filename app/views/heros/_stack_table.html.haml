@@ -28,6 +28,16 @@
     %button{class: 'btn btn-default disabled btn-block synergy-closing-top synergy-span', id: 'stack_stat_defense_decrease'} 
       Defense Down
 
+%div{class: 'row stack-table stack-wide', hidden: true}
+  %div{class: 'col-xs-6', style: 'text-align: right'} 
+    %span{class: 'glyphicon glyphicon-arrow-left'}
+    &nbsp;
+    Allies
+  %div{class: 'col-xs-6'} 
+    Opponents
+    &nbsp;
+    %span{class: 'glyphicon glyphicon-arrow-right'}
+
 %div{class: 'row stack-table', hidden: true}
   %div{class: 'col-xs-2 synergy-leading'} 
     %button{class: 'btn btn-default disabled btn-block synergy-leading-bottom synergy-span', id: 'stack_stat_defense_increase'}
