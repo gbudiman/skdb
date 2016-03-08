@@ -12,14 +12,16 @@ class Utility
   end
 
   def self.shut_up
-    t = Rails.logger.level
-    Rails.logger.level = 1
-    puts "Temporarily setting Rails.logger.level to 1"
+    # t = Rails.logger.level
+    # Rails.logger.level = 1
+    Rails.logger.silence(Logger::INFO) do
+      #puts "Temporarily setting Rails.logger.level to 1"
 
-    yield
+      yield
+    end
     
-    Rails.logger.level = t
-    puts "Rails.logger.level set back to #{t}"
+    # Rails.logger.level = t
+    # puts "Rails.logger.level set back to #{t}"
   end
 
   def self.query_like
