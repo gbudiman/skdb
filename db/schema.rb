@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308080048) do
+ActiveRecord::Schema.define(version: 20160308212652) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -45,6 +45,28 @@ ActiveRecord::Schema.define(version: 20160308080048) do
 
   add_index "coupons", ["input_code", "reward"], name: "index_coupons_on_input_code_and_reward", unique: true, using: :btree
 
+  create_table "equip_stats", force: :cascade do |t|
+    t.integer  "equip_id",   limit: 4,               null: false
+    t.integer  "category",   limit: 4,               null: false
+    t.string   "attribute",  limit: 255,             null: false
+    t.integer  "value",      limit: 4,               null: false
+    t.integer  "variance",   limit: 4,   default: 0
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "equip_stats", ["equip_id", "category", "attribute"], name: "index_equip_stats_on_equip_id_and_category_and_attribute", unique: true, using: :btree
+
+  create_table "equips", force: :cascade do |t|
+    t.integer  "rank",       limit: 4,   null: false
+    t.string   "name",       limit: 255
+    t.integer  "slot",       limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "equips", ["name"], name: "index_equips_on_name", unique: true, using: :btree
+
   create_table "heros", force: :cascade do |t|
     t.string   "static_name", limit: 255, null: false
     t.string   "name",        limit: 255, null: false
@@ -68,6 +90,16 @@ ActiveRecord::Schema.define(version: 20160308080048) do
   add_index "ip_countries", ["address_end"], name: "index_ip_countries_on_address_end", unique: true, using: :btree
   add_index "ip_countries", ["address_start"], name: "index_ip_countries_on_address_start", unique: true, using: :btree
   add_index "ip_countries", ["country_id"], name: "index_ip_countries_on_country_id", using: :btree
+
+  create_table "recommendations", force: :cascade do |t|
+    t.integer  "slot",       limit: 4,   null: false
+    t.string   "value",      limit: 255, null: false
+    t.integer  "hero_id",    limit: 4,   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "recommendations", ["hero_id", "slot"], name: "index_recommendations_on_hero_id_and_slot", unique: true, using: :btree
 
   create_table "skill_atbs", force: :cascade do |t|
     t.string   "value",      limit: 255, null: false
@@ -106,6 +138,16 @@ ActiveRecord::Schema.define(version: 20160308080048) do
 
   add_index "stats", ["hero_id", "name", "datapoint"], name: "unique_hero_stat", unique: true, using: :btree
   add_index "stats", ["hero_id"], name: "index_stats_on_hero_id", using: :btree
+
+  create_table "tiers", force: :cascade do |t|
+    t.integer  "category",   limit: 4,   null: false
+    t.string   "value",      limit: 255, null: false
+    t.integer  "hero_id",    limit: 4,   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "tiers", ["hero_id", "category"], name: "index_tiers_on_hero_id_and_category", unique: true, using: :btree
 
   create_table "visitors", force: :cascade do |t|
     t.string  "address",      limit: 255,             null: false

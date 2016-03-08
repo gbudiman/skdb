@@ -14,6 +14,8 @@ class Hero < ActiveRecord::Base
 
   has_many :skills, dependent: :destroy
   has_many :stats, dependent: :destroy
+  has_many :tiers, dependent: :destroy
+  has_many :recommendations, dependent: :destroy
 
   def self.fetch_having_atb_effect _h
     hero_superset = Atb.joins(skills: :hero)
