@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309060917) do
+ActiveRecord::Schema.define(version: 20160309063013) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -94,11 +94,12 @@ ActiveRecord::Schema.define(version: 20160309060917) do
   add_index "ip_countries", ["country_id"], name: "index_ip_countries_on_country_id", using: :btree
 
   create_table "recommendations", force: :cascade do |t|
-    t.integer  "slot",       limit: 4,   null: false
-    t.string   "value",      limit: 255, null: false
-    t.integer  "hero_id",    limit: 4,   null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "slot",       limit: 4,                   null: false
+    t.string   "value",      limit: 255,                 null: false
+    t.integer  "hero_id",    limit: 4,                   null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "deviation",              default: false
   end
 
   add_index "recommendations", ["hero_id", "slot"], name: "index_recommendations_on_hero_id_and_slot", unique: true, using: :btree
