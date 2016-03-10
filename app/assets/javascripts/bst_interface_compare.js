@@ -242,7 +242,7 @@ function stylify_recs(d) {
   $.each(d, function(slot, value) {
     if (slot == 'jewel') {
       $.each(value.split(', '), function(i, x) {
-        s += $.label_group([slot + ' ' + i, x], 'default', slot + ' recommendations');
+        s += $.label_group([slot + ' ' + (i + 1), x], 'default', slot + ' recommendations');
         s += '<br />';
       })
     } else {
