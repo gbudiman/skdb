@@ -58,6 +58,34 @@ class Visitor < ActiveRecord::Base
     return Hash[out.sort_by { |k, v| -v }]
   end
 
+  def self.summarize_and_destroy_records!
+    # Summarize everything up to last week
+    date_limit = Date.today - 7 
+    data = Hash.new
+
+    Visitor.where('todays_date < :d', d: date_limit).each do |r|
+      data[r.todays_date] ||= { count: 0, cumulative: 0 }
+      data[r.todays_date][:count] += 1
+      data[r.todays_date][:cumulative] += r.todays_count
+    end
+
+    ActiveRecord::Base.transaction do
+      data.each do |k, v|
+        sv = SummarizedVisitor.find_or_initialize_by todays_date: k
+        sv.visit_count ||= 0
+        sv.visit_count  += v[:cumulative]
+
+        sv.unique_count ||= 0
+        sv.unique_count  += v[:count]
+        sv.save!
+      end
+
+      Visitor.where(todays_date: data.keys).destroy_all
+    end
+
+    return data.keys.count
+  end
+
 private
   def set_default_date
     self.todays_date ||= Date.today

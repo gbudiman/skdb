@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309063013) do
+ActiveRecord::Schema.define(version: 20160310032958) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -141,6 +141,16 @@ ActiveRecord::Schema.define(version: 20160309063013) do
 
   add_index "stats", ["hero_id", "name", "datapoint"], name: "unique_hero_stat", unique: true, using: :btree
   add_index "stats", ["hero_id"], name: "index_stats_on_hero_id", using: :btree
+
+  create_table "summarized_visitors", force: :cascade do |t|
+    t.date     "todays_date",            null: false
+    t.integer  "visit_count",  limit: 4, null: false
+    t.integer  "unique_count", limit: 4, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "summarized_visitors", ["todays_date"], name: "index_summarized_visitors_on_todays_date", unique: true, using: :btree
 
   create_table "tiers", force: :cascade do |t|
     t.integer  "category",   limit: 4,   null: false
