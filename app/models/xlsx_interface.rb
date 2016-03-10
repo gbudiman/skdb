@@ -23,6 +23,8 @@ class XlsxInterface
     Utility.shut_up do
       Hero.destroy_all
       Atb.destroy_all
+      Recommendation.destroy_all
+      Tier.destroy_all
       update_database!
     end
   end
@@ -95,6 +97,20 @@ private
                                 atk: nbti(row['ATK_forty_5']),
                                 def: nbti(row['DEF_forty_5'])
                               },
+            },
+            equip_recommendations: {
+              weapon: nbts(row['rec_weapon']),
+              armor:  nbts(row['rec_armor']),
+              jewel:  nbta(row['rec_jewel_0'], row['rec_jewel_1'], row['rec_jewel_2'])
+            },
+            tiers: {
+              adventure: nbts(row['t_adv']),
+              cr_easy:   nbts(row['t_ecr']),
+              cr_normal: nbts(row['t_ncr']),
+              pvp:       nbts(row['t_pvp']),
+              tower:     nbts(row['t_tower']),
+              raid:      nbts(row['t_raid']),
+              boss:      nbts(row['t_boss'])
             }
           }
 
@@ -107,5 +123,16 @@ private
   def nbti _x
     # Not blank? Convert to integer
     return _x.blank? ? nil : _x.to_i
+  end
+
+  def nbts _x
+    return _x.length == 0 ? nil : _x
+  end
+
+  def nbta *_a
+    content = Array.new
+    _a.each { |x| (x != nil and x.strip.length > 0) ? content.push(x.strip) : 0 }
+
+    return content.length > 0 ? content.sort.join(', ') : nil
   end
 end

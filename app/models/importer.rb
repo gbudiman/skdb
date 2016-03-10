@@ -57,6 +57,21 @@ class Importer
         hero.category = row[:category]
         hero.element = row[:element]
         hero.save!
+
+        row[:equip_recommendations].each do |slot, value|
+          next if value == nil
+          r = Recommendation.find_or_initialize_by hero_id: hero.id, slot: slot
+          r.value = value
+          r.save
+        end
+
+        row[:tiers].each do |category, value|
+          next if value == nil
+          t = Tier.find_or_initialize_by hero_id: hero.id, category: category
+          t.value = value
+          t.save
+        end
+
         row[:datapoints].each do |datapoint_key, datapoint_data|
           datapoint_data.each do |_name, value|
             next if value == nil

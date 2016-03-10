@@ -1,0 +1,56 @@
+%table{id: 'tier-table'}
+  %thead
+    %tr
+      %th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
+      %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Name
+      %th{'data-field' => 'adventure', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvE
+      %th{'data-field' => 'cr_easy', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} CR Easy
+      %th{'data-field' => 'cr_normal', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} CR Norm
+      %th{'data-field' => 'raid', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} Raid
+      %th{'data-field' => 'pvp', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvP
+      %th{'data-field' => 'tower', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} Tower
+      %th{'data-field' => 'boss', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} Boss
+
+= javascript_include_tag 'stat_table'
+:javascript
+  $('#tier-table').bootstrapTable({
+    url: '/tiers/fetch',
+    showColumns: true,
+    toolbar: '.tiers-toolbar',
+    onPostBody: function() {
+      resize_once('#tier-table');
+      activate_links('#tier-table');
+    },
+    onSort: function() {
+      resize_bst_area('#tier-table');
+      activate_links('#tier-table');
+    }
+  });
+
+  var tier_rank = {
+    'SS': 100,
+    'S+': 91,
+    'S' : 90,
+    'S-': 89,
+    'A+': 81,
+    'A' : 80,
+    'A-': 79,
+    'B+': 71,
+    'B' : 70,
+    'B-': 69,
+    'C+': 61,
+    'C' : 60,
+    'C-': 59,
+    'D+': 51,
+    'D' : 50,
+    'D-': 49,
+  };
+
+  function tier_sorter(_a, _b) {
+    a = _a == undefined ? -1 : tier_rank[_a.split(' ')[0]];
+    b = _b == undefined ? -1 : tier_rank[_b.split(' ')[0]];
+
+    if (a > b) return 1;
+    if (a < b) return -1;
+    return 0;
+  }

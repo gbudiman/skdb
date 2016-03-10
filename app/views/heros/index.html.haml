@@ -7,15 +7,19 @@
     %div{class: 'row'}
       %ul{class: 'nav nav-tabs minimizable'}
         %li{class: 'active'}
-          %a{'data-toggle' => 'tab', href: '#tab-search'} Search
+          %a{'data-toggle' => 'tab', href: '#tab-tiers'} 
+            Tiers
+            %sup{class: 'glyphicon-red'} NEW
         %li
           %a{'data-toggle' => 'tab', href: '#tab-tabular'} 
             Tabular
-            %sup{class: 'glyphicon-red'} NEW
+        %li
+          %a{'data-toggle' => 'tab', href: '#tab-search'} Search
+
 
     %div{class: 'row'}
       %div{class: 'tab-content minimizable'}
-        %div{id: 'tab-search', class: 'tab-pane fade in active'}
+        %div{id: 'tab-search', class: 'tab-pane fade in'}
           %div{class: 'panel minimizable', id: 'tab-search'}
             %div{class: 'panel-heading'}
               %div{class: 'input-group'}
@@ -45,6 +49,8 @@
                   %span{class: 'badge pull-right', id: 'effect-result-count'}
                 %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
 
+        %div{id: 'tab-tiers', class: 'tab-pane fade in active'}
+          = render template: 'tiers/index'
         %div{id: 'tab-tabular', class: 'tab-pane fade in'}
           = render template: 'stat/index'
 

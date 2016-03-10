@@ -26,6 +26,9 @@ Rails.application.routes.draw do
 
   get     'coupons'                            => 'coupons#index'
   get     'coupons/fetch'                      => 'coupons#index_fetch'
+
+  get     'tiers'                              => 'tiers#index'
+  get     'tiers/fetch'                        => 'tiers#index_fetch'
   # get     'stat/fetch/:level'                  => 'stat#index_fetch'
   # get     'stat/fetch/:level/:plus'            => 'stat#index_fetch'
   # get     'stat/fetch/update/:level'           => 'stat#index_fetch_update'
