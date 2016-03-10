@@ -73,4 +73,5 @@ function resize_once(id) {
 
 $(window).on('resize', function() {
   resize_bst_area('#stat-table');
+  resize_bst_area('#tier-table');
 });

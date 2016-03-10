@@ -99,7 +99,9 @@ class Hero < ActiveRecord::Base
                 INNER JOIN atbs
                    ON         atbs.id = sa.atb_id
                 LEFT OUTER JOIN stats
-                   ON        heros.id = stats.hero_id')
+                   ON        heros.id = stats.hero_id
+                LEFT OUTER JOIN recommendations AS recs
+                   ON        heros.id = recs.hero_id')
         .where('heros.id IN(:id)', id: _ids)
         .select('heros.id           AS hero_id,
                  heros.static_name  AS hero_static_name,
@@ -107,6 +109,8 @@ class Hero < ActiveRecord::Base
                  heros.rank         AS hero_rank,
                  heros.category     AS hero_category,
                  heros.element      AS hero_element,
+                 recs.slot          AS recs_slot,
+                 recs.value         AS recs_value,
                  stats.name         AS stat_name,
                  stats.datapoint    AS stat_datapoint,
                  stats.value        AS stat_value,
@@ -122,19 +126,20 @@ class Hero < ActiveRecord::Base
                  atbs.category      AS atb_category,
                  atbs.effect        AS atb_effect,
                  atbs.modifier      AS atb_modifier').each do |r|
-      result[r.hero_id] ||= Hash.new
+      result[r.hero_id]       ||= Hash.new
 
-      hero                = result[r.hero_id]
-      hero[:hero_id]      = r.hero_id
-      hero[:hero_name]    = r.hero_name
-      hero[:hero_rank]    = r.hero_rank.to_i
-      hero[:hero_category] = r.hero_category
-      hero[:hero_element] = Hero.elements.keys[r.hero_element]
-      hero[:url_friendly] = r.hero_static_name.split(/\_/).first
-      hero[:skills]     ||= Hash.new
-      hero[:stats]      ||= Hash.new
-      hero[:level]        = _level
-      hero[:plus]         = _plus
+      hero                      = result[r.hero_id]
+      hero[:hero_id]            = r.hero_id
+      hero[:hero_name]          = r.hero_name
+      hero[:hero_rank]          = r.hero_rank.to_i
+      hero[:hero_category]      = r.hero_category
+      hero[:hero_element]       = Hero.elements.keys[r.hero_element]
+      hero[:url_friendly]       = r.hero_static_name.split(/\_/).first
+      hero[:skills]           ||= Hash.new
+      hero[:stats]            ||= Hash.new
+      hero[:recommendations]  ||= Hash.new
+      hero[:level]              = _level
+      hero[:plus]               = _plus
 
       # Stat sub-member #####
       if r.stat_name
@@ -143,6 +148,11 @@ class Hero < ActiveRecord::Base
 
         hero[:stats][stat_name] ||= Hash.new
         hero[:stats][stat_name][stat_datapoint] = r.stat_value
+      end
+
+      # Equip recommendations #
+      if r.recs_slot
+        hero[:recommendations][Recommendation.slots.keys[r.recs_slot]] = r.recs_value
       end
 
       # Skill sub-member ######

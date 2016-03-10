@@ -180,11 +180,18 @@ function adjust_stats(el) {
 
 function expand_stats_and_skills(s) {
   return [stylify_flair(undefined, 'Flair Not Available'),
-          stylify_stats(s.stats, s.level, s.plus),
+          stylify_combo(stylify_stats(s.stats, s.level, s.plus),
+                        stylify_recs(s.recommendations)),
           stylify_skill(s.skills.active_0),
           stylify_skill(s.skills.active_1),
           stylify_skill(s.skills.passive, 'No Passive Aura'),
           stylify_skill(s.skills.awakening, 'Not Awakened Hero')];
+}
+
+function stylify_combo(a, b) {
+  var s = a + '<br>' + b;
+
+  return s;
 }
 
 function stylify_hero(d) {
@@ -227,6 +234,24 @@ function stylify_flair(d, err_na) {
   if (!d) {
     return $.label_group(err_na, 'default');
   }
+}
+
+function stylify_recs(d) {
+  var s = '';
+
+  $.each(d, function(slot, value) {
+    if (slot == 'jewel') {
+      $.each(value.split(', '), function(i, x) {
+        s += $.label_group([slot + ' ' + i, x], 'default', slot + ' recommendations');
+        s += '<br />';
+      })
+    } else {
+      s += $.label_group([slot, value], 'default', slot + ' recommendations');
+      s += '<br />';
+    }
+  });
+
+  return s;
 }
 
 function stylify_stats(d, _level, _plus) {

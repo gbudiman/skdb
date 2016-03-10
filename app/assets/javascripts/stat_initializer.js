@@ -53,19 +53,6 @@ function recalculate_stats() {
   var length = $('#stat-table').bootstrapTable('getData').length;
   var uids = new Array();
 
-  $.each($('#stat-table').bootstrapTable('getData'), function(i, x) {
-    uids.push({
-      id: $(this)[0]['id'],
-      //id: i,
-      row: {
-        hp_calc: 16,
-        def_calc: 16,
-        mag_calc: 16,
-        atk_calc: 16
-      }
-    });
-  });
-
   $('#stat-table').bootstrapTable('updateByUniqueId', uids);
 }
 
