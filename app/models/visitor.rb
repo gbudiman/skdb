@@ -59,8 +59,8 @@ class Visitor < ActiveRecord::Base
   end
 
   def self.summarize_and_destroy_records!
-    # Summarize everything up to last week
-    date_limit = Date.today - 7 
+    # Retain records of 4 days only
+    date_limit = Date.today - 3 
     data = Hash.new
 
     Visitor.where('todays_date < :d', d: date_limit).each do |r|
