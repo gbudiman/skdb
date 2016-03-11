@@ -58,7 +58,7 @@ var modifier_translation = {
   stat_incoming_magical_damage_decrease: _render_stat('down', 'Magical Damage Received', 'inverse'),
   stat_incoming_physical_damage_decrease: _render_stat('down', 'Physical Damage Received', 'inverse'),
   stat_lethal_rate_increase: _render_stat('up', 'Lethal Rate'),
-  stat_magical_attack_decrease: _render_stat('down', 'Magical Attack Decrease', 'inverse'),
+  stat_magical_attack_decrease: _render_stat('down', 'Magical Attack', 'inverse'),
   stat_magical_attack_increase: _render_stat('up', 'Magical Attack'),
   stat_magical_attack_increase_on_enemy_death: _render_stat('up', 'Magical Attack on Enemy Death'),
   stat_physical_attack_decrease: _render_stat('down', 'Physical Attack'),
