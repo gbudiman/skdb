@@ -8,11 +8,12 @@ Bugs? Problems? Use [Issue Trackers](https://github.com/gbudiman/skdb/issues)
 
 ## Screenshot
 
-1. Search anything<br />
-<img src="public/readme_img/search.png" alt="Search Anything" width="256" target="_skdb"/>
+1. Search by tiers, stats, skills, effects, pretty much anything<br />
+<img src="public/readme_img/tiers.png" alt="Search Anything" width="256" target="_skdb"/>
 <img src="public/readme_img/tabular.png" alt="Search Anything" width="256" target="_skdb"/>
+<img src="public/readme_img/search.png" alt="Search Anything" width="256" target="_skdb"/>
 
-2. Compare heroes' skills and stats. Stats are dynamic and scaled to heroes' level and augment<br />
+2. Compare heroes' skills, stats, and equip recommendations. Stats are dynamic and scaled to heroes' level and augment<br />
 <img src="public/readme_img/compare_table.png" alt="Compare Table" width="640" target="_skdb"/>
 
 3. Synergies and duplicates<br />
