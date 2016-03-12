@@ -2,12 +2,14 @@
 	%table{id: 'rec-table'}
 		%thead
 			%tr
-				%th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
-				%th{'data-field' => 'name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Name
-				%th{'data-field' => 'weapon', 'data-sortable' => 'true'} Weapon
-				%th{'data-field' => 'armor', 'data-sortable' => 'true'} Armor
+				%th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true', 'data-rowspan' => 2, 'data-halign' => 'center', 'data-valign' => 'middle'} E
+				%th{'data-field' => 'name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons', 'data-rowspan' => 2, 'data-halign' => 'center', 'data-valign' => 'middle'} Name
+				%th{'data-field' => 'weapon', 'data-sortable' => 'true', 'data-rowspan' => 2, 'data-halign' => 'center', 'data-valign' => 'middle'} Weapon
+				%th{'data-field' => 'armor', 'data-sortable' => 'true', 'data-rowspan' => 2, 'data-halign' => 'center', 'data-valign' => 'middle'} Armor
+				%th{'data-colspan' => @jewel_columns.count, 'data-halign' => 'center', 'data-valign' => 'middle'} Jewels
+			%tr
 				- @jewel_columns.each do |j|
-					%th{'data-field' => j, 'data-formatter' => 'jewel_formatter', 'data-sortable' => 'true', 'data-sort-name' => j }= j
+					%th{'data-field' => j, 'data-formatter' => 'jewel_formatter', 'data-sortable' => 'true', 'data-sort-name' => j, 'data-align' => 'center', 'data-valign' => 'middle'}= j
 		%tbody
 
 = javascript_include_tag 'stat_table'
@@ -20,6 +22,6 @@
 		if (value == true) {
 			return '<span class="glyphicon glyphicon-ok"></span>';
 		} else {
-		  return '-';
+		  return '';
 		}
 	}
