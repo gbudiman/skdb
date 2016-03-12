@@ -29,6 +29,9 @@ Rails.application.routes.draw do
 
   get     'tiers'                              => 'tiers#index'
   get     'tiers/fetch'                        => 'tiers#index_fetch'
+
+  get     'equip_recommendations'              => 'equip_recommendations#index'
+  get     'equip_recommendations/fetch'        => 'equip_recommendations#index_fetch'
   # get     'stat/fetch/:level'                  => 'stat#index_fetch'
   # get     'stat/fetch/:level/:plus'            => 'stat#index_fetch'
   # get     'stat/fetch/update/:level'           => 'stat#index_fetch_update'

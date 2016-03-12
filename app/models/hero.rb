@@ -75,6 +75,61 @@ class Hero < ActiveRecord::Base
     return denorm
   end
 
+  def self.fetch_equip_recommendations
+    result = Hash.new
+    denorm = Array.new
+
+    jewels_pristine = Recommendation.fetch_jewel_types
+
+    Hero.joins('LEFT OUTER JOIN recommendations AS recs
+                  ON                    heros.id = recs.hero_id')
+        .select('heros.id            AS hero_id,
+                 heros.name          AS hero_name,
+                 heros.rank          AS hero_rank,
+                 heros.category      AS hero_category,
+                 heros.element       AS hero_element,
+                 recs.slot           AS recs_slot,
+                 recs.value          AS recs_value')
+        .where('heros.rank = 6').each do |r|
+      result[r.hero_id] ||= Hash.new
+      result[r.hero_id][:name] = r.hero_name
+      result[r.hero_id][:rank] = r.hero_rank
+      result[r.hero_id][:category] = r.hero_category
+      result[r.hero_id][:element] = Hero.elements.keys[r.hero_element]
+      result[r.hero_id][:recs] ||= Hash.new
+
+      if r.recs_slot
+        result[r.hero_id][:recs][Recommendation.slots.keys[r.recs_slot].to_sym] = r.recs_value
+      end
+    end
+
+    result.each do |k, v|
+      jewels = Hash.new
+      jewels_pristine.each do |j|
+        jewels[j] = false
+      end
+
+      if v[:recs][:jewel]
+        v[:recs][:jewel].split(/\, /).each do |j|
+          jewels[j] = true
+        end
+      end
+
+      denorm.push({
+        id: k,
+        rank: v[:rank],
+        name: v[:name],
+        stripped_name: v[:name].split(/\s+/).last,
+        category: v[:category],
+        element: v[:element],
+        weapon: v[:recs][:weapon],
+        armor: v[:recs][:armor]
+      }.merge(jewels))
+    end
+
+    return denorm
+  end
+
   def self.search _q
     result = Array.new
 

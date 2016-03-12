@@ -30,14 +30,18 @@
           %ul{class: 'nav navbar-nav navbar-left'}
             %li{class: 'dropdown'}
               %a{href: '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown', role: 'button', 'aria-haspopup' => true, 'aria-expanded' => false}
-                Misc
+                Encyclopaedia
                 %sup{class: 'glyphicon-red'} NEW
                 <span class='caret'></span>
               %ul{class: 'dropdown-menu'}
-                %li
+                %li{class: "#{ApplicationHelper.set_active self, '/equip_recommendations'}"}
+                  %a{href: '/equip_recommendations'} 
+                    Equip Recommendations
+                %li{class: 'divider'}
+                %li{class: "#{ApplicationHelper.set_active self, '/coupons'}"}
                   %a{href: '/coupons'} 
                     Coupons
-                    %sup{class: 'glyphicon-red'} NEW
+
           %ul{class: 'nav navbar-nav navbar-right'}
             %li
               %a{href: 'https://github.com/gbudiman/skdb/commits/master',
