@@ -2,6 +2,7 @@ class XlsxInterface
   attr_reader :skills, :stats
 
   def initialize _path
+    ap _path
     @skills = process_skill RemoteTable.new(_path, sheet: 'skills')
     @stats = process_stat RemoteTable.new(_path, sheet: 'stats')
 
@@ -12,20 +13,25 @@ class XlsxInterface
     data = Importer.new(_load_xlsx :mock)
   end
 
-  def self.update_database!
+  def self.update_database! **_h
     Utility.shut_up do
-      data = Importer.new(_load_xlsx :real_shit)
+      if _h[:remote]
+        data = Importer.new(_load_xlsx :remote)
+      else
+        data = Importer.new(_load_xlsx :real_shit)
+      end
+
       data.commit!
     end
   end
 
-  def self.rebuild_database!
+  def self.rebuild_database! **_h
     Utility.shut_up do
       Hero.destroy_all
       Atb.destroy_all
       Recommendation.destroy_all
       Tier.destroy_all
-      update_database!
+      update_database! _h
     end
   end
 
@@ -33,6 +39,7 @@ private
   def self._load_xlsx _type
     xlsx = case _type
     when :mock then XlsxInterface.new(Rails.root.join('spec', 'xlsx', 'test.xlsx').to_s)
+    when :remote then XlsxInterface.new('https://github.com/gbudiman/skdb/raw/master/db/seed.xlsx')
     else            XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
     end
 
