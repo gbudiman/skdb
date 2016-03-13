@@ -50,6 +50,34 @@ class Atb < ActiveRecord::Base
   has_many :skill_atbs, dependent: :destroy
   has_many :skills, through: :skill_atbs
 
+  def self.get_stat_modifiers
+    effects = Hash.new
+    results = Hash.new
+    denorms = Array.new
+    e = Atb.where(category: Atb.categories[:stat_modifiers]).pluck(:effect)
+    Hero.fetch_having_atb_effect(effect: e, for_stat_modifiers: true).each do |k, d|
+      no_stat = k.split(/\_/)[1..-1]
+      c_increase = no_stat.delete('increase')
+      c_decrease = no_stat.delete('decrease')
+      cid = (c_increase || c_decrease).to_sym
+
+      stat_mdf_name = no_stat.join('_').humanize
+
+      results[stat_mdf_name] ||= { increase: Array.new, decrease: Array.new }
+      results[stat_mdf_name][cid] += d
+    end
+
+    results.each do |k, d|
+      denorms.push({
+        modifier: k,
+        increase: d[:increase],
+        decrease: d[:decrease]
+      })
+    end
+
+    return denorms
+  end
+
   def self.get_status_effects
     inflicts = Hash.new
     immunities = Hash.new

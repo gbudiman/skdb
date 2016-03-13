@@ -1,0 +1,35 @@
+%table{id: 'stat-modifiers-table'}
+  %thead
+    %tr
+      %th{'data-field' => 'decrease', 'data-formatter' => 'format_decrease', 'data-halign' => 'center'} Decrease
+      %th{'data-field' => 'modifier', 'data-formatter' => 'format_modifier', 'data-sortable' => 'true', 'data-align' => 'center'} Modifier
+      %th{'data-field' => 'increase', 'data-formatter' => 'format_increase', 'data-halign' => 'center'} Increase
+
+= javascript_include_tag 'stat_table'
+= javascript_include_tag 'mechanics_formatter'
+:javascript
+  $('#stat-modifiers-table').bootstrapTable({
+    url: '/mechanics/stat_modifiers/fetch'
+  })
+
+  function format_modifier(value, row, index) {
+    return '<strong>' + value + '</strong>';
+  }
+
+  function format_decrease(value, row, index) {
+    var s = '';
+    $.each(group(row.decrease), function(hero, data) {
+      s += group_format(hero, data, 'left');
+    })
+
+    return s;
+  }
+
+  function format_increase(value, row, index) {
+    var s = '';
+    $.each(group(row.increase), function(hero, data) {
+      s += group_format(hero, data, 'right');
+    })
+
+    return s;
+  }

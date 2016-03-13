@@ -49,6 +49,34 @@ class Hero < ActiveRecord::Base
       end
 
       return result
+    elsif _h[:for_stat_modifiers]
+      result = Hash.new
+      Atb.joins(skill_atbs: [skill: :hero])
+         .where('atbs.effect' => _h[:effect])
+         .where('heros.rank = 6')
+         .where('atbs.modifier' => Atb.modifiers[:fraction])
+         .select('heros.name AS hero_name,
+                  heros.element AS hero_element,
+                  atbs.effect AS effect,
+                  skills.name AS skill_name,
+                  skills.category AS skill_category,
+                  skills.cooldown AS skill_cooldown,
+                  skill_atbs.value AS value,
+                  skill_atbs.target AS target')
+         .distinct.each do |r|
+        result[r.effect] ||= Array.new
+        result[r.effect].push({
+          hero_name: r.hero_name.split(/\ /).last,
+          hero_element: Hero.elements.keys[r.hero_element],
+          fraction: r.value,
+          skill_name: r.skill_name,
+          skill_cooldown: r.skill_cooldown,
+          skill_category: Skill.categories.keys[r.skill_category],
+          skill_target: SkillAtb.targets.keys[r.target]
+        })
+      end
+
+      return result
     else
       hero_superset = Atb.joins(skills: :hero)
                          .where('atbs.effect = :e', e: _h[:effect])
