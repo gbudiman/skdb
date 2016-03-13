@@ -1,0 +1,38 @@
+- @tasks = ['Clear Adventure Stage 1-4', 'Power Up a Hero', 'Acquire an Item from Shop', 'Clear Adventure Stage 1-6', 'Buy a Hero in Shop', 'Power up a Hero', 'Clear Adventure Stage 1-10', 'Swap Heros Position', 'Buy a Hero in Shop', 'Power up a Hero', 'Buy a Hero in Shop', 'Setup another Hero to your formation', 'Upgrade on of the Battle Formation', 'Change your Formation', 'Clear Adventure 2-10', 'Power up a Hero', 'Clear Adventure Stage 3-4', 'Setup another Hero to your formation', 'Fight in Celestial Tower', 'Power up a Hero x3', 'Clear Adventure Stage 3-10', 'Buy a Hero in Shop', 'Power up a Hero', 'Fight in Celestial Tower', 'Power up a Hero', 'Clear Adventure Stage 4-4', 'Power up a Hero', 'Upgrade on of the Battle Formation', 'Clear Adventure Stage 4-10', 'Fight in Celestial Tower', 'Power up a Hero', 'Clear Adventure Stage 5-4', 'Fight in Celestial Tower', 'Clear Adventure Stage 5-10', 'Power up a Hero', 'Clear Adventure Stage 6-5', 'Power up a Hero', 'Fight in Adventure x5', 'Summon a Friend in Adventure', 'Upgrade one of the Battle Formation', 'Setup another Hero to your Formation', 'Fight in Castle Rush', 'Buy a Hero in Shop', 'Power up a Hero', 'Fight in Arena', 'Get 4*hero from shop, adventure, fusion', 'Reach Lv.30 with 4*hero in adventure', 'Fight in Celestial Tower', 'Power up an Item', 'Fight in adventure stage x3', 'Power up a Hero', 'Power up an Item', 'Upgrade one of the Battle Formation', 'Upgrade one of the Battle Formation', 'Fight in Adventure Stage x5', 'Power up a Hero', 'Acquire an Item from Shop', 'Power up a Hero', 'Power up an Item', 'Power up a Hero', 'Fight in Adventure Stage x3', 'Change your Formation', 'Fight in Celestial Tower', 'Power up a Hero', 'Fight in Adventure Stage x10', 'Fight in Arena', 'Power up a Hero', 'Buy a Hero in Shop', 'Fuse 3* heroes to get a 4* hero', 'Fight in Adventure Stage x10', 'Acquire an Item from Shop', 'Fight in Daily Dungeon', 'Get 3*Hero from Adventure, Shop, Fusion', 'Power up a 3*Hero to +5', 'Fight in Adventure Stage x5', 'Fight in Celestial Tower', 'Buy a Hero in Shop', 'Fight in Adventure Stage x10', 'Power up a Hero', 'Acquire an Item from Shop', 'Power up an Item', 'Upgrade on of the Battle Formation', 'Fight in Adventure Stage x10', 'Power up a 3*Hero to +5', 'Fight in Adventure Stage x5', 'Buy a Hero in Shop', 'Get a 4*Hero from Shop, Adventure, Fusion', 'Power up a Hero', 'Fight in Celestial Tower', 'Fight in Adventure Stage x5', 'Reach Lv.30 with a 4*Hero', 'Power up a Hero x3', 'Power up 3 items', 'Rank up an Item Once', 'Fight in Adventure Stage x10', 'Power up a 3* Hero to +5 (Random 3 Ele)', 'Get a Hero from Rank Up', 'Fight in Celestial Tower x3', 'Fight in Adventure Stage x10', 'Power up a Hero', 'Buy a Hero in Shop', 'Power up an Item', 'Fight in Adventure Stage x10', 'Power up a Hero', 'Acquire an Item from Shop', 'Power up an Item', 'Fight in Adventure Stage x10', 'Power up a 4*Hero to +5', 'Get a 5*Hero from shop, adventure, fusion', 'Buy a Hero in Shop', 'Fight in Adventure Stage x10', 'Power up a 5*Hero to +5', 'Fight in Arena x3', 'Upgrade Battle Formation', 'Power up a 5*Hero to +5', 'Fight in Adventure Stage x10', 'Get a 6-star Hero from Ranking Up', 'Reach lvl30 with 6-star Hero in Adventure', 'Power up a 6-star Hero to +5']
+
+%div{id: 'guide-quests-toolbar'}
+  %h4
+    %strong Guide Quests
+%table{id: 'guide-quests-table'}
+  %thead
+    %tr
+      %th{'data-align' => 'right', 'data-halign' => 'center'} Index
+      %th{'data-searchable' => 'true', 'daga-halign' => 'center'} Task
+  %tbody
+    - @tasks[0..39].each_with_index do |t, i|
+      %tr
+        %td= i+1
+        %td= t
+    %tr{class: 'bg-primary'}
+      %td{colspan: 2} 
+        %div{align: 'center'}
+          %strong Intermediate
+    - @tasks[40..78].each_with_index do |t, i|
+      %tr
+        %td= i+1
+        %td= t
+    %tr{class: 'bg-primary'}
+      %td{colspan: 2} 
+        %div{align: 'center'}
+          %strong Advanced
+    - @tasks[79..-1].each_with_index do |t, i|
+      %tr
+        %td= i+1
+        %td= t
+
+:javascript
+  $('#guide-quests-table').bootstrapTable({
+    search: true,
+    toolbar: '#guide-quests-toolbar',
+    height: 720
+  })
