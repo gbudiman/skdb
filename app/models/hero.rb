@@ -18,11 +18,44 @@ class Hero < ActiveRecord::Base
   has_many :recommendations, dependent: :destroy
 
   def self.fetch_having_atb_effect _h
-    hero_superset = Atb.joins(skills: :hero)
-                       .where('atbs.effect = :e', e: _h[:effect])
-                       .where('skill_atbs.target = :r', r: SkillAtb.targets[_h[:target]])
-                       .pluck('heros.id').uniq
-    Hero.details(hero_superset)
+    if _h[:simplified]
+      result = Hash.new
+      Atb.joins(skill_atbs: [skill: :hero])
+         .where('atbs.effect' => _h[:effect])
+         .where('heros.rank = 6')
+         .where('skill_atbs.target > 0')
+         .where('atbs.modifier' => Atb.modifiers[:turns])
+         .select('atbs.effect AS effect',
+                 'skills.name AS skill_name',
+                 'skills.cooldown AS skill_cooldown',
+                 'skills.category AS skill_category',
+                 'skill_atbs.target AS skill_target',
+                 'heros.name AS hero_name',
+                 'heros.element AS hero_element',
+                 'skill_atbs.value AS modifier_value')
+         .distinct.each do |r|
+
+        result[r.effect] ||= Array.new
+        result[r.effect].push({
+          hero_name: r.hero_name.split(/\ /).last,
+          hero_element: Hero.elements.keys[r.hero_element],
+          skill_target: SkillAtb.targets.keys[r.skill_target],
+          skill_name: r.skill_name,
+          skill_cooldown: r.skill_cooldown,
+          skill_category: Skill.categories.keys[r.skill_category],
+          turns: r.modifier_value.to_i
+        })
+        #puts "#{r.hero_name}: #{r.skill_name} -> #{r.effect}"
+      end
+
+      return result
+    else
+      hero_superset = Atb.joins(skills: :hero)
+                         .where('atbs.effect = :e', e: _h[:effect])
+                         .where('skill_atbs.target = :r', r: SkillAtb.targets[_h[:target]])
+                         .pluck('heros.id').uniq
+      Hero.details(hero_superset)
+    end
   end
 
   def self.fetch_with_stats **_h

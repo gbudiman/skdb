@@ -1,10 +1,10 @@
 class XlsxInterface
-  attr_reader :skills, :stats
+  attr_reader :skills, :stats, :atbs
 
   def initialize _path
-    ap _path
     @skills = process_skill RemoteTable.new(_path, sheet: 'skills')
     @stats = process_stat RemoteTable.new(_path, sheet: 'stats')
+    @atbs = RemoteTable.new(_path, sheet: 'attributes')
 
     return self
   end
@@ -38,12 +38,17 @@ class XlsxInterface
 private
   def self._load_xlsx _type
     xlsx = case _type
-    when :mock then XlsxInterface.new(Rails.root.join('spec', 'xlsx', 'test.xlsx').to_s)
-    when :remote then XlsxInterface.new('https://github.com/gbudiman/skdb/raw/master/db/seed.xlsx')
-    else            XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
+    when :mock    then XlsxInterface.new(Rails.root.join('spec', 'xlsx', 'test.xlsx').to_s)
+    when :remote  then XlsxInterface.new('https://github.com/gbudiman/skdb/raw/master/db/seed.xlsx')
+    else               XlsxInterface.new(Rails.root.join('db', 'seed.xlsx').to_s)
     end
 
     return xlsx
+  end
+
+  def process_atb _d
+    _d.each do |row|
+    end
   end
 
   def process_skill _d

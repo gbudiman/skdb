@@ -50,6 +50,65 @@ class Atb < ActiveRecord::Base
   has_many :skill_atbs, dependent: :destroy
   has_many :skills, through: :skill_atbs
 
+  def self.get_status_effects
+    inflicts = Hash.new
+    immunities = Hash.new
+    cross_table = { inflicts: Hash.new, immunities: Hash.new, recomb: Hash.new }
+    denorms = Array.new
+
+    Atb.where(category: Atb.categories[:debuffs]).each do |r|
+      effect = r.effect.split(/\_/).last
+      inflicts[effect] = r.effect
+    end
+
+    Atb.where(category: Atb.categories[:immunities]).each do |r|
+      effect = r.effect.split(/\_/)[2]
+
+      if inflicts[effect]
+        immunities[effect] = r.effect
+      elsif r.effect =~ /all_debuff/
+        all_debuff = r.effect.split(/\_/)[2..-1].join('_') 
+        immunities[all_debuff] = r.effect
+      end
+    end
+
+    cross_table[:inflicts] = Hero.fetch_having_atb_effect(effect: inflicts.values, simplified: true)
+    cross_table[:immunities] = Hero.fetch_having_atb_effect(effect: immunities.values, simplified: true)
+
+    cross_table[:inflicts].each do |k, v|
+      val = inflicts.key(k)
+      cross_table[:recomb][val] ||= Hash.new
+      cross_table[:recomb][val][:inflict] ||= Array.new
+      cross_table[:recomb][val][:inflict] += v
+    end
+
+    cross_table[:immunities].each do |k, v|
+      next if k =~ /all_debuff/
+
+      val = immunities.key(k)
+      cross_table[:recomb][val] ||= Hash.new
+      cross_table[:recomb][val][:immunity] ||= Array.new
+      cross_table[:recomb][val][:immunity] += v
+    end
+
+    cross_table[:immunities].select{|k, v| k =~ /all_debuff/}.each do |k, v|
+      cross_table[:recomb].each do |recomb, d|
+        d[:immunity] ||= Array.new
+        d[:immunity] += v
+      end
+    end
+
+    cross_table[:recomb].each do |k, v|
+      h = Hash.new
+      h[:status_effect] = k
+      h[:inflicts] = v[:inflict]
+      h[:immunities] = v[:immunity]
+      denorms.push h
+    end
+
+    return denorms
+  end
+
   def self.search _q
     result = Array.new
     

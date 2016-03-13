@@ -1,0 +1,94 @@
+%table{id: 'status-effects-table'}
+  %thead
+    %tr
+      %th{'data-field' => 'inflicts', 'data-formatter' => 'format_inflict', 'data-searchable' => 'true', 'data-halign' => 'center'} Inflicts
+      %th{'data-field' => 'status_effect', 'data-formatter' => 'format_status_effect', 'data-sortable' => 'true', 'data-align' => 'center'} Status Effects
+      %th{'data-field' => 'immunities', 'data-formatter' => 'format_immunity', 'data-searchable' => 'true', 'data-halign' => 'center'} Immunities
+
+= javascript_include_tag 'stat_table'
+:javascript
+  function group(x) {
+    var h = new Object();
+    $.each(x, function(i, x) {
+      if (h[x.hero_name] == undefined) {
+        h[x.hero_name] = {
+          hero_element: x.hero_element,
+          skill_data: new Array()
+        };
+      }
+
+      h[x.hero_name]['skill_data'].push(x);
+    })
+
+    return h;
+  }
+
+  function group_format(hero, data, alignment) {
+    var s = ''
+    var span_class = (alignment == 'left') ? 'pull-right' : 'pull-left';
+    var span_invert = (alignment == 'left') ? 'pull-left' : 'pull-right';
+
+    s += '<span class="' + span_class + '">'
+      +    format_hero_element(data.hero_element, null, null)
+      +    ' '
+      +    '<strong>' + hero + '</strong>'
+      +  '</span>'
+      +  '<br />'
+      +  '<ul class="list-unstyled">';
+
+    $.each(data.skill_data, function(skill, sd) {
+      s += '<li>'
+        +    '<span class="' + span_class + '">' + sd.skill_name + '</span>'
+        +    '<span class="' + span_invert + '">';
+
+      if (alignment == 'right') {
+        s += $.prettify_generic('refresh', sd.turns, 'Duration')
+          +  ' '
+          +  $.prettify_target(sd.skill_target)
+          +  ' '
+          +  $.prettify_skill(sd.skill_category, sd.skill_cooldown);
+      } else {
+        s += $.prettify_skill(sd.skill_category, sd.skill_cooldown)
+          +  ' '
+          +  $.prettify_target(sd.skill_target)
+          +  ' '
+          +  $.prettify_generic('refresh', sd.turns, 'Duration');
+      }
+        
+      s += '</span>'
+        +  '</li><br />';
+    })
+
+    s += '</ul>';
+
+    return s;
+  }
+
+  function format_inflict(value, row, index) {
+    var s = '';
+
+    $.each(group(row.inflicts), function(hero, data) {
+      s += group_format(hero, data, 'left');
+    });
+
+    return s;
+  }
+
+  function format_immunity(value, row, index) {
+    var s = '';
+
+    $.each(group(row.immunities), function(hero, data) {
+      s += group_format(hero, data, 'right');
+    })
+
+    return s;
+  }
+
+  function format_status_effect(value, row, index) {
+    return '<strong>' + value[0].toUpperCase() + value.substring(1) + '</strong>';
+  }
+
+  $('#status-effects-table').bootstrapTable({
+    url: '/mechanics/status_effects/fetch',
+    search: true
+  })

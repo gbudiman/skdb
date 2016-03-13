@@ -1,0 +1,2 @@
+module MechanicsHelper
+end

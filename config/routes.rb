@@ -32,6 +32,9 @@ Rails.application.routes.draw do
 
   get     'equip_recommendations'              => 'equip_recommendations#index'
   get     'equip_recommendations/fetch'        => 'equip_recommendations#index_fetch'
+
+  get     'mechanics/status_effects'           => 'mechanics#status_effects'
+  get     'mechanics/status_effects/fetch'     => 'mechanics#status_effects_fetch'
   # get     'stat/fetch/:level'                  => 'stat#index_fetch'
   # get     'stat/fetch/:level/:plus'            => 'stat#index_fetch'
   # get     'stat/fetch/update/:level'           => 'stat#index_fetch_update'

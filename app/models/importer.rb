@@ -4,6 +4,7 @@ class Importer
   def initialize _data, **_opts
     @skills = _data.skills if _data
     @stats = _data.stats if _data
+    @atbs = _data.atbs if _data
 
     @opts = _opts # allow_hero_name_overwrite
                   # allow_skill_name_overwrite
@@ -93,9 +94,24 @@ class Importer
         Stat.save_or_update name: :spd, datapoint: :thirty, hero_id: hero.id, value: row[:spd]
       end
 
+      atb_detected = 0
+      atb_classified = 0
+      @atbs.each do |row|
+        atb = Atb.find_by(name: row['attributes'])
+
+        if atb
+          atb_detected += 1
+          atb.category = row['class']
+          if atb.save
+            atb_classified += 1
+          end
+        end
+      end
+
       #puts "#{@result_stats[:row_count]} heroes in stats sheet"
       puts "#{@result_stats[:hero_partial]} hero stats partially completed"
       puts "#{@result_stats[:hero_completed]} heroes have complete stats"
+      puts "#{atb_classified} / #{atb_detected} attributes classified"
     end
 
     puts "Commit completed"
