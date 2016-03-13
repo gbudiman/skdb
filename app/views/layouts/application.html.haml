@@ -34,6 +34,10 @@
                 %sup{class: 'glyphicon-red'} NEW
                 <span class='caret'></span>
               %ul{class: 'dropdown-menu'}
+                %li{class: "#{ApplicationHelper.set_active self, '/mechanics'}"}
+                  %a{href: '/mechanics'} 
+                    Game Mechanics
+                    %sup{class: 'glyphicon-red'} NEW
                 %li{class: "#{ApplicationHelper.set_active self, '/equip_recommendations'}"}
                   %a{href: '/equip_recommendations'} 
                     Equip Recommendations

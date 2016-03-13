@@ -14,10 +14,6 @@
  *= require_self
  */
 
-body {
-  position: relative;
-}
-
 #left-bar, #right-bar {
   overflow: auto;
 }
@@ -222,4 +218,9 @@ div.synergy-closing {
 
 div#team-stats {
   text-align: right;
+}
+
+#scrollable-scrollspy {
+  height: 90vh;
+  overflow-y: auto;
 }
