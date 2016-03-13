@@ -1,3 +1,7 @@
+%div{id: 'status-effects-toolbar'}
+  %h4 
+    %strong Status Effects
+
 %table{id: 'status-effects-table'}
   %thead
     %tr
@@ -34,5 +38,7 @@
 
   $('#status-effects-table').bootstrapTable({
     url: '/mechanics/status_effects/fetch',
-    search: true
+    search: true,
+    height: 720,
+    toolbar: 'status-effects-toolbar'
   })

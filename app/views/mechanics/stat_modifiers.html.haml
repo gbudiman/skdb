@@ -1,15 +1,22 @@
+%div{id: 'stat-modifiers-toolbar'}
+  %h4 
+    %strong Stat Modifiers
+
 %table{id: 'stat-modifiers-table'}
   %thead
     %tr
-      %th{'data-field' => 'decrease', 'data-formatter' => 'format_decrease', 'data-halign' => 'center'} Decrease
-      %th{'data-field' => 'modifier', 'data-formatter' => 'format_modifier', 'data-sortable' => 'true', 'data-align' => 'center'} Modifier
-      %th{'data-field' => 'increase', 'data-formatter' => 'format_increase', 'data-halign' => 'center'} Increase
+      %th{'data-field' => 'decrease', 'data-formatter' => 'format_decrease', 'data-halign' => 'center', 'data-searchable' => 'true'} Decrease
+      %th{'data-field' => 'modifier', 'data-formatter' => 'format_modifier', 'data-sortable' => 'true', 'data-align' => 'center', 'data-sort-name' => 'modifier'} Modifier
+      %th{'data-field' => 'increase', 'data-formatter' => 'format_increase', 'data-halign' => 'center', 'data-searchable' => 'true'} Increase
 
 = javascript_include_tag 'stat_table'
 = javascript_include_tag 'mechanics_formatter'
 :javascript
   $('#stat-modifiers-table').bootstrapTable({
-    url: '/mechanics/stat_modifiers/fetch'
+    url: '/mechanics/stat_modifiers/fetch',
+    height: 720,
+    search: true,
+    toolbar: '#stat-modifiers-toolbar'
   })
 
   function format_modifier(value, row, index) {

@@ -41,7 +41,7 @@ function group_format(hero, data, alignment) {
     if (sd.fraction != undefined) {
       classifier = sd.fraction;
       help = 'Fraction (%)';
-      glyph = 'signal';
+      glyph = 'filter';
     }
 
     s += '<li>'
