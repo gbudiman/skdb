@@ -92,7 +92,7 @@ private
 
         stat = r["Stat_#{i}"].strip
         val = r["Val_#{i}"].strip.length == 0 ? nil : r["Val_#{i}"].strip
-        var = r["Var_#{i}"].strip.length == 0 ? nil : r["Val_#{i}"].strip
+        var = r["Var_#{i}"].strip.length == 0 ? nil : r["Var_#{i}"].strip
 
         rdm = EquipStat.create! equip_id: item.id,
                                 category: :randomized,
