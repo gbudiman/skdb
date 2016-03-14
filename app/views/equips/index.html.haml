@@ -3,13 +3,13 @@
     %strong Equipments
 
 %div{class: 'col-xs-12'}
-  %table{id: 'equip-table', 'data-height' => '32em'}
+  %table{id: 'equip-table', 'data-height' => '32em', 'data-filter-control' => 'true'}
     %thead
       %tr
-        %th{'data-field' => 'rank', 'data-sortable' => 'true', 'data-searchable' => 'false'}
+        %th{'data-field' => 'rank', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-filter-control' => 'select'}
           %span{class: 'glyphicon glyphicon-star'}
         %th{'data-field' => 'name', 'data-sortable' => 'true', 'data-searchable' => 'true'} Item Name
-        %th{'data-field' => 'type', 'data-formatter' => 'format_item_type', 'data-sortable' => 'true', 'data-searchable' => 'true'} Type
+        %th{'data-field' => 'type', 'data-formatter' => 'format_item_type', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-filter-control' => 'select'} Type
         %th{'data-field' => 'fixed_stat', 'data-formatter' => 'format_fixed_stat', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-sort-name' => 'fixed_sort'} Fixed Stat
         %th{'data-field' => 'randomized_stat', 'data-formatter' => 'format_rdm_stat', 'data-sortable' => 'true', 'data-searchable' => 'true'} Randomized Stat
         %th{'data-field' => 'acquisition', 'data-sortable' => 'true', 'data-searchable' => 'true'} Acquisition
