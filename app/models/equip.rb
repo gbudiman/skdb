@@ -16,6 +16,29 @@ class Equip < ActiveRecord::Base
     puts "#{EquipStat.count} item attributes recorded"
   end
 
+  def self.fetch
+    result = Hash.new
+
+    Equip.joins('LEFT OUTER JOIN equip_stats AS es
+                   ON equips.id = es.equip_id')
+         .select('equips.id AS id,
+                  equips.name AS name,
+                  equips.rank AS rank,
+                  equips.slot AS slot,
+                  es.category AS category,
+                  es.atb AS atb,
+                  es.value AS value,
+                  es.variance AS variance')
+         .each do |r|
+      result[id] ||= Hash.new
+      result[id][:name] = r.name
+      result[id][:rank] = r.rank
+      result[id][:slot] = Equip.slots.keys[r.slot]
+      result[id][:stats] ||= Hash.new
+      
+    end
+  end
+
 private
   def self.import!
     items = Hash.new
@@ -31,8 +54,6 @@ private
                                value: r['Value_Main'],
                                variance: r['Var_Main'].strip.length == 0 ? nil : r['Var_Main'].strip
 
-
-      puts r['Item Name']
       (0..6).each do |i|
         next if r["Stat_#{i}"].strip.length == 0
 
