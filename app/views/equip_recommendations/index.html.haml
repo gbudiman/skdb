@@ -1,3 +1,7 @@
+%div{id: 'rec-table-toolbar'}
+	%h4
+		%strong Equip Recommendations
+
 %div{class: 'col-xs-12'}
 	%table{id: 'rec-table'}
 		%thead
@@ -15,7 +19,10 @@
 = javascript_include_tag 'stat_table'
 :javascript
 	$('#rec-table').bootstrapTable({
-		url: '/equip_recommendations/fetch'
+		url: '/equip_recommendations/fetch',
+		height: 720,
+		toolbar: '#rec-table-toolbar',
+		search: true
 	})
 
 	function jewel_formatter(value, row, index) {
@@ -25,3 +32,7 @@
 		  return '';
 		}
 	}
+
+	$(window).on('resize', function() {
+		resize_bst_area('#rec-table');
+	});

@@ -1,0 +1,46 @@
+%div{id: 'equip-table-toolbar'}
+  %h4
+    %strong Equipments
+
+%div{class: 'col-xs-12'}
+  %table{id: 'equip-table'}
+    %thead
+      %tr
+        %th{'data-field' => 'rank', 'data-sortable' => 'true', 'data-searchable' => 'false'}
+          %span{class: 'glyphicon glyphicon-star'}
+        %th{'data-field' => 'name', 'data-sortable' => 'true', 'data-searchable' => 'true'} Item Name
+        %th{'data-field' => 'type', 'data-formatter' => 'format_item_type', 'data-sortable' => 'true', 'data-searchable' => 'true'} Type
+        %th{'data-field' => 'fixed_stat', 'data-formatter' => 'format_fixed_stat', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-sort-name' => 'fixed_sort'} Fixed Stat
+        %th{'data-field' => 'randomized_stat', 'data-formatter' => 'format_rdm_stat', 'data-sortable' => 'true', 'data-searchable' => 'true'} Randomized Stat
+        %th{'data-field' => 'acquisition', 'data-sortable' => 'true', 'data-searchable' => 'true'} Acquisition
+
+= javascript_include_tag 'stat_table'
+:javascript
+  $('#equip-table').bootstrapTable({
+    url: '/equips/fetch',
+    search: 'true',
+    toolbar: '#equip-table-toolbar',
+    height: 720
+  })
+
+  function format_item_type(value) {
+    switch(value) {
+      case 'armor': return 'Armor'; break;
+      case 'phy_weapon': return 'P. Weapon'; break; 
+      case 'mag_weapon': return 'M. Weapon'; break;
+      case 'jewel': return 'Jewel'; break;
+      case 'misc': return 'Misc'; break;
+    }
+  }
+
+  function format_fixed_stat(value, row) {
+    return '<strong>' + row.fixed_stat.join('<br />') + '</strong>';
+  }
+
+  function format_rdm_stat(value, row) {
+    return row.randomized_stat.join('<br />');
+  }
+
+  $(window).on('resize', function() {
+    resize_bst_area('#equip-table');
+  })

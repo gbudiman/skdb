@@ -18,6 +18,7 @@ class Equip < ActiveRecord::Base
 
   def self.fetch
     result = Hash.new
+    denorms = Array.new
 
     Equip.joins('LEFT OUTER JOIN equip_stats AS es
                    ON equips.id = es.equip_id')
@@ -25,18 +26,49 @@ class Equip < ActiveRecord::Base
                   equips.name AS name,
                   equips.rank AS rank,
                   equips.slot AS slot,
+                  equips.acquisition AS acquisition,
                   es.category AS category,
                   es.atb AS atb,
                   es.value AS value,
                   es.variance AS variance')
          .each do |r|
-      result[id] ||= Hash.new
-      result[id][:name] = r.name
-      result[id][:rank] = r.rank
-      result[id][:slot] = Equip.slots.keys[r.slot]
-      result[id][:stats] ||= Hash.new
-      
+      result[r.id] ||= Hash.new
+      result[r.id][:name] = r.name
+      result[r.id][:rank] = r.rank
+      result[r.id][:slot] = r.slot
+      result[r.id][:acquisition] = r.acquisition
+
+      result[r.id][:stats] ||= { fixed: Array.new, randomized: Array.new }
+
+      if r.category
+        category = EquipStat.categories.keys[r.category].to_sym
+
+        maybe_variance = ''
+        if r.variance
+          maybe_variance = " ~ #{r.variance}"
+        end
+        result[r.id][:stats][category].push("#{r.atb} +#{r.value}#{maybe_variance}")
+
+        if category == :fixed
+          result[r.id][:stats][:fixed_sort] = "#{r.atb} #{sprintf('%012d', r.value)}"
+        end
+      end
     end
+
+    result.each do |id, r|
+      h = Hash.new
+      h[:name] = r[:name]
+      h[:rank] = r[:rank]
+      h[:type] = r[:slot]
+      h[:acquisition] = r[:acquisition]
+      h[:fixed_stat] = r[:stats][:fixed]
+      h[:fixed_sort] = r[:stats][:fixed_sort] || '_'
+      h[:randomized_stat] = r[:stats][:randomized]
+
+      denorms.push h
+    end
+
+    return denorms
   end
 
 private
@@ -45,8 +77,9 @@ private
 
     RemoteTable.new('https://raw.githubusercontent.com/gbudiman/skdb/master/db/items.csv').each do |r|
       item = Equip.create! name: r['Item Name'],
-                          rank: r['Rank'].to_i,
-                          slot: r['Type'].to_sym
+                           rank: r['Rank'].to_i,
+                           slot: r['Type'].to_sym,
+                           acquisition: r['Acquisition'].strip.length == 0 ? nil : r['Acquisition'].strip
 
       main = EquipStat.create! equip_id: item.id,
                                category: :fixed,
