@@ -2,15 +2,26 @@
   %div{id: 'mechanics-navbar'}
     %ul{class: 'nav nav-pills nav-stacked'}
       %li
-        %a{href: '#stat-modifiers-area'} Stat Modifiers
+        %a{href: '#stat_modifiers'} Stat Modifiers
       %li
-        %a{href: '#status-effects-area'} Status Effects
+        %a{href: '#status_effects'} Status Effects
+      %li
+        %a{href: '#masteries'} Masteries
+      %li
+        %a{href: '#friendship_quests'} Friendship Quests
+      %li
+        %a{href: '#guide_quests'} Guide Quests
 %div{class: 'col-xs-10', id: 'scrollable-scrollspy'}
-  #stat-modifiers-area
+  #stat_modifiers
   = render template: 'mechanics/stat_modifiers'
-  #status-effects-area
+  #status_effects
   = render template: 'mechanics/status_effects'
-
+  #masteries
+  = render template: 'mechanics/masteries'
+  #friendship_quests
+  = render template: 'mechanics/friendship_quests'
+  #guide_quests
+  = render template: 'mechanics/guide_quests'
 
 :javascript
   $('#scrollable-scrollspy').scrollspy({
@@ -20,6 +31,9 @@
   $(window).on('resize', function() {
     resize_bst_area('#stat-modifiers-table');
     resize_bst_area('#status-effects-table');
+    resize_bst_area('#masteries-table');
+    resize_bst_area('#friendship-quests-table');
+    resize_bst_area('#guide-quests-table');
   })  
 
   $('#mechanics-navbar a').on('click', function(e) {

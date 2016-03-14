@@ -38,6 +38,11 @@ Rails.application.routes.draw do
   get     'mechanics/status_effects/fetch'     => 'mechanics#status_effects_fetch'
   get     'mechanics/stat_modifiers'           => 'mechanics#stat_modifiers'
   get     'mechanics/stat_modifiers/fetch'     => 'mechanics#stat_modifiers_fetch'
+  get     'mechanics/masteries'                => 'mechanics#masteries'
+  get     'mechanics/guide_quests'             => 'mechanics#guide_quests'
+
+  get     'equips'                             => 'equips#index'
+  get     'equips/fetch'                       => 'equips#index_fetch'
   # get     'stat/fetch/:level'                  => 'stat#index_fetch'
   # get     'stat/fetch/:level/:plus'            => 'stat#index_fetch'
   # get     'stat/fetch/update/:level'           => 'stat#index_fetch_update'

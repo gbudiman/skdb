@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160310032958) do
+ActiveRecord::Schema.define(version: 20160314002122) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -48,14 +48,14 @@ ActiveRecord::Schema.define(version: 20160310032958) do
   create_table "equip_stats", force: :cascade do |t|
     t.integer  "equip_id",   limit: 4,               null: false
     t.integer  "category",   limit: 4,               null: false
-    t.string   "attribute",  limit: 255,             null: false
     t.integer  "value",      limit: 4,               null: false
     t.integer  "variance",   limit: 4,   default: 0
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.string   "atb",        limit: 255,             null: false
   end
 
-  add_index "equip_stats", ["equip_id", "category", "attribute"], name: "index_equip_stats_on_equip_id_and_category_and_attribute", unique: true, using: :btree
+  add_index "equip_stats", ["equip_id", "category", "atb", "value"], name: "index_equip_stats_on_equip_id_and_category_and_atb_and_value", unique: true, using: :btree
 
   create_table "equips", force: :cascade do |t|
     t.integer  "rank",        limit: 4,   null: false
