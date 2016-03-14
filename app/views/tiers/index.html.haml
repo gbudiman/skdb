@@ -1,22 +1,30 @@
-%table{id: 'tier-table', 'data-height' => '32em'}
-  %thead
-    %tr
-      %th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
-      %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Name
-      %th{'data-field' => 'adventure', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvE
-      %th{'data-field' => 'cr_easy', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} CR Easy
-      %th{'data-field' => 'cr_normal', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} CR Norm
-      %th{'data-field' => 'raid', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} Raid
-      %th{'data-field' => 'pvp', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvP
-      %th{'data-field' => 'tower', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} Tower
-      %th{'data-field' => 'boss', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => 'false'} Boss
+- @visible = (defined? @full and @full) ? 'true' : 'false'
+
+- if @visible == 'true'
+  %div{id: 'tier-table-toolbar'}
+    %h4
+      %strong Hero Tierlist
+
+%div{class: 'col-xs-12'}
+  %table{id: 'tier-table', 'data-height' => '32em'}
+    %thead
+      %tr
+        %th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
+        %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Name
+        %th{'data-field' => 'adventure', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvE
+        %th{'data-field' => 'cr_easy', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} CR Easy
+        %th{'data-field' => 'cr_normal', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} CR Norm
+        %th{'data-field' => 'raid', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} Raid
+        %th{'data-field' => 'pvp', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvP
+        %th{'data-field' => 'tower', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} Tower
+        %th{'data-field' => 'boss', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} Boss
 
 = javascript_include_tag 'stat_table'
 :javascript
   $('#tier-table').bootstrapTable({
     url: '/tiers/fetch',
     showColumns: true,
-    toolbar: '.tiers-toolbar',
+    toolbar: '#tier-table-toolbar',
     onPostBody: function() {
       resize_once('#tier-table');
       activate_links('#tier-table');

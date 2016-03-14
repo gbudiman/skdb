@@ -50,7 +50,8 @@
                 %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
 
         %div{id: 'tab-tiers', class: 'tab-pane fade in active'}
-          = render template: 'tiers/index'
+          %div{class: 'row'}
+            = render template: 'tiers/index', locals: { full: false }
         %div{id: 'tab-tabular', class: 'tab-pane fade in'}
           = render template: 'stat/index'
 

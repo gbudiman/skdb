@@ -39,6 +39,7 @@
                   %a{href: '/mechanics'} 
                     Game Mechanics
                     %sup{class: 'glyphicon-red'} NEW
+                %li{class: 'divider'}
                 %li{class: "#{ApplicationHelper.set_active self, '/equips'}"}
                   %a{href: '/equips'} 
                     Equipments
@@ -46,6 +47,10 @@
                 %li{class: "#{ApplicationHelper.set_active self, '/equip_recommendations'}"}
                   %a{href: '/equip_recommendations'} 
                     Equip Recommendations
+                %li{class: "#{ApplicationHelper.set_active self, '/tiers'}"}
+                  %a{href: '/tiers'} 
+                    Hero Tierlist
+                    %sup{class: 'glyphicon-red'} NEW
                 %li{class: 'divider'}
                 %li{class: "#{ApplicationHelper.set_active self, '/coupons'}"}
                   %a{href: '/coupons'} 
