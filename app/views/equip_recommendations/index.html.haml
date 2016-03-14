@@ -3,7 +3,7 @@
 		%strong Equip Recommendations
 
 %div{class: 'col-xs-12'}
-	%table{id: 'rec-table'}
+	%table{id: 'rec-table', 'data-height' => '32em'}
 		%thead
 			%tr
 				%th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true', 'data-rowspan' => 2, 'data-halign' => 'center', 'data-valign' => 'middle'} E
@@ -20,10 +20,12 @@
 :javascript
 	$('#rec-table').bootstrapTable({
 		url: '/equip_recommendations/fetch',
-		height: 720,
 		toolbar: '#rec-table-toolbar',
-		search: true
-	})
+		search: true,
+		onPostBody: function() {
+			resize_once('#rec-table');
+		}
+	});
 
 	function jewel_formatter(value, row, index) {
 		if (value == true) {
@@ -34,5 +36,5 @@
 	}
 
 	$(window).on('resize', function() {
-		resize_bst_area('#rec-table');
+		resize_bst_area('#rec-table', true);
 	});
