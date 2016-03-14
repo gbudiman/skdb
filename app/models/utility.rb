@@ -31,6 +31,8 @@ class Utility
 
       puts "Rails.logger.level set back to #{previous_level}"
       Rails.logger.level = previous_level
+    else
+      yield
     end
   
   end
