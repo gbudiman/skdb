@@ -1,0 +1,2 @@
+module PowerUpsHelper
+end

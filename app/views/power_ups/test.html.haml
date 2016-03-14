@@ -1,0 +1,7 @@
+%div{class: 'main col-xs-12'}
+
+= javascript_include_tag 'power_ups'
+:javascript
+  $('.main').create_power_up_bar('s');
+  $('.main').create_element_bar('t');
+:css
