@@ -1,14 +1,29 @@
+$(window).on('resize', function() {
+  resize_compare_area();
+})
+
+function resize_compare_area() {
+  resize_compare_area_once();
+  $('#compare-table').bootstrapTable('resetWidth');
+}
+
+function resize_compare_area_once() {
+  $('#compare-table').parent().css('height', '24em');
+  $('#compare-table').css('width', '99%');
+}
+
 function initialize_compare_table_bst() {
   $('#mismatched-preloads').parent().parent().hide();
   
   $('#compare-table').show().bootstrapTable({
     onPostBody: function() {
-      $('#compare-table').parent().css('height', '64vh');
+      resize_compare_area_once();
     }
   });
 
   $('#toolbar').show();
   $('.stack-table').show();
+  $('#underlay').hide();
 
   $('#permalink').off('click').on('click', function() {
     $(this).select();

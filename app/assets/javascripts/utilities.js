@@ -88,6 +88,13 @@ jQuery.fn.extend({
     })
 
     update_permalink();
+
+    if ($(this).find('tbody').find('tr').first().find('td').length == 0) {
+      $('#toolbar').hide();
+      $('.stack-table').hide();
+      $('#underlay').show();
+      $('#compare-table').bootstrapTable('destroy');
+    }
   },
 
   find_ord_by_hero_id: function(id) {

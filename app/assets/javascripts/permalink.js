@@ -14,8 +14,6 @@ function update_permalink() {
 
   $('#permalink').val(permalink);
 
-  //console.log(window.mismatches);
-
   if ((window.mismatches != undefined) && window.mismatches.length > 0) {
     $('#mismatched-preloads').parent().parent().show();
     $('#mismatched-preloads')

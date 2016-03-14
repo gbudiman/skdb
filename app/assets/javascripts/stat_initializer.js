@@ -5,11 +5,11 @@ $('#stat-table').bootstrapTable({
   toolbar: '.tabular-toolbar',
   rowAttributes: 'format_row_stat',
   onPostBody: function() { 
-    resize_once('#stat-table'); 
+    resize_once('#stat-table', false); 
     activate_links('#stat-table');
   },
   onSort: function() {
-    resize_bst_area('#stat-table');
+    resize_bst_area('#stat-table', false);
     activate_links('#stat-table');
   }
 });
