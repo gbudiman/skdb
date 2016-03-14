@@ -2,7 +2,7 @@
   %h4
     %strong Status Effects
 
-%table{id: 'status-effects-table'}
+%table{id: 'status-effects-table', 'data-height' => '32em'}
   %thead
     %tr
       %th{'data-field' => 'inflicts', 'data-formatter' => 'format_inflict', 'data-searchable' => 'true', 'data-halign' => 'center'} Inflicts
@@ -39,6 +39,8 @@
   $('#status-effects-table').bootstrapTable({
     url: '/mechanics/status_effects/fetch',
     search: true,
-    height: 720,
+    onPostBody: function() {
+      resize_once('#status-effects-table');
+    },
     toolbar: '#status-effects-toolbar'
   })

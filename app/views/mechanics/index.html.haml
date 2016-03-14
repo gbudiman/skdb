@@ -5,12 +5,13 @@
         %a{href: '#stat_modifiers'} Stat Modifiers
       %li
         %a{href: '#status_effects'} Status Effects
-      %li
-        %a{href: '#masteries'} Masteries
+      %hr
       %li
         %a{href: '#friendship_quests'} Friendship Quests
       %li
         %a{href: '#guide_quests'} Guide Quests
+      %li
+        %a{href: '#masteries'} Masteries
 %div{class: 'col-xs-10', id: 'scrollable-scrollspy'}
   #stat_modifiers
   = render template: 'mechanics/stat_modifiers'
@@ -29,11 +30,11 @@
   });
 
   $(window).on('resize', function() {
-    resize_bst_area('#stat-modifiers-table');
-    resize_bst_area('#status-effects-table');
-    resize_bst_area('#masteries-table');
-    resize_bst_area('#friendship-quests-table');
-    resize_bst_area('#guide-quests-table');
+    resize_bst_area('#stat-modifiers-table', true);
+    resize_bst_area('#status-effects-table', true);
+    resize_bst_area('#masteries-table', true);
+    resize_bst_area('#friendship-quests-table', true);
+    resize_bst_area('#guide-quests-table', true);
   })  
 
   $('#mechanics-navbar a').on('click', function(e) {

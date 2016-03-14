@@ -2,7 +2,7 @@
   %h4
     %strong Friendship Quests
 
-%table{id: 'friendship-quests-table'}
+%table{id: 'friendship-quests-table', 'data-height' => '32em'}
   %thead
     %tr
       %th{'data-searchable' => 'true'} Actions
@@ -97,5 +97,7 @@
   $('#friendship-quests-table').bootstrapTable({
     search: true,
     toolbar: '#friendship-quests-toolbar',
-    height: 720
+    onPostBody: function() {
+      resize_once('#friendship-quests-table');
+    }
   })

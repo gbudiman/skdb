@@ -3,7 +3,7 @@
 %div{id: 'guide-quests-toolbar'}
   %h4
     %strong Guide Quests
-%table{id: 'guide-quests-table'}
+%table{id: 'guide-quests-table', 'data-height' => '32em'}
   %thead
     %tr
       %th{'data-align' => 'right', 'data-halign' => 'center'} Index
@@ -34,5 +34,7 @@
   $('#guide-quests-table').bootstrapTable({
     search: true,
     toolbar: '#guide-quests-toolbar',
-    height: 720
+    onPostBody: function() {
+      resize_once('#guide-quests-table');
+    }
   })

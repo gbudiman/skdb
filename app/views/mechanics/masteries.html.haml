@@ -2,7 +2,7 @@
   %h4
     %strong Masteries
 
-%table{id: 'masteries-table'}
+%table{id: 'masteries-table', 'data-height' => '32em'}
   %thead
     %tr
       %th{'data-align' => 'right', 'data-halign' => 'center'} Level
@@ -130,7 +130,9 @@
   $('#masteries-table').bootstrapTable({
     toolbar: '#masteries-toolbar',
     search: true,
-    height: 720
+    onPostBody: function() {
+      resize_once('#masteries-table');
+    }
   });
 
   function rubies_formatter(value) {

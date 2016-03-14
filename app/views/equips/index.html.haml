@@ -3,7 +3,7 @@
     %strong Equipments
 
 %div{class: 'col-xs-12'}
-  %table{id: 'equip-table'}
+  %table{id: 'equip-table', 'data-height' => '32em'}
     %thead
       %tr
         %th{'data-field' => 'rank', 'data-sortable' => 'true', 'data-searchable' => 'false'}
@@ -20,7 +20,9 @@
     url: '/equips/fetch',
     search: 'true',
     toolbar: '#equip-table-toolbar',
-    height: 720
+    onPostBody: function() {
+      resize_once('#equip-table');
+    }
   })
 
   function format_item_type(value) {
