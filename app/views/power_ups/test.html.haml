@@ -1,7 +1,10 @@
-%div{class: 'main col-xs-12'}
+%div{class: 'main col-xs-4'}
 
 = javascript_include_tag 'power_ups'
+= stylesheet_link_tag    'power_ups'
+
 :javascript
-  $('.main').create_power_up_bar('s');
-  $('.main').create_element_bar('t');
-:css
+  $('.main').create_grade('ts', 3);
+  $('.main').create_grade('ts', 4);
+  $('.main').create_grade('ts', 5);
+  $('.main').create_grade('ts', 6);
