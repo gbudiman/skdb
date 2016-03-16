@@ -21,7 +21,15 @@ jQuery.fn.extend({
           +     this.create_power_up_bar('a' + '-' + grade)
           +   '</li>'
           +   '<li class="list-group-item">'
-          +     this.create_fodder_staging('c' + '-' + grade)
+          +     '<div class="row">'
+          +       '<div class="col-xs-8">'
+          +         this.create_fodder_staging('c' + '-' + grade)
+          +       '</div>'
+          +       '<div class="col-xs-4">'
+          +         this.create_gold_cost_tracker('d' + '-' + grade)
+          +       '</div>'
+          +     '</div>'
+          +     '<div class="clearfix"></div>'
           +   '</li>';
 
     if (grade < 6) {
@@ -37,6 +45,10 @@ jQuery.fn.extend({
     $('#a-' + grade).activate_power_up_slider();
     $('#b-' + grade).activate_element_slider();
     $('#c-' + grade).activate_fodder_controls($('#a-' + grade), grade);
+  },
+
+  create_gold_cost_tracker: function(id) {
+    return _create_gold_cost_tracker(id);
   },
 
   create_fodder_staging: function(id) {
@@ -78,6 +90,16 @@ jQuery.fn.extend({
   }
 })
 
+function _create_gold_cost_tracker(id) {
+  var s = '';
+
+  s += '<ul class="list-group">'
+    +    '<li class="list-group-item text-center"><strong>Gold Cost</li>'
+    +    '<li class="list-group-item list-group-item-warning text-center gold-cost-text">0</li>'
+    +  '</ul>'
+  return s;
+}
+
 function _create_fodder_staging(id) {
   var u = new Array();
 
@@ -91,10 +113,10 @@ function _create_fodder_staging(id) {
 }
 
 function _create_fodder_button(grade) {
-  var s = '<button type="button" class="btn" disabled>' + grade + ' <span class="glyphicon glyphicon-star"></span>' + '</button> '
-        + '<button type="button" class="btn fodder-subtract"><span class="glyphicon glyphicon-minus"></button>'
+  var s = '<button type="button" class="btn" disabled><strong>' + grade + '</strong> <span class="glyphicon glyphicon-star"></span>' + '</button> '
+        + '<button type="button" class="btn btn-success fodder-subtract"><span class="glyphicon glyphicon-minus"></button>'
         + '<button type="button" class="btn fodder-count" disabled>0</button>'
-        + '<button type="button" class="btn fodder-add"><span class="glyphicon glyphicon-plus"></button>'
+        + '<button type="button" class="btn btn-success fodder-add"><span class="glyphicon glyphicon-plus"></button>'
         + '<button type="button" class="btn fodder-cost" disabled>0</button>';
 
   return s;
@@ -114,11 +136,23 @@ function _activate_fodder_controls(el, _slider_el, grade) {
 
 function _update_fodder_meter(el, _slider_el, grade) {
   var sum = 0;
+  var cost = 0;
 
   el.find('.fodder-count').each(function(i, x) {
     sum += parseInt($(this).text()) * fodder_grade[grade][i];
   });
 
+  el.find('.fodder-cost').each(function(i, x) {
+    var val = parseInt($(this).attr('data-value'));
+
+    if (isNaN(val)) {
+      return true;
+    }
+
+    cost += val;
+  })
+
+  el.parent().parent().find('.gold-cost-text').text(cost.toLocaleString());
   _slider_el.set(sum);
 }
 
@@ -129,7 +163,8 @@ function _update_fodder_count(el, x, grade, _slider_el) {
   var is_exceeded = _slider_el.bootstrapSlider('getValue')[0] >= 500 ? true : false;
 
   target.text((value == 0 && x < 0) || (is_exceeded && x > 0) ? value : value + x);
-  cost.text(parseInt(target.text()) * gold_cost[grade]);
+  cost.text((parseInt(target.text()) * gold_cost[grade]).toLocaleString());
+  cost.attr('data-value', parseInt(target.text()) * gold_cost[grade])
 }
 
 function _set(el, value) {
