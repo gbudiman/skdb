@@ -24,17 +24,44 @@ var element_grade = {
 jQuery.fn.extend({
   create_container: function(id) {
     var that = $(this);
-    var s = '<div class="btn-group small-pad">'
-          +   '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-          +     'Calculate Power Up '
-          +     '&nbsp;'
-          +     '<span class="caret"></span>'
-          +   '</button>'
-          +   '<ul class="dropdown-menu">'
-          +     '<li><a href="#" data-init=3>From 3 <span class="glyphicon glyphicon-star"></span></a></li>'
-          +     '<li><a href="#" data-init=4>From 4 <span class="glyphicon glyphicon-star"></span></a></li>'
-          +     '<li><a href="#" data-init=5>From 5 <span class="glyphicon glyphicon-star"></span></a></li>'
-          +   '</ul>'
+    var s = '<div class="row">'
+          +   '<div class="col-xs-4">'
+          +     '<div class="btn-group small-pad">'
+          +       '<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+          +         'Calculate<br />Power Up '
+          +         '&nbsp;'
+          +         '<span class="caret"></span>'
+          +       '</button>'
+          +       '<ul class="dropdown-menu">'
+          +         '<li><a href="#" data-init=3>From 3 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +         '<li><a href="#" data-init=4>From 4 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +         '<li><a href="#" data-init=5>From 5 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +       '</ul>'
+          +     '</div>'
+          +   '</div>'
+          +   '<div class="col-xs-8">'
+          +     '<div class="input-group small-pad">'
+          +       '<span class="input-group-addon">Gold</span>'
+          +       '<span class="input-group-addon cumulative-gold-cost">0</span>'
+          +     '</div>'
+          +     '<div class="input-group small-pad cumulative-fodders">'
+          +       '<span class="input-group-addon">Fodders</span>'
+          +       '<span class="input-group-addon cfc-1">0</span>'
+          +       '<span class="input-group-addon cfc-2">0</span>'
+          +       '<span class="input-group-addon cfc-3">0</span>'
+          +       '<span class="input-group-addon cfc-4">0</span>'
+          +       '<span class="input-group-addon cfc-5">0</span>'
+          +     '</div>'
+          +     '<div class="input-group cumulative-elementals">'
+          +       '<span class="input-group-addon">Elementals</span>'
+          +       '<span class="input-group-addon cec-2">0</span>'
+          +       '<span class="input-group-addon cec-3">0</span>'
+          +       '<span class="input-group-addon cec-4">0</span>'
+          +       '<span class="input-group-addon cec-5">0</span>'
+          +     '</div>'
+          +   '</div>'
+          + '</div>'
+
           + '</div>'
           + '<br />'
           + '<div id="' + id + '"></div>';
@@ -55,9 +82,8 @@ jQuery.fn.extend({
         $('#' + id + '-' + i).hide();
       }
 
-      //for (var i = init; i <= 6; i++) {
+      that.find('input[data-value]').trigger('change');
       $('#' + id + '-' + init).show();
-      //}
     })
   },
 
@@ -66,7 +92,7 @@ jQuery.fn.extend({
   },
 
   create_grade: function(id, grade) {
-    var s = '<ul class="list-group" id="' + id + '-' + grade + '">'
+    var s = '<ul class="list-group" id="' + id + '-' + grade + '" data-grade=' + grade + '>'
           +   '<li class="list-group-item active"><strong>'
           +     'Power Up ' + grade + ' <span class="glyphicon glyphicon-star"></span>'
           +   '</strong></li>'
@@ -214,7 +240,7 @@ function _create_fodder_staging(id) {
 function _create_fodder_button(grade) {
   var s = '<button type="button" class="btn btn-default" disabled><strong>' + grade + '</strong> <span class="glyphicon glyphicon-star"></span></button> '
         + '<button type="button" class="btn btn-success fodder-subtract"><span class="glyphicon glyphicon-minus"></span></button>'
-        + '<button type="button" class="btn fodder-count" disabled>0</button>'
+        + '<button type="button" class="btn fodder-count" data-grade=' + grade + ' disabled>0</button>'
         + '<button type="button" class="btn btn-success fodder-add"><span class="glyphicon glyphicon-plus"></span></button>'
         + '<button type="button" class="btn fodder-cost" disabled>0</button>';
 
@@ -260,11 +286,12 @@ function _attach_dependency_trigger(el) {
       $('#' + this_id).on('change', function() {
         var current_value = $(this).bootstrapSlider('getValue');
         var next_grade = that.next();
+        var next_grade_all = that.nextAll();
 
         if (current_value >= 100) {
           next_grade.show();
         } else {
-          next_grade.hide();
+          next_grade_all.hide();
         }
       });
     }
@@ -318,6 +345,60 @@ function _update_element_meter(el, _slider_el, grade) {
       }
     });
   }
+
+  _update_cumulatives(el);
+}
+
+function _update_cumulatives(el) {
+  var target_eles = el.parent().parent().parent().parent().find('.cumulative-elementals');
+  var target_gold = el.parent().parent().parent().parent().parent().parent().find('.cumulative-gold-cost');
+  var target_fodders = el.parent().parent().parent().parent().parent().parent().find('.cumulative-fodders');
+  var source_eles = el.parent().parent().parent().parent().parent().find('.element-count:visible');
+  var source_gold = el.parent().parent().parent().parent().parent().find('.gold-cost-text:visible');
+  var source_fodders = el.parent().parent().parent().parent().parent().find('.fodder-count:visible');
+
+  var result_eles = {
+    2: 0, 3: 0, 4: 0, 5: 0
+  };
+
+  var result_fodders = {
+    1: 0, 2: 0, 3: 0, 4: 0, 5: 0
+  };
+
+  var result_gold = 0;
+
+  source_eles.each(function() {
+    var grade = parseInt($(this).attr('data-grade'));
+    var count = parseInt($(this).text());
+
+    result_eles[grade] += count;
+  });
+
+  source_gold.each(function() {
+    result_gold += parseInt($(this).attr('data-value'));
+  });
+
+  console.log(source_gold);
+  console.log(result_gold);
+  console.log(target_gold);
+
+  source_fodders.each(function() {
+    var grade = parseInt($(this).attr('data-grade'));
+    var count = parseInt($(this).text());
+
+    result_fodders[grade] += count;
+  });
+
+  $.each(result_eles, function(i, x) {
+    target_eles.find('.cec-' + i).text(result_eles[i]);
+  })
+
+  target_gold.text(result_gold.toLocaleString());
+
+  $.each(result_fodders, function(i, x) {
+    target_fodders.find('.cfc-' + i).text(result_fodders[i]);
+  })
+
 }
 
 function _update_fodder_meter(el, _slider_el, grade) {
@@ -339,6 +420,7 @@ function _update_fodder_meter(el, _slider_el, grade) {
   })
 
   el.parent().parent().find('.gold-cost-text').text(cost.toLocaleString());
+  el.parent().parent().find('.gold-cost-text').attr('data-value', cost);
   _slider_el.set(sum);
 
   if (sum >= 500) {
@@ -378,6 +460,8 @@ function _update_fodder_meter(el, _slider_el, grade) {
       }
     });
   }
+
+  _update_cumulatives(el);
 }
 
 function _update_element_count(el, x, grade, _slider_el) {
@@ -479,6 +563,10 @@ function _activate_element_slider(el, _el_text) {
 
   $(el).bootstrapSlider('disable');
   $(el).on('change', function(evt) {
+    if (evt.value == undefined) {
+      return false;
+    }
+
     $(el_text).html(_element_string(evt.value.newValue));
   });
 
@@ -498,6 +586,10 @@ function _activate_power_up_slider(el, _el_text, _el_max) {
 
   $(el).bootstrapSlider('disable');
   $(el).on('change', function(evt) {
+    if (evt.value == undefined) {
+      return false;
+    }
+
     $(el_text).html(_power_up_string(evt.value.newValue[0]));
     $(el_max).html(_power_up_string(evt.value.newValue[1]));
 
