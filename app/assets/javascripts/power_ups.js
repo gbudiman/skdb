@@ -12,11 +12,21 @@ var gold_cost = {
   4: 4500,
   5: 6750,
   6: 9500
-}
+};
+
+var element_grade = {
+  3: [50, 100],
+  4: [25, 50, 100],
+  5: [12.5, 25, 50, 100],
+  6: [6.25, 12.5, 25, 50, 100]
+};
 
 jQuery.fn.extend({
   create_grade: function(id, grade) {
     var s = '<ul class="list-group">'
+          +   '<li class="list-group-item active"><strong>'
+          +     'Power Up ' + grade + ' <span class="glyphicon glyphicon-star"></span>'
+          +   '</strong></li>'
           +   '<li class="list-group-item">'
           +     this.create_power_up_bar('a' + '-' + grade)
           +   '</li>'
@@ -33,8 +43,14 @@ jQuery.fn.extend({
           +   '</li>';
 
     if (grade < 6) {
-       s +=   '<li class="list-group-item">'
+       s +=   '<li class="list-group-item list-group-item-info">'
+          +     '<strong>Add Elementals</strong>'
+          +   '</li>'
+          +   '<li class="list-group-item">'
           +     this.create_element_bar('b' + '-' + grade)
+          +   '</li>'
+          +   '<li class="list-group-item">'
+          +     this.create_element_staging('e' + '-' + grade, grade)
           +   '</li>'
     }
 
@@ -45,6 +61,10 @@ jQuery.fn.extend({
     $('#a-' + grade).activate_power_up_slider();
     $('#b-' + grade).activate_element_slider();
     $('#c-' + grade).activate_fodder_controls($('#a-' + grade), grade);
+
+    if (grade < 6) {
+      $('#e-' + grade).activate_element_controls($('#b-' + grade), grade);
+    }
   },
 
   create_gold_cost_tracker: function(id) {
@@ -63,8 +83,16 @@ jQuery.fn.extend({
     return _create_element_bar(id);
   },
 
+  create_element_staging: function(id, grade) {
+    return _create_element_staging(id, grade);
+  },
+
   activate_fodder_controls: function(el, grade) {
     _activate_fodder_controls($(this), el, grade);
+  },
+
+  activate_element_controls: function(el, grade) {
+    _activate_element_controls($(this), el, grade);
   },
 
   activate_element_slider: function() { 
@@ -90,11 +118,39 @@ jQuery.fn.extend({
   }
 })
 
+function _create_element_staging(id, grade) {
+  var u = new Array();
+
+  for (var i = 2; i <= grade; i++) {
+    u.push('<div class="btn-group small-pad">' + _create_element_button(i) + '</div>');
+  }
+
+  var s = u.join('<br />');
+
+  return '<div id="' + id + '">' + s + '</div>';
+}
+
+function _create_element_button(grade) {
+  var s = '<button type="button" class="btn btn-default" disabled>'
+        +   '<strong>' + grade + ' </strong>'
+        +   '<span class="glyphicon glyphicon-star"></span>'
+        + '</button>'
+        + '<button type="button" class="btn btn-success element-subtract">'
+        +   '<span class="glyphicon glyphicon-minus"></span>'
+        + '</button>'
+        + '<button type="button" class="btn element-count" data-grade=' + grade + ' disabled>0</button>'
+        + '<button type="button" class="btn btn-success element-add">'
+        +   '<span class="glyphicon glyphicon-plus"></span>'
+        + '</button>';
+
+  return s;
+}
+
 function _create_gold_cost_tracker(id) {
   var s = '';
 
   s += '<ul class="list-group">'
-    +    '<li class="list-group-item text-center"><strong>Gold Cost</li>'
+    +    '<li class="list-group-item text-center"><strong>Gold Cost</strong></li>'
     +    '<li class="list-group-item list-group-item-warning text-center gold-cost-text">0</li>'
     +  '</ul>'
   return s;
@@ -103,7 +159,7 @@ function _create_gold_cost_tracker(id) {
 function _create_fodder_staging(id) {
   var u = new Array();
 
-  $.each([1,2,3,4,5], function(i, x) {
+  $.each([1,2,3,4], function(i, x) {
     u.push('<div class="btn-group small-pad">' + _create_fodder_button(x) + '</div>');
   });
 
@@ -113,13 +169,27 @@ function _create_fodder_staging(id) {
 }
 
 function _create_fodder_button(grade) {
-  var s = '<button type="button" class="btn" disabled><strong>' + grade + '</strong> <span class="glyphicon glyphicon-star"></span>' + '</button> '
-        + '<button type="button" class="btn btn-success fodder-subtract"><span class="glyphicon glyphicon-minus"></button>'
+  var s = '<button type="button" class="btn btn-default" disabled><strong>' + grade + '</strong> <span class="glyphicon glyphicon-star"></span></button> '
+        + '<button type="button" class="btn btn-success fodder-subtract"><span class="glyphicon glyphicon-minus"></span></button>'
         + '<button type="button" class="btn fodder-count" disabled>0</button>'
-        + '<button type="button" class="btn btn-success fodder-add"><span class="glyphicon glyphicon-plus"></button>'
+        + '<button type="button" class="btn btn-success fodder-add"><span class="glyphicon glyphicon-plus"></span></button>'
         + '<button type="button" class="btn fodder-cost" disabled>0</button>';
 
   return s;
+}
+
+function _activate_element_controls(el, _slider_el, grade) {
+  el.find('.element-subtract').on('click', function() {
+    _update_element_count($(this), -1, grade, _slider_el);
+    _update_element_meter(el, _slider_el, grade);
+  });
+
+  el.find('.element-add').on('click', function() {
+    _update_element_count($(this), 1, grade, _slider_el);
+    _update_element_meter(el, _slider_el, grade);
+  });
+
+  _update_element_meter(el, _slider_el, grade);
 }
 
 function _activate_fodder_controls(el, _slider_el, grade) {
@@ -132,6 +202,57 @@ function _activate_fodder_controls(el, _slider_el, grade) {
     _update_fodder_count($(this), 1, grade, _slider_el);
     _update_fodder_meter(el, _slider_el, grade);
   })
+
+  _update_fodder_meter(el, _slider_el, grade);
+}
+
+function _update_element_meter(el, _slider_el, grade) {
+  var sum = 0;
+  var cost = 0;
+
+  el.find('.element-count').each(function(i, x) {
+    sum += parseInt($(this).text()) * element_grade[grade][i];
+  });
+
+  _slider_el.set(sum);
+
+  if (sum >= 100) {
+    $.each(el.find('.element-add'), function() {
+      $(this).prop('disabled', true);
+    });
+
+    $.each(el.find('.element-subtract'), function() {
+      var that = $(this);
+
+      if (parseInt(that.parent().find('.element-count').text()) == 0) {
+        that.prop('disabled', true);
+      } else {
+        that.prop('disabled', false);
+      }
+    });
+  } else if (sum <= 0) {
+    $.each(el.find('.element-subtract'), function() {
+      $(this).prop('disabled', true);
+    });
+
+    $.each(el.find('.element-add'), function() {
+      $(this).prop('disabled', false);
+    })
+  } else {
+    $.each(el.find('.element-add'), function() {
+      $(this).prop('disabled', false);
+    });
+
+    $.each(el.find('.element-subtract'), function() {
+      var that = $(this);
+
+      if (parseInt(that.parent().find('.element-count').text()) == 0) {
+        that.prop('disabled', true);
+      } else {
+        that.prop('disabled', false);
+      }
+    });
+  }
 }
 
 function _update_fodder_meter(el, _slider_el, grade) {
@@ -154,6 +275,52 @@ function _update_fodder_meter(el, _slider_el, grade) {
 
   el.parent().parent().find('.gold-cost-text').text(cost.toLocaleString());
   _slider_el.set(sum);
+
+  if (sum >= 500) {
+    $.each(el.find('.fodder-add'), function() {
+      $(this).prop('disabled', true);
+    });
+
+    $.each(el.find('.fodder-subtract'), function() {
+      var that = $(this);
+
+      if (parseInt(that.parent().find('.fodder-count').text()) == 0) {
+        that.prop('disabled', true);
+      } else {
+        that.prop('disabled', false);
+      }
+    });
+  } else if (sum <= 0) {
+    $.each(el.find('.fodder-subtract'), function() {
+      $(this).prop('disabled', true);
+    });
+
+    $.each(el.find('.fodder-add'), function() {
+      $(this).prop('disabled', false);
+    })
+  } else {
+    $.each(el.find('.fodder-add'), function() {
+      $(this).prop('disabled', false);
+    });
+
+    $.each(el.find('.fodder-subtract'), function() {
+      var that = $(this);
+
+      if (parseInt(that.parent().find('.fodder-count').text()) == 0) {
+        that.prop('disabled', true);
+      } else {
+        that.prop('disabled', false);
+      }
+    });
+  }
+}
+
+function _update_element_count(el, x, grade, _slider_el) {
+  var target = el.parent().find('.element-count');
+  var value = parseInt(target.text());
+  var is_exceeded = _slider_el.bootstrapSlider('getValue') >= 100 ? true : false;
+
+  target.text((value == 0 && x < 0) || (is_exceeded && x > 0) ? value : value + x);
 }
 
 function _update_fodder_count(el, x, grade, _slider_el) {
@@ -173,11 +340,24 @@ function _set(el, value) {
                                     parseFloat(value) * 1.5]
                                  , false
                                  , true);
+    console.log(el);
+    _alert_exceeding(el.parent().parent().find('.power-ups-group').first().find('.exceed-warning').first(), parseFloat(value) > 500);
+    _alert_exceeding(el.parent().parent().find('.power-ups-group').first().find('.exceed-warning').last(), parseFloat(value) * 1.5 > 500);
   } else {
     el.bootstrapSlider('setValue', parseFloat(value), false, true);
+    _alert_exceeding(el, value > 100);
   }
 
 }
+
+function _alert_exceeding(el, _bool) {
+  if (_bool) {
+    el.parent().find('.exceed-warning').html('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+  } else {
+    el.parent().find('.exceed-warning').html('');
+  }
+}
+
 function _add(el, value) {
   if (el.bootstrapSlider('getAttribute', 'range')) {
     var current_value = el.bootstrapSlider('getValue')[0];
@@ -199,7 +379,9 @@ function _create_element_bar(id) {
   return '<input id="' + id + '" type="text"/>'
        + '<ul class="pagination power-ups-group">'
        +   '<li>'
-       +     '<span id="' + id + '-text"></span>'
+       +     '<span id="' + id + '-text"> '
+       +       '<span class="value"></span>'
+       +       '<span class="exceed-warning"></span>'
        +   '</li>'
        + '</ul>';
 }
@@ -208,20 +390,28 @@ function _create_power_up_bar(id) {
   return '<input id="' + id + '" type="text"/>'
        + '<ul class="pagination power-ups-group">'
        +   '<li>'
-       +     '<span id="' + id + '-text"></span> '
+       +     '<span id="' + id + '-text"> '
+       +       '<span class="value"></span>'
+       +       '<span class="exceed-warning"></span>'
+       +     '</span>'
        +   '</li>'
        +   '<li>'
-       +     '<span id="' + id + '-max"></span> '
+       +     '<span id="' + id + '-max"> '
+       +       '<span class="value"></span>'
+       +       '<span class="exceed-warning"></span>'
+       +     '</span>'
        +   '</li>'
        + '</ul>';
 }
 
-function _activate_element_slider(el, el_text) {
+function _activate_element_slider(el, _el_text) {
   $(el).bootstrapSlider({
     ticks: [0, 100],
     ticks_labels: [0, 100],
     value: 0
-  })
+  });
+
+  var el_text = $(_el_text).find('.value');
 
   $(el).bootstrapSlider('disable');
   $(el).on('change', function(evt) {
@@ -231,13 +421,16 @@ function _activate_element_slider(el, el_text) {
   $(el_text).html(_element_string($(el).bootstrapSlider('getValue')));
 }
 
-function _activate_power_up_slider(el, el_text, el_max) {
+function _activate_power_up_slider(el, _el_text, _el_max) {
   $(el).bootstrapSlider({
     ticks: [0, 100, 200, 300, 400, 500],
     ticks_labels: [0, 1, 2, 3, 4, 5],
     value: [0, 0],
     range: true
   });
+
+  var el_text = $(_el_text).find('.value');
+  var el_max = $(_el_max).find('.value');
 
   $(el).bootstrapSlider('disable');
   $(el).on('change', function(evt) {
