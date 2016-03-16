@@ -22,8 +22,51 @@ var element_grade = {
 };
 
 jQuery.fn.extend({
+  create_container: function(id) {
+    var that = $(this);
+    var s = '<div class="btn-group small-pad">'
+          +   '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+          +     'Calculate Power Up '
+          +     '&nbsp;'
+          +     '<span class="caret"></span>'
+          +   '</button>'
+          +   '<ul class="dropdown-menu">'
+          +     '<li><a href="#" data-init=3>From 3 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +     '<li><a href="#" data-init=4>From 4 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +     '<li><a href="#" data-init=5>From 5 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +   '</ul>'
+          + '</div>'
+          + '<br />'
+          + '<div id="' + id + '"></div>';
+
+    $(this).append(s);
+
+    for (var i = 3; i <= 6; i++) {
+      that.find('#' + id).create_grade(id, i);
+      $('#' + id + '-' + i).hide();
+    }
+
+    that.find('#' + id).attach_dependency_trigger();
+
+    $(this).find('a[data-init]').on('click', function() {
+      var init = parseInt($(this).attr('data-init'));
+
+      for (var i = 3; i < init; i++) {
+        $('#' + id + '-' + i).hide();
+      }
+
+      //for (var i = init; i <= 6; i++) {
+      $('#' + id + '-' + init).show();
+      //}
+    })
+  },
+
+  attach_dependency_trigger: function() {
+    _attach_dependency_trigger($(this));
+  },
+
   create_grade: function(id, grade) {
-    var s = '<ul class="list-group">'
+    var s = '<ul class="list-group" id="' + id + '-' + grade + '">'
           +   '<li class="list-group-item active"><strong>'
           +     'Power Up ' + grade + ' <span class="glyphicon glyphicon-star"></span>'
           +   '</strong></li>'
@@ -206,6 +249,28 @@ function _activate_fodder_controls(el, _slider_el, grade) {
   _update_fodder_meter(el, _slider_el, grade);
 }
 
+function _attach_dependency_trigger(el) {
+  el.find('ul.list-group').each(function() {
+    var that = $(this);
+
+    var target = $(this).find('input').last();
+    var this_id = target.attr('id');
+
+    if (this_id !== undefined) {
+      $('#' + this_id).on('change', function() {
+        var current_value = $(this).bootstrapSlider('getValue');
+        var next_grade = that.next();
+
+        if (current_value >= 100) {
+          next_grade.show();
+        } else {
+          next_grade.hide();
+        }
+      });
+    }
+  })
+}
+
 function _update_element_meter(el, _slider_el, grade) {
   var sum = 0;
   var cost = 0;
@@ -340,7 +405,6 @@ function _set(el, value) {
                                     parseFloat(value) * 1.5]
                                  , false
                                  , true);
-    console.log(el);
     _alert_exceeding(el.parent().parent().find('.power-ups-group').first().find('.exceed-warning').first(), parseFloat(value) > 500);
     _alert_exceeding(el.parent().parent().find('.power-ups-group').first().find('.exceed-warning').last(), parseFloat(value) * 1.5 > 500);
   } else {
