@@ -26,9 +26,9 @@ jQuery.fn.extend({
     var that = $(this);
     var s = '<div class="row">'
           +   '<div class="col-xs-4">'
-          +     '<div class="btn-group small-pad">'
+          +     '<div class="btn-group btn-block small-pad">'
           +       '<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-          +         'Calculate<br />Power Up '
+          +         '<strong>Calculate Power Up</strong> '
           +         '&nbsp;'
           +         '<span class="caret"></span>'
           +       '</button>'
@@ -48,18 +48,18 @@ jQuery.fn.extend({
           +     '</div>'
           +     '<div class="input-group small-pad cumulative-fodders">'
           +       '<span class="input-group-addon">Fodders</span>'
-          +       '<span class="input-group-addon cfc-1">0</span>'
-          +       '<span class="input-group-addon cfc-2">0</span>'
-          +       '<span class="input-group-addon cfc-3">0</span>'
-          +       '<span class="input-group-addon cfc-4">0</span>'
-          +       '<span class="input-group-addon cfc-5">0</span>'
+          +       '<span class="input-group-addon cfc cfc-1" data-grade=1>0</span>'
+          +       '<span class="input-group-addon cfc cfc-2" data-grade=2>0</span>'
+          +       '<span class="input-group-addon cfc cfc-3" data-grade=3>0</span>'
+          +       '<span class="input-group-addon cfc cfc-4" data-grade=4>0</span>'
+          +       '<span class="input-group-addon cfc cfc-5" data-grade=5>0</span>'
           +     '</div>'
           +     '<div class="input-group cumulative-elementals">'
           +       '<span class="input-group-addon">Elementals</span>'
-          +       '<span class="input-group-addon cec-2">0</span>'
-          +       '<span class="input-group-addon cec-3">0</span>'
-          +       '<span class="input-group-addon cec-4">0</span>'
-          +       '<span class="input-group-addon cec-5">0</span>'
+          +       '<span class="input-group-addon cec cec-2" data-grade=2>0</span>'
+          +       '<span class="input-group-addon cec cec-3" data-grade=3>0</span>'
+          +       '<span class="input-group-addon cec cec-4" data-grade=4>0</span>'
+          +       '<span class="input-group-addon cec cec-5" data-grade=5>0</span>'
           +     '</div>'
           +   '</div>'
           + '</div>'
@@ -90,6 +90,12 @@ jQuery.fn.extend({
         $('#' + id + '-' + init).fadeIn();
       }
     })
+
+    that.activate_cumulatives_tooltip();
+  },
+
+  activate_cumulatives_tooltip: function() {
+    _activate_cumulatives_tooltip($(this));
   },
 
   reset: function() {
@@ -191,6 +197,28 @@ jQuery.fn.extend({
     return _set($(this), value);
   }
 })
+
+function _activate_cumulatives_tooltip(el) {
+  el.find('.cfc').each(function() {
+    var that = $(this);
+
+    that.tooltip({
+      title: 'Cumulative ' + that.attr('data-grade') + ' <span class="glyphicon glyphicon-star"></span> Fodders',
+      container: 'body',
+      html: true
+    });
+  })
+
+  el.find('.cec').each(function() {
+    var that = $(this);
+
+    that.tooltip({
+      title: 'Cumulative ' + that.attr('data-grade') + ' <span class="glyphicon glyphicon-star"></span> Elementals',
+      container: 'body',
+      html: true
+    });
+  })
+}
 
 function _create_element_staging(id, grade) {
   var u = new Array();

@@ -32,29 +32,35 @@
             %li{class: 'dropdown'}
               %a{href: '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown', role: 'button', 'aria-haspopup' => true, 'aria-expanded' => false}
                 Encyclopaedia
-                %sup{class: 'glyphicon-red'} NEW
                 <span class='caret'></span>
               %ul{class: 'dropdown-menu'}
                 %li{class: "#{ApplicationHelper.set_active self, '/mechanics'}"}
                   %a{href: '/mechanics'} 
                     Game Mechanics
-                    %sup{class: 'glyphicon-red'} NEW
                 %li{class: 'divider'}
                 %li{class: "#{ApplicationHelper.set_active self, '/equips'}"}
                   %a{href: '/equips'} 
                     Equipments
-                    %sup{class: 'glyphicon-red'} NEW
                 %li{class: "#{ApplicationHelper.set_active self, '/equip_recommendations'}"}
                   %a{href: '/equip_recommendations'} 
                     Equip Recommendations
                 %li{class: "#{ApplicationHelper.set_active self, '/tiers'}"}
                   %a{href: '/tiers'} 
                     Hero Tierlist
-                    %sup{class: 'glyphicon-red'} NEW
                 %li{class: 'divider'}
                 %li{class: "#{ApplicationHelper.set_active self, '/coupons'}"}
                   %a{href: '/coupons'} 
                     Coupons
+            %li{class: 'dropdown'}
+              %a{href: '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown', role: 'button', 'aria-haspopup' => true, 'aria-expanded' => false}
+                Calculator
+                %sup{class: 'glyphicon-red'} NEW
+                <span class='caret'</span>
+              %ul{class: 'dropdown-menu'}
+                %li{class: "#{ApplicationHelper.set_active self, '/calcs/power_ups'}"}
+                  %a{href: '/calcs/power_ups'}
+                    Power UPs
+                    %sup{class: 'glyphicon-red'} NEW
 
           %ul{class: 'nav navbar-nav navbar-right'}
             %li
