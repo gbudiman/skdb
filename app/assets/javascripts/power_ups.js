@@ -76,12 +76,17 @@ jQuery.fn.extend({
       $('#' + id + '-' + i).hide();
     }
 
+    //that.find('#' + id).create_dependency_message(id).hide();
+
     $(this).find('a[data-init]').on('click', function() {
       var init = parseInt($(this).attr('data-init'));
+
+      
 
       if (init == -1) {
         $('#' + id).reset();
       } else {
+        
 
         for (var i = 3; i < init; i++) {
           $('#' + id + '-' + i).fadeOut();
@@ -89,7 +94,13 @@ jQuery.fn.extend({
 
         that.find('input[data-value]').trigger('change');
         $('#' + id + '-' + init).fadeIn();
+
+        if (init == 6) {
+          that.find('.list-group[data-grade=99]').hide();
+        }
       }
+
+
     })
 
     that.activate_cumulatives_tooltip();
@@ -101,6 +112,10 @@ jQuery.fn.extend({
 
   reset: function() {
     _reset($(this));
+  },
+
+  create_dependency_message: function(id) {
+    return _create_dependency_message($(this), id);
   },
 
   create_grade: function(id, grade) {
@@ -124,11 +139,19 @@ jQuery.fn.extend({
           +   '</li>';
 
     if (grade < 6) {
-       s +=   '<li class="list-group-item list-group-item-info">'
-          +     '<strong>Add Elementals</strong>'
-          +   '</li>'
-          +   '<li class="list-group-item">'
-          +     this.create_element_bar('b' + '-' + grade)
+       s +=   '<li class="list-group-item list-group-item-warning">'
+          +     '<div class="row">'
+          +       '<div class="col-xs-4">'
+          +         '<strong>Elementals</strong>'
+          +         '<br />'
+          +         grade + ' <span class="glyphicon glyphicon-star"></span> needed'
+          +       '</div>'
+          // +   '</li>'
+          // +   '<li class="list-group-item">'
+          +       '<div class="col-xs-8">'
+          +         this.create_element_bar('b' + '-' + grade)
+          +       '</div>'
+          +     '</div>'
           +   '</li>'
           +   '<li class="list-group-item">'
           +     this.create_element_staging('e' + '-' + grade, grade)
@@ -221,16 +244,35 @@ function _activate_cumulatives_tooltip(el) {
   })
 }
 
+function _create_dependency_message(el, id) {
+  var s = '<ul class="list-group" id="' + id + '-' + 99 + '" data-grade=99>'
+        +   '<li class="list-group-item list-group-item-warning">'
+        +     '<div class="row">'
+        +       '<div class="col-xs-1">'
+        +         '<span class="glyphicon glyphicon-exclamation-sign"></span>'
+        +       '</div>'
+        +       '<div class="col-xs-11">'
+        +         'Power up and add Elementals in previous grade first to unlock further upgrade'
+        +       '</div>'
+        +     '</div>'
+        +   '</li>'
+        + '</ul>';
+
+  el.append(s);
+
+  return $('#' + id + '-' + 99);
+}
+
 function _create_element_staging(id, grade) {
   var u = new Array();
 
   for (var i = 2; i <= grade; i++) {
-    u.push('<div class="btn-group small-pad">' + _create_element_button(i) + '</div>');
+    u.push('<div class="btn-group small-pad col-xs-6">' + _create_element_button(i) + '</div>');
   }
 
-  var s = u.join('<br />');
+  var s = u.join('');
 
-  return '<div id="' + id + '">' + s + '</div>';
+  return '<div id="' + id + '">' + s + '</div><div class="clearfix"></div>';
 }
 
 function _create_element_button(grade) {
@@ -254,7 +296,7 @@ function _create_gold_cost_tracker(id) {
 
   s += '<ul class="list-group">'
     +    '<li class="list-group-item text-center"><strong>Gold Cost</strong></li>'
-    +    '<li class="list-group-item list-group-item-warning text-center gold-cost-text">0</li>'
+    +    '<li class="list-group-item text-center gold-cost-text">0</li>'
     +  '</ul>'
   return s;
 }
@@ -313,12 +355,48 @@ function _evaluate_dependency(el) {
   var list_group = el.parent().parent();
   var fodder_progress = parseInt(list_group.find('input.fodder-bar').bootstrapSlider('getValue')[1]);
   var element_progress = parseInt(list_group.find('input.element-bar').bootstrapSlider('getValue'));
+  var stop_at = list_group.parent().find('[data-grade=99]');
+  var grade = parseInt(list_group.attr('data-grade'));
+
+  console.log('grade: ' + list_group.attr('data-grade'));
+  console.log(fodder_progress + ':' + element_progress);
 
   if (fodder_progress >= 500 && element_progress >= 100) {
-    list_group.next().fadeIn();
+    //if (grade < 6) {
+      list_group.next().show();
+    //} else {
+      //list_group.next().fadeOut();
+    //}
   } else {
-    list_group.nextAll().fadeOut();
+    //list_group.nextAll().fadeOut();
+    list_group.nextUntil(stop_at).fadeOut();
+    if (!stop_at.is(':visible')) {
+      stop_at.show();
+    }
   }
+
+  if (list_group.parent().find('.list-group[data-grade=6]').is(':visible')) {
+    stop_at.hide();
+  } else {
+    if (!stop_at.is(':visible')) {
+      stop_at.show();
+    }
+  }
+
+  //list_group.parent().find('[data-grade=99]').fadeIn();
+
+  // console.log(list_group.parent().find('.list-group:visible[data-grade=6]'));
+  // if (list_group.parent().find('.list-group[data-grade=6]:visible').length == 0) {
+  //   console.log('not visible');
+  //   if (!list_group.is(':visible')) {
+  //     list_group.fadeIn();
+  //   }
+  // } else { // grade 6 is visible, hide
+  //   console.log('visible');
+  //   if (list_group.is(':visible')) {
+  //     list_group.fadeOut();
+  //   }
+  // }
 }
 
 function _update_element_meter(el, _slider_el, grade) {
@@ -549,6 +627,7 @@ function _create_element_bar(id) {
        +     '<span id="' + id + '-text"> '
        +       '<span class="value"></span>'
        +       '<span class="exceed-warning"></span>'
+       +     '</span>'
        +   '</li>'
        + '</ul>';
 }
@@ -586,7 +665,8 @@ function _activate_element_slider(el, _el_text) {
     } else {
       $(el_text).html(_element_string(evt.value.newValue));
 
-      _evaluate_dependency($(el));
+      // element-slider is 2-levels deeper than fodder-slider is
+      _evaluate_dependency($(el).parent().parent());
     }
   });
 
