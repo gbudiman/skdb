@@ -36,6 +36,7 @@ jQuery.fn.extend({
           +         '<li><a href="#" data-init=3>From 3 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li><a href="#" data-init=4>From 4 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li><a href="#" data-init=5>From 5 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +         '<li><a href="#" data-init=6>Only 6 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li role="separator" class="divider"></li>'
           +         '<li><a href="#" data-init=-1>Reset</a></li>'
           +       '</ul>'
