@@ -36,6 +36,8 @@ jQuery.fn.extend({
           +         '<li><a href="#" data-init=3>From 3 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li><a href="#" data-init=4>From 4 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li><a href="#" data-init=5>From 5 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +         '<li role="separator" class="divider"></li>'
+          +         '<li><a href="#" data-init=-1>Reset</a></li>'
           +       '</ul>'
           +     '</div>'
           +   '</div>'
@@ -70,19 +72,28 @@ jQuery.fn.extend({
 
     for (var i = 3; i <= 6; i++) {
       that.find('#' + id).create_grade(id, i);
-      $('#' + id + '-' + i).fadeOut();
+      $('#' + id + '-' + i).hide();
     }
 
     $(this).find('a[data-init]').on('click', function() {
       var init = parseInt($(this).attr('data-init'));
 
-      for (var i = 3; i < init; i++) {
-        $('#' + id + '-' + i).fadeOut();
-      }
+      if (init == -1) {
+        $('#' + id).reset();
+      } else {
 
-      that.find('input[data-value]').trigger('change');
-      $('#' + id + '-' + init).fadeIn();
+        for (var i = 3; i < init; i++) {
+          $('#' + id + '-' + i).fadeOut();
+        }
+
+        that.find('input[data-value]').trigger('change');
+        $('#' + id + '-' + init).fadeIn();
+      }
     })
+  },
+
+  reset: function() {
+    _reset($(this));
   },
 
   create_grade: function(id, grade) {
@@ -274,11 +285,7 @@ function _evaluate_dependency(el) {
   var fodder_progress = parseInt(list_group.find('input.fodder-bar').bootstrapSlider('getValue')[1]);
   var element_progress = parseInt(list_group.find('input.element-bar').bootstrapSlider('getValue'));
 
-  console.log('evaluating ' + fodder_progress + ': ' + element_progress);
-
   if (fodder_progress >= 500 && element_progress >= 100) {
-    console.log('unhiding ');
-    console.log(list_group.next());
     list_group.next().fadeIn();
   } else {
     list_group.nextAll().fadeOut();
@@ -604,4 +611,27 @@ function _power_up_string(value) {
 
 function _element_string(value) {
   return '<strong>' + value + '</strong> %';
+}
+
+function _reset(el) {
+  //console.log(el);
+  el.find('.btn-group').each(function() {
+    var group = $(this);
+    var fodder_count = group.find('.fodder-count');
+    var element_count = group.find('.element-count');
+
+    if (fodder_count.length > 0) {
+      var count = parseInt(fodder_count.text());
+      for (var i = 0; i < count; i++) {
+        group.find('.fodder-subtract').trigger('click');
+      }
+    }
+
+    if (element_count.length > 0) {
+      var count = parseInt(element_count.text());
+      for (var i = 0; i < count; i++) {
+        group.find('.element-subtract').trigger('click');
+      }
+    }
+  });
 }
