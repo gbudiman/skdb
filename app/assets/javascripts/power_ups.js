@@ -70,25 +70,19 @@ jQuery.fn.extend({
 
     for (var i = 3; i <= 6; i++) {
       that.find('#' + id).create_grade(id, i);
-      $('#' + id + '-' + i).hide();
+      $('#' + id + '-' + i).fadeOut();
     }
-
-    that.find('#' + id).attach_dependency_trigger();
 
     $(this).find('a[data-init]').on('click', function() {
       var init = parseInt($(this).attr('data-init'));
 
       for (var i = 3; i < init; i++) {
-        $('#' + id + '-' + i).hide();
+        $('#' + id + '-' + i).fadeOut();
       }
 
       that.find('input[data-value]').trigger('change');
-      $('#' + id + '-' + init).show();
+      $('#' + id + '-' + init).fadeIn();
     })
-  },
-
-  attach_dependency_trigger: function() {
-    _attach_dependency_trigger($(this));
   },
 
   create_grade: function(id, grade) {
@@ -275,27 +269,20 @@ function _activate_fodder_controls(el, _slider_el, grade) {
   _update_fodder_meter(el, _slider_el, grade);
 }
 
-function _attach_dependency_trigger(el) {
-  el.find('ul.list-group').each(function() {
-    var that = $(this);
+function _evaluate_dependency(el) {
+  var list_group = el.parent().parent();
+  var fodder_progress = parseInt(list_group.find('input.fodder-bar').bootstrapSlider('getValue')[1]);
+  var element_progress = parseInt(list_group.find('input.element-bar').bootstrapSlider('getValue'));
 
-    var target = $(this).find('input').last();
-    var this_id = target.attr('id');
+  console.log('evaluating ' + fodder_progress + ': ' + element_progress);
 
-    if (this_id !== undefined) {
-      $('#' + this_id).on('change', function() {
-        var current_value = $(this).bootstrapSlider('getValue');
-        var next_grade = that.next();
-        var next_grade_all = that.nextAll();
-
-        if (current_value >= 100) {
-          next_grade.show();
-        } else {
-          next_grade_all.hide();
-        }
-      });
-    }
-  })
+  if (fodder_progress >= 500 && element_progress >= 100) {
+    console.log('unhiding ');
+    console.log(list_group.next());
+    list_group.next().fadeIn();
+  } else {
+    list_group.nextAll().fadeOut();
+  }
 }
 
 function _update_element_meter(el, _slider_el, grade) {
@@ -377,10 +364,6 @@ function _update_cumulatives(el) {
   source_gold.each(function() {
     result_gold += parseInt($(this).attr('data-value'));
   });
-
-  console.log(source_gold);
-  console.log(result_gold);
-  console.log(target_gold);
 
   source_fodders.each(function() {
     var grade = parseInt($(this).attr('data-grade'));
@@ -524,7 +507,7 @@ function _add(el, value) {
 }
 
 function _create_element_bar(id) {
-  return '<input id="' + id + '" type="text"/>'
+  return '<input id="' + id + '" type="text" class="element-bar" />'
        + '<ul class="pagination power-ups-group">'
        +   '<li>'
        +     '<span id="' + id + '-text"> '
@@ -535,7 +518,7 @@ function _create_element_bar(id) {
 }
 
 function _create_power_up_bar(id) {
-  return '<input id="' + id + '" type="text"/>'
+  return '<input id="' + id + '" type="text" class="fodder-bar" />'
        + '<ul class="pagination power-ups-group">'
        +   '<li>'
        +     '<span id="' + id + '-text"> '
@@ -564,10 +547,11 @@ function _activate_element_slider(el, _el_text) {
   $(el).bootstrapSlider('disable');
   $(el).on('change', function(evt) {
     if (evt.value == undefined) {
-      return false;
-    }
+    } else {
+      $(el_text).html(_element_string(evt.value.newValue));
 
-    $(el_text).html(_element_string(evt.value.newValue));
+      _evaluate_dependency($(el));
+    }
   });
 
   $(el_text).html(_element_string($(el).bootstrapSlider('getValue')));
@@ -587,23 +571,24 @@ function _activate_power_up_slider(el, _el_text, _el_max) {
   $(el).bootstrapSlider('disable');
   $(el).on('change', function(evt) {
     if (evt.value == undefined) {
-      return false;
-    }
-
-    $(el_text).html(_power_up_string(evt.value.newValue[0]));
-    $(el_max).html(_power_up_string(evt.value.newValue[1]));
-
-    if (evt.value.newValue[0] >= 500) {
-      $(el_text).parent().addClass('active');
     } else {
-      $(el_text).parent().removeClass('active');
+      $(el_text).html(_power_up_string(evt.value.newValue[0]));
+      $(el_max).html(_power_up_string(evt.value.newValue[1]));
+
+      if (evt.value.newValue[0] >= 500) {
+        $(el_text).parent().addClass('active');
+      } else {
+        $(el_text).parent().removeClass('active');
+      }
+
+      if (evt.value.newValue[1] >= 500) {
+        $(el_max).parent().addClass('active');
+      } else {
+        $(el_max).parent().removeClass('active');
+      }
     }
 
-    if (evt.value.newValue[1] >= 500) {
-      $(el_max).parent().addClass('active');
-    } else {
-      $(el_max).parent().removeClass('active');
-    }
+    _evaluate_dependency($(el));
   });
 
   $(el_text).html(_power_up_string($(el).bootstrapSlider('getValue')[0]));
