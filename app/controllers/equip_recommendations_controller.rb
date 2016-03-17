@@ -4,6 +4,7 @@ class EquipRecommendationsController < ApplicationController
 	end
 
 	def index_fetch
+    log
 		render json: Hero.fetch_equip_recommendations
 	end
 end

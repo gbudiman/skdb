@@ -4,6 +4,7 @@ class TiersController < ApplicationController
   end
 
   def index_fetch
+    log
     render json: Tier.fetch
   end
 end
