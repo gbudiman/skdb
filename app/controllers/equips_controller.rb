@@ -3,6 +3,7 @@ class EquipsController < ApplicationController
   end
 
   def index_fetch
+    log
     render json: Equip.fetch
   end
 end

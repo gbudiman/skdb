@@ -26,9 +26,9 @@ jQuery.fn.extend({
     var that = $(this);
     var s = '<div class="row">'
           +   '<div class="col-xs-4">'
-          +     '<div class="btn-group small-pad">'
+          +     '<div class="btn-group btn-block small-pad">'
           +       '<button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-          +         'Calculate<br />Power Up '
+          +         '<strong>Calculate Power Up</strong> '
           +         '&nbsp;'
           +         '<span class="caret"></span>'
           +       '</button>'
@@ -36,6 +36,7 @@ jQuery.fn.extend({
           +         '<li><a href="#" data-init=3>From 3 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li><a href="#" data-init=4>From 4 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li><a href="#" data-init=5>From 5 <span class="glyphicon glyphicon-star"></span></a></li>'
+          +         '<li><a href="#" data-init=6>Only 6 <span class="glyphicon glyphicon-star"></span></a></li>'
           +         '<li role="separator" class="divider"></li>'
           +         '<li><a href="#" data-init=-1>Reset</a></li>'
           +       '</ul>'
@@ -48,18 +49,18 @@ jQuery.fn.extend({
           +     '</div>'
           +     '<div class="input-group small-pad cumulative-fodders">'
           +       '<span class="input-group-addon">Fodders</span>'
-          +       '<span class="input-group-addon cfc-1">0</span>'
-          +       '<span class="input-group-addon cfc-2">0</span>'
-          +       '<span class="input-group-addon cfc-3">0</span>'
-          +       '<span class="input-group-addon cfc-4">0</span>'
-          +       '<span class="input-group-addon cfc-5">0</span>'
+          +       '<span class="input-group-addon cfc cfc-1" data-grade=1>0</span>'
+          +       '<span class="input-group-addon cfc cfc-2" data-grade=2>0</span>'
+          +       '<span class="input-group-addon cfc cfc-3" data-grade=3>0</span>'
+          +       '<span class="input-group-addon cfc cfc-4" data-grade=4>0</span>'
+          +       '<span class="input-group-addon cfc cfc-5" data-grade=5>0</span>'
           +     '</div>'
           +     '<div class="input-group cumulative-elementals">'
           +       '<span class="input-group-addon">Elementals</span>'
-          +       '<span class="input-group-addon cec-2">0</span>'
-          +       '<span class="input-group-addon cec-3">0</span>'
-          +       '<span class="input-group-addon cec-4">0</span>'
-          +       '<span class="input-group-addon cec-5">0</span>'
+          +       '<span class="input-group-addon cec cec-2" data-grade=2>0</span>'
+          +       '<span class="input-group-addon cec cec-3" data-grade=3>0</span>'
+          +       '<span class="input-group-addon cec cec-4" data-grade=4>0</span>'
+          +       '<span class="input-group-addon cec cec-5" data-grade=5>0</span>'
           +     '</div>'
           +   '</div>'
           + '</div>'
@@ -75,12 +76,17 @@ jQuery.fn.extend({
       $('#' + id + '-' + i).hide();
     }
 
+    //that.find('#' + id).create_dependency_message(id).hide();
+
     $(this).find('a[data-init]').on('click', function() {
       var init = parseInt($(this).attr('data-init'));
+
+      
 
       if (init == -1) {
         $('#' + id).reset();
       } else {
+        
 
         for (var i = 3; i < init; i++) {
           $('#' + id + '-' + i).fadeOut();
@@ -88,12 +94,28 @@ jQuery.fn.extend({
 
         that.find('input[data-value]').trigger('change');
         $('#' + id + '-' + init).fadeIn();
+
+        if (init == 6) {
+          that.find('.list-group[data-grade=99]').hide();
+        }
       }
+
+
     })
+
+    that.activate_cumulatives_tooltip();
+  },
+
+  activate_cumulatives_tooltip: function() {
+    _activate_cumulatives_tooltip($(this));
   },
 
   reset: function() {
     _reset($(this));
+  },
+
+  create_dependency_message: function(id) {
+    return _create_dependency_message($(this), id);
   },
 
   create_grade: function(id, grade) {
@@ -117,11 +139,19 @@ jQuery.fn.extend({
           +   '</li>';
 
     if (grade < 6) {
-       s +=   '<li class="list-group-item list-group-item-info">'
-          +     '<strong>Add Elementals</strong>'
-          +   '</li>'
-          +   '<li class="list-group-item">'
-          +     this.create_element_bar('b' + '-' + grade)
+       s +=   '<li class="list-group-item list-group-item-warning">'
+          +     '<div class="row">'
+          +       '<div class="col-xs-4">'
+          +         '<strong>Elementals</strong>'
+          +         '<br />'
+          +         grade + ' <span class="glyphicon glyphicon-star"></span> needed'
+          +       '</div>'
+          // +   '</li>'
+          // +   '<li class="list-group-item">'
+          +       '<div class="col-xs-8">'
+          +         this.create_element_bar('b' + '-' + grade)
+          +       '</div>'
+          +     '</div>'
           +   '</li>'
           +   '<li class="list-group-item">'
           +     this.create_element_staging('e' + '-' + grade, grade)
@@ -192,16 +222,57 @@ jQuery.fn.extend({
   }
 })
 
+function _activate_cumulatives_tooltip(el) {
+  el.find('.cfc').each(function() {
+    var that = $(this);
+
+    that.tooltip({
+      title: 'Cumulative ' + that.attr('data-grade') + ' <span class="glyphicon glyphicon-star"></span> Fodders',
+      container: 'body',
+      html: true
+    });
+  })
+
+  el.find('.cec').each(function() {
+    var that = $(this);
+
+    that.tooltip({
+      title: 'Cumulative ' + that.attr('data-grade') + ' <span class="glyphicon glyphicon-star"></span> Elementals',
+      container: 'body',
+      html: true
+    });
+  })
+}
+
+function _create_dependency_message(el, id) {
+  var s = '<ul class="list-group" id="' + id + '-' + 99 + '" data-grade=99>'
+        +   '<li class="list-group-item list-group-item-warning">'
+        +     '<div class="row">'
+        +       '<div class="col-xs-1">'
+        +         '<span class="glyphicon glyphicon-exclamation-sign"></span>'
+        +       '</div>'
+        +       '<div class="col-xs-11">'
+        +         'Power up and add Elementals in previous grade first to unlock further upgrade'
+        +       '</div>'
+        +     '</div>'
+        +   '</li>'
+        + '</ul>';
+
+  el.append(s);
+
+  return $('#' + id + '-' + 99);
+}
+
 function _create_element_staging(id, grade) {
   var u = new Array();
 
   for (var i = 2; i <= grade; i++) {
-    u.push('<div class="btn-group small-pad">' + _create_element_button(i) + '</div>');
+    u.push('<div class="btn-group small-pad col-xs-6">' + _create_element_button(i) + '</div>');
   }
 
-  var s = u.join('<br />');
+  var s = u.join('');
 
-  return '<div id="' + id + '">' + s + '</div>';
+  return '<div id="' + id + '">' + s + '</div><div class="clearfix"></div>';
 }
 
 function _create_element_button(grade) {
@@ -225,7 +296,7 @@ function _create_gold_cost_tracker(id) {
 
   s += '<ul class="list-group">'
     +    '<li class="list-group-item text-center"><strong>Gold Cost</strong></li>'
-    +    '<li class="list-group-item list-group-item-warning text-center gold-cost-text">0</li>'
+    +    '<li class="list-group-item text-center gold-cost-text">0</li>'
     +  '</ul>'
   return s;
 }
@@ -284,12 +355,48 @@ function _evaluate_dependency(el) {
   var list_group = el.parent().parent();
   var fodder_progress = parseInt(list_group.find('input.fodder-bar').bootstrapSlider('getValue')[1]);
   var element_progress = parseInt(list_group.find('input.element-bar').bootstrapSlider('getValue'));
+  var stop_at = list_group.parent().find('[data-grade=99]');
+  var grade = parseInt(list_group.attr('data-grade'));
+
+  console.log('grade: ' + list_group.attr('data-grade'));
+  console.log(fodder_progress + ':' + element_progress);
 
   if (fodder_progress >= 500 && element_progress >= 100) {
-    list_group.next().fadeIn();
+    //if (grade < 6) {
+      list_group.next().show();
+    //} else {
+      //list_group.next().fadeOut();
+    //}
   } else {
-    list_group.nextAll().fadeOut();
+    //list_group.nextAll().fadeOut();
+    list_group.nextUntil(stop_at).fadeOut();
+    if (!stop_at.is(':visible')) {
+      stop_at.show();
+    }
   }
+
+  if (list_group.parent().find('.list-group[data-grade=6]').is(':visible')) {
+    stop_at.hide();
+  } else {
+    if (!stop_at.is(':visible')) {
+      stop_at.show();
+    }
+  }
+
+  //list_group.parent().find('[data-grade=99]').fadeIn();
+
+  // console.log(list_group.parent().find('.list-group:visible[data-grade=6]'));
+  // if (list_group.parent().find('.list-group[data-grade=6]:visible').length == 0) {
+  //   console.log('not visible');
+  //   if (!list_group.is(':visible')) {
+  //     list_group.fadeIn();
+  //   }
+  // } else { // grade 6 is visible, hide
+  //   console.log('visible');
+  //   if (list_group.is(':visible')) {
+  //     list_group.fadeOut();
+  //   }
+  // }
 }
 
 function _update_element_meter(el, _slider_el, grade) {
@@ -520,6 +627,7 @@ function _create_element_bar(id) {
        +     '<span id="' + id + '-text"> '
        +       '<span class="value"></span>'
        +       '<span class="exceed-warning"></span>'
+       +     '</span>'
        +   '</li>'
        + '</ul>';
 }
@@ -557,7 +665,8 @@ function _activate_element_slider(el, _el_text) {
     } else {
       $(el_text).html(_element_string(evt.value.newValue));
 
-      _evaluate_dependency($(el));
+      // element-slider is 2-levels deeper than fodder-slider is
+      _evaluate_dependency($(el).parent().parent());
     }
   });
 
