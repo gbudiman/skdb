@@ -9,10 +9,9 @@
         %li{class: 'active'}
           %a{'data-toggle' => 'tab', href: '#tab-tiers'} 
             Tiers
-            %sup{class: 'glyphicon-red'} NEW
         %li
           %a{'data-toggle' => 'tab', href: '#tab-tabular'} 
-            Tabular
+            Stats
         %li
           %a{'data-toggle' => 'tab', href: '#tab-search'} Search
 
@@ -50,8 +49,8 @@
                 %ul{class: 'list-group panel-search-result-infinte', id: 'effect-result'}
 
         %div{id: 'tab-tiers', class: 'tab-pane fade in active'}
-          %div{class: 'row'}
-            = render template: 'tiers/index', locals: { full: false }
+          
+          = render template: 'tiers/index', locals: { full: false }
         %div{id: 'tab-tabular', class: 'tab-pane fade in'}
           = render template: 'stat/index'
 
@@ -63,7 +62,7 @@
             %span{class: 'glyphicon glyphicon-arrow-left'}
         %div{class: 'col-xs-10'}
           %h1 Add Hero
-          %p Select hero from left pane
+          %p Select hero from left pane to start comparison
         %div{class: 'clearfix'}
     %div{id: 'toolbar', hidden: true, class: 'row'}
       %div{class: 'col-xs-6'}
