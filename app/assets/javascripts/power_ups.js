@@ -66,7 +66,7 @@ jQuery.fn.extend({
 
           + '</div>'
           + '<br />'
-          + '<div id="' + id + '"></div>';
+          + '<div id="' + id + '" class="scrolling"></div>';
 
     $(this).append(s);
 
