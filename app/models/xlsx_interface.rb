@@ -122,7 +122,8 @@ private
               pvp:       nbts(row['t_pvp']),
               tower:     nbts(row['t_tower']),
               raid:      nbts(row['t_raid']),
-              boss:      nbts(row['t_boss'])
+              boss:      nbts(row['t_boss']),
+              d_hard:    nbts(row['t_dh']),
             }
           }
 

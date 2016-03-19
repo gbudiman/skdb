@@ -5,7 +5,8 @@ class Tier < ActiveRecord::Base
                   :raid,
                   :pvp,
                   :tower,
-                  :boss]
+                  :boss,
+                  :d_hard]
 
   belongs_to :hero
   validates :hero, presence: true
@@ -29,7 +30,7 @@ class Tier < ActiveRecord::Base
       result[r.id][:rank] = r.hero_rank
       result[r.id][:category] = r.hero_category
       result[r.id][:element] = Hero.elements.keys[r.hero_element]
-      result[r.id][:tiers] ||= Hash.new
+      result[r.id][:tiers] ||= Hash[Tier.categories.map { |k, v| [k, nil] }]
 
       result[r.id][:tiers][Tier.categories.keys[r.tier_category]] = r.tier_value
     end

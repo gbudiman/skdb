@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160314002122) do
+ActiveRecord::Schema.define(version: 20160319191337) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -67,6 +67,11 @@ ActiveRecord::Schema.define(version: 20160314002122) do
   end
 
   add_index "equips", ["name"], name: "index_equips_on_name", unique: true, using: :btree
+
+  create_table "hero_teams", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "heros", force: :cascade do |t|
     t.string   "static_name", limit: 255, null: false
@@ -151,6 +156,11 @@ ActiveRecord::Schema.define(version: 20160314002122) do
   end
 
   add_index "summarized_visitors", ["todays_date"], name: "index_summarized_visitors_on_todays_date", unique: true, using: :btree
+
+  create_table "team_templates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tiers", force: :cascade do |t|
     t.integer  "category",   limit: 4,   null: false

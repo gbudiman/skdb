@@ -11,13 +11,17 @@
       %tr
         %th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
         %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Name
-        %th{'data-field' => 'adventure', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvE
-        %th{'data-field' => 'cr_easy', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} CR Easy
-        %th{'data-field' => 'cr_normal', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} CR Norm
-        %th{'data-field' => 'raid', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} Raid
-        %th{'data-field' => 'pvp', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter'} PvP
-        %th{'data-field' => 'tower', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} Tower
-        %th{'data-field' => 'boss', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}"} Boss
+        %th{'data-field' => 'adventure', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-formatter' => 'format_generic_with_null_handler', 'data-visible' => 'false'} PvE
+        %th{'data-field' => 'd_hard', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-formatter' => 'format_generic_with_null_handler'} 
+          D Hard
+          %sup{class: 'glyphicon-red'} NEW
+        %th{'data-field' => 'cr_easy', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}", 'data-formatter' => 'format_generic_with_null_handler'} CR Easy
+        %th{'data-field' => 'cr_normal', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-formatter' => 'format_generic_with_null_handler'} CR Norm
+        %th{'data-field' => 'raid', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}", 'data-formatter' => 'format_generic_with_null_handler'} Raid
+        %th{'data-field' => 'pvp', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-formatter' => 'format_generic_with_null_handler'} PvP
+        
+        %th{'data-field' => 'tower', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}", 'data-formatter' => 'format_generic_with_null_handler'} Tower
+        %th{'data-field' => 'boss', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-visible' => "#{@visible}", 'data-formatter' => 'format_generic_with_null_handler'} Boss
 
 = javascript_include_tag 'stat_table'
 :javascript
@@ -61,4 +65,8 @@
     if (a > b) return 1;
     if (a < b) return -1;
     return 0;
+  }
+
+  function format_generic_with_null_handler(value) {
+    return value || '-';
   }
