@@ -16,6 +16,7 @@ class Hero < ActiveRecord::Base
   has_many :stats, dependent: :destroy
   has_many :tiers, dependent: :destroy
   has_many :recommendations, dependent: :destroy
+  has_many :hero_teams, dependent: :destroy
 
   def self.fetch_having_atb_effect _h
     if _h[:simplified]
