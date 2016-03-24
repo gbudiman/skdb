@@ -8,7 +8,7 @@ function resize_compare_area() {
 }
 
 function resize_compare_area_once() {
-  $('#compare-table').parent().css('height', '24em');
+  $('#compare-table').parent().css('height', '42em');
   $('#compare-table').css('width', '99%');
 }
 
