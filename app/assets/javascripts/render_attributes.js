@@ -22,6 +22,7 @@ var modifier_translation = {
   immunity_to_petrify: _render_immunity('Petrify'),
   immunity_to_physical_damage: _render_immunity('Physical Attack'),
   immunity_to_silence: _render_immunity('Silence'),
+  immunity_to_stat_attrition_debuffs: _render_immunity('Stat Attrition'),
   immunity_to_stun: _render_immunity('Stun'),
   inflict_bleed: _render_inflict('Bleed'),
   inflict_blind: _render_inflict('Blind'),
