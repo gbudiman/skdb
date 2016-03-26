@@ -52,6 +52,7 @@ class TeamTemplate < ActiveRecord::Base
       end
     end
 
+    puts "#{TeamTemplate.count} team templates recorded"
     return TeamTemplate.count
   end
 
