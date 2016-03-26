@@ -55,6 +55,28 @@ class TeamTemplate < ActiveRecord::Base
     return TeamTemplate.count
   end
 
+  def self.fetch
+    result = Hash.new
+
+    TeamTemplate.joins('LEFT OUTER JOIN hero_teams AS ht
+                          ON ht.team_template_id = team_templates.id
+                        LEFT OUTER JOIN heros AS h
+                          ON ht.hero_id = h.id')
+                .select('ht.hero_id AS hero_id,
+                         h.name AS hero_name,
+                         team_templates.name AS team_name,
+                         team_templates.description AS team_description,
+                         team_templates.id AS team_id')
+                .each do |r|
+      
+      result[r.team_id] ||= { name: r.team_name, description: r.team_description, heros: Array.new }
+      #ap "#{r.hero_id} => #{r.hero_name}"
+      result[r.team_id][:heros].push(r.hero_name.split.last)
+    end
+
+    return result
+  end
+
 private
   def self.import!
     RemoteTable.new('https://raw.githubusercontent.com/gbudiman/skdb/master/db/team_templates.csv').each do |r|

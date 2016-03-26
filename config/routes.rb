@@ -45,6 +45,9 @@ Rails.application.routes.draw do
   get     'equips/fetch'                       => 'equips#index_fetch'
 
   get     'calcs/power_ups'                    => 'power_ups#index'
+
+  get     'team/templates'                     => 'team_templates#index'
+  get     'team/templates/fetch'               => 'team_templates#index_fetch'
   # get     'calcs/power_ups/test'               => 'power_ups#test'
   # get     'stat/fetch/:level'                  => 'stat#index_fetch'
   # get     'stat/fetch/:level/:plus'            => 'stat#index_fetch'
