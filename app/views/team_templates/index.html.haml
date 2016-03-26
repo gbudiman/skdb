@@ -1,0 +1,7 @@
+%div{class: 'list-group'}
+  - data.each do |k, v|
+    %a{href: '#', class: 'list-group-item team-template', 'data-hero-id' => "#{v[:hero_ids].to_json}" }
+      %h4{class: 'list-group-item-heading'}= v[:name]
+      %p{class: 'list-group-item-text'}
+        %div{class: 'text-muted'}= v[:description]
+        %div= v[:hero_names].join(', ')

@@ -69,9 +69,13 @@ class TeamTemplate < ActiveRecord::Base
                          team_templates.id AS team_id')
                 .each do |r|
       
-      result[r.team_id] ||= { name: r.team_name, description: r.team_description, heros: Array.new }
+      result[r.team_id] ||= { name: r.team_name, 
+                              description: r.team_description, 
+                              hero_ids: Array.new,
+                              hero_names: Array.new }
       #ap "#{r.hero_id} => #{r.hero_name}"
-      result[r.team_id][:heros].push(r.hero_name.split.last)
+      result[r.team_id][:hero_names].push(r.hero_name.split.last)
+      result[r.team_id][:hero_ids].push(r.hero_id)
     end
 
     return result
