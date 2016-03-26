@@ -42,4 +42,34 @@ class TeamTemplate < ActiveRecord::Base
       return ht.pluck(_method)
     end
   end
+
+  def self.rebuild_database!
+    ActiveRecord::Base.transaction do
+      Utility.shut_up do
+        TeamTemplate.destroy_all
+
+        import!
+      end
+    end
+
+    return TeamTemplate.count
+  end
+
+private
+  def self.import!
+    RemoteTable.new('https://raw.githubusercontent.com/gbudiman/skdb/master/db/team_templates.csv').each do |r|
+      heros = Array.new
+
+      (0..4).each do |i|
+        cat = r["h#{i}"]
+        if cat.strip.length > 0
+          heros.push cat
+        end
+      end
+
+      TeamTemplate.rebuild name: r['name'],
+                           heros: heros,
+                           description: r['description']
+    end
+  end
 end
