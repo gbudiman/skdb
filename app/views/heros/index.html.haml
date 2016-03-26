@@ -55,7 +55,7 @@
           = render template: 'tiers/index', locals: { full: false }
         %div{id: 'tab-tabular', class: 'tab-pane fade in'}
           = render template: 'stat/index'
-        %div{id: 'tab-template', class: 'tab-pane fade in'}
+        %div{id: 'tab-template', class: 'tab-pane fade in', style: 'height: "32em"' }
           %br
           = render template: 'team_templates/index', locals: { data: TeamTemplate.fetch }
 
@@ -67,7 +67,7 @@
             %span{class: 'glyphicon glyphicon-arrow-left'}
         %div{class: 'col-xs-10'}
           %h1 Add Hero
-          %p Select hero from left pane to start comparison
+          %p Select hero or team template from left pane to start comparison
         %div{class: 'clearfix'}
     %div{id: 'toolbar', hidden: true, class: 'row'}
       %div{class: 'col-xs-6'}
@@ -115,6 +115,18 @@
 :javascript
   window.preload = #{@preload.to_json};
   window.mismatches = #{@mismatches.to_json};
+  window.start = '#{@start}';
+
+  $('a[href="#tab-template"]').off('click').on('click', function() {
+    $('#team-template').css('height', '75vh');
+    $('#team-template').css('overflow-y', 'auto');
+  });
+
+  if (window.start) {
+    $('a[href="#' + window.start + '"]').trigger('click');
+  }
+
+  
 
 = javascript_include_tag 'launch_search'
 = javascript_include_tag 'bst_interface_compare'
@@ -123,3 +135,4 @@
 = javascript_include_tag 'permalink'
 = javascript_include_tag 'preload_compare'
 = javascript_include_tag 'team_templates'
+= stylesheet_link_tag 'team_templates'

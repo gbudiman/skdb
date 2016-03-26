@@ -3,6 +3,7 @@ class HerosController < ApplicationController
     log
     @preload = nil
     @compact_tabular = true
+    @start = params[:start]
   end
 
   def index_mock
