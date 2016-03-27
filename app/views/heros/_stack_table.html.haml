@@ -6,10 +6,10 @@
     %div{class: 'row'}
       %div{class: 'col-xs-12 synergy-mid'} 
         %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_physical_attack_increase'} 
-          PHY Up
+          ATK Up
       %div{class: 'col-xs-12 synergy-mid'}
         %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_magical_attack_increase'} 
-          MAG Up
+          M.ATK Up
   %div{class: 'col-xs-2 synergy-mid'}
     %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-span', id: 'stack_stat_damage_output_increase'} 
       Damage Output Up
@@ -19,14 +19,14 @@
   %div{class: 'col-xs-2'}
     %div{class: 'row'}
       %div{class: 'col-xs-12 synergy-mid'} 
-        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_physical_damage_decrease'} 
-          PHY Resist
+        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_physical_damage_increase'} 
+          PHY Resist Down
       %div{class: 'col-xs-12 synergy-mid'} 
-        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_magical_damage_decrease'} 
-          MAG Resist
+        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_magical_damage_increase'} 
+          MAG Resist Down
   %div{class: 'col-xs-2 synergy-closing'} 
     %button{class: 'btn btn-default disabled btn-block synergy-closing-top synergy-span', id: 'stack_stat_defense_decrease'} 
-      Defense Down
+      DEF Down
 
 %div{class: 'row stack-table stack-wide', hidden: true}
   %div{class: 'col-xs-6', style: 'text-align: right'} 
@@ -41,14 +41,14 @@
 %div{class: 'row stack-table', hidden: true}
   %div{class: 'col-xs-2 synergy-leading'} 
     %button{class: 'btn btn-default disabled btn-block synergy-leading-bottom synergy-span', id: 'stack_stat_defense_increase'}
-      Defense Up
+      DEF Up
   %div{class: 'col-xs-2'}
     %div{class: 'row'}
       %div{class: 'col-xs-12 synergy-mid'} 
-        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_physical_damage_increase'} 
+        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_physical_damage_decrease'} 
           PHY Resist Up
       %div{class: 'col-xs-12 synergy-mid'}
-        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_magical_damage_increase'} 
+        %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_incoming_magical_damage_decrease'} 
           MAG Resist Up
   %div{class: 'col-xs-2 synergy-mid'}
     %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-span', id: 'stack_stat_incoming_damage_decrease'} 
@@ -60,10 +60,10 @@
     %div{class: 'row'}
       %div{class: 'col-xs-12 synergy-mid'} 
         %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_physical_attack_decrease'} 
-          PHY Down
+          ATK Down
       %div{class: 'col-xs-12 synergy-mid'} 
         %button{class: 'btn btn-default disabled btn-block synergy-mid synergy-cell', id: 'stack_stat_magical_attack_decrease'} 
-          MAG Down
+          M.ATK Down
   %div{class: 'col-xs-2 synergy-closing'} 
     %button{class: 'btn btn-primary active btn-block synergy-closing-bottom synergy-span'} 
       Defensive Synergy

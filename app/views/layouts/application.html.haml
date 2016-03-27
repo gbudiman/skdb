@@ -22,7 +22,7 @@
     = stylesheet_link_tag    'bootstrap-slider.min'
     = csrf_meta_tags
   %body
-    %nav{class: 'navbar navbar-inverse'}
+    %nav{class: 'navbar navbar-inverse no-rounding'}
       %div{class: 'container-fluid'}
         %div{class: 'navbar-header'}
           %a{class: 'navbar-brand', href: '/'} Seven Knights Database
@@ -55,7 +55,7 @@
               %a{href: '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown', role: 'button', 'aria-haspopup' => true, 'aria-expanded' => false}
                 Calculator
                 %sup{class: 'glyphicon-red'} NEW
-                <span class='caret'</span>
+                <span class='caret'></span>
               %ul{class: 'dropdown-menu'}
                 %li{class: "#{ApplicationHelper.set_active self, '/calcs/power_ups'}"}
                   %a{href: '/calcs/power_ups'}
@@ -63,18 +63,25 @@
                     %sup{class: 'glyphicon-red'} NEW
 
           %ul{class: 'nav navbar-nav navbar-right'}
-            %li
-              %a{href: 'https://github.com/gbudiman/skdb/commits/master',
-                 target: '_github_blank',
-                 id: 'versioning'} 
+            %li{class: 'dropdown'}
+              %a{href: '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown', role: 'button', 'aria-haspopup' => true, 'aria-expanded' => false}
                 #{ApplicationHelper::CLIENT}
                 &nbsp;|&nbsp;
                 #{ApplicationHelper::VERSION}
-            %li
-              %a{class: 'navbar-brand pull-right', 
-                 href: 'https://github.com/gbudiman/skdb',
-                 title: 'GitHub Project Page',
-                 target: '_github_blank'} 
-                GitHub
-                %span{class: 'glyphicon glyphicon-new-window'}
+
+                <span class='caret'></span>
+              %ul{class: 'dropdown-menu'}
+                %li{class: 'text-right'}
+                  %a{href: 'https://www.reddit.com/r/7kglobal/', target: '_reddit'} 
+                    #{'/r/7kglobal'}
+                    %span{class: 'glyphicon glyphicon-new-window'}
+                %li{class: 'divider'}
+                %li{class: 'text-right'}
+                  %a{href: 'https://github.com/gbudiman/skdb', target: '_github'} 
+                    GitHub
+                    %span{class: 'glyphicon glyphicon-new-window'}
+                %li{class: 'text-right'}
+                  %a{href: 'https://github.com/gbudiman/skdb/issues', target: '_bugs'} 
+                    Bug Reports
+                    %span{class: 'glyphicon glyphicon-new-window'}
     = yield
