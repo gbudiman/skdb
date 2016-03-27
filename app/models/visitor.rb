@@ -18,6 +18,10 @@ class Visitor < ActiveRecord::Base
     return self
   end
 
+  def self.cumulative_unique_visit_to_date
+    return Visitor.distinct(:address).count(:address) + SummarizedVisitor.sum(:unique_count)
+  end
+
   def self.log **_h
     Visitor.new(_h).log
   end

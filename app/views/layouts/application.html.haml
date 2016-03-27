@@ -84,4 +84,13 @@
                   %a{href: 'https://github.com/gbudiman/skdb/issues', target: '_bugs'} 
                     Bug Reports
                     %span{class: 'glyphicon glyphicon-new-window'}
+                %li{class: 'divider'}
+                %li{class: 'text-right'}
+                  %a
+                    %span{id: 'visitor-count'}
+                      #{ApplicationHelper.cumulative_unique_visit_to_date}
+                    Hits
     = yield
+
+:javascript
+  $('#visitor-count').text(parseInt($('#visitor-count').text()).toLocaleString());

@@ -6,4 +6,8 @@ module ApplicationHelper
   	return s.current_page?(_x) ? 'active' : ''
   end
 
+  def self.cumulative_unique_visit_to_date
+    return Visitor.cumulative_unique_visit_to_date
+  end
+
 end
