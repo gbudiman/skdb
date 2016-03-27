@@ -115,7 +115,7 @@ function recalculate_team_speed() {
     total += parseInt($(this).children().last().text());
   });
 
-  $('#compare-cumulative-spd').text(total / 2); 
+  $('#compare-cumulative-spd').text(total); 
 }
 
 function recalculate_team_members() {
