@@ -31,6 +31,18 @@ function getScrollBarWidth () {
     return 100 - widthWithScroll;
 };
 
+jQuery.expr[':'].containsInsensitive = jQuery.expr.createPseudo(function (arg) {
+  return function (elem) {
+    return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+  }
+});
+
+jQuery.expr[':'].notContainsInsensitive = jQuery.expr.createPseudo(function (arg) {
+  return function (elem) {
+    return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) < 0;
+  }
+});
+
 jQuery.fn.extend({
   has_hero: function(hero_id) {
     var count = $(this).find('th[data-hero-id="' + hero_id + '"]').length;

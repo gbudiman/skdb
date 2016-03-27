@@ -1,7 +1,14 @@
-%div{class: 'list-group', id: 'team-template'}
-  - (@data || data).each do |k, v|
-    %a{href: '#', class: 'list-group-item team-template', 'data-hero-id' => "#{v[:hero_ids].to_json}" }
-      %h4{class: 'list-group-item-heading'}= v[:name]
-      %p{class: 'list-group-item-text'}
-        %div{class: 'text-muted'}= v[:description]
-        %div= v[:hero_names].join(', ')
+%div
+  %div{class: 'row'}
+    %div{class: 'col-xs-6 pull-right'}
+      %input{type: 'text', placeholder: 'Try dungeon hard...', class: 'form-control', id: 'template-search'}
+      %br
+  %div{class: 'row'}
+    %div{class: 'col-xs-12'}
+      %div{class: 'list-group', id: 'team-template'}
+        - (@data || data).each do |k, v|
+          %a{href: '#', class: 'list-group-item team-template', 'data-hero-id' => "#{v[:hero_ids].to_json}" }
+            %h4{class: 'list-group-item-heading'}= v[:name]
+            %p{class: 'list-group-item-text'}
+              %div{class: 'text-muted'}= v[:description]
+              %div= v[:hero_names].join(', ')
