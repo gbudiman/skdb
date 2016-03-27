@@ -123,7 +123,14 @@
   });
 
   if (window.start) {
-    $('a[href="#' + window.start + '"]').trigger('click');
+    var re = /^tab\-/i;
+    if (window.start.match(/^tab\-/)) {
+
+    } else {
+      window.start = 'tab-' + window.start;
+    }
+
+    $('a[href="#' + window.start.toLowerCase() + '"]').trigger('click');
   }
 
   
