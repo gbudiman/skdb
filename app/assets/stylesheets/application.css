@@ -214,3 +214,8 @@ div#team-stats {
 .navbar-inverse.no-rounding {
   border-radius: 0px;
 }
+
+.pseudo-footer.styled {
+  text-align: center;
+  font-weight: bold;
+}

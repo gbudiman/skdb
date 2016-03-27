@@ -66,25 +66,31 @@ function attach_column_displace_right() {
 
 function attach_column_activator() {
   $('#compare-table').find('thead').find('tr').find('th').each(function(i, e) {
-    var placeholder = $(this);
-
-    placeholder.on('mouseover', function() {
-      var current_position = $(this).attr('data-header-index');
-      var last_column_index = $('#compare-table').find('th[data-header-index]').length - 1;
-
-      if (current_position != 0) {
-        placeholder.find('a.displace-left').show();
-      }
-
-      if (current_position != last_column_index) {
-        placeholder.find('a.displace-right').show();
-      }
-
-      placeholder.find('a.compare-remove').show();
-    }).on('mouseout', function() {
-      placeholder.find('a').hide();
-    })
+    _activate($(this));
   })
+
+  $('#compare-table').find('tbody').find('tr.pseudo-footer').find('td').each(function(i, e) {
+    _activate($(this));
+  })
+}
+
+function _activate(placeholder) {
+  placeholder.on('mouseover', function() {
+    var current_position = $(this).attr('data-header-index');
+    var last_column_index = $('#compare-table').find('th[data-header-index]').length - 1;
+
+    if (current_position != 0) {
+      placeholder.find('a.displace-left').show();
+    }
+
+    if (current_position != last_column_index) {
+      placeholder.find('a.displace-right').show();
+    }
+
+    placeholder.find('a.compare-remove').show();
+  }).on('mouseout', function() {
+    placeholder.find('a').hide();
+  });
 }
 
 function compare_table_add(d) {
@@ -109,11 +115,11 @@ function recalculate_team_speed() {
     total += parseInt($(this).children().last().text());
   });
 
-  $('#compare-cumulative-spd').text(total); 
+  $('#compare-cumulative-spd').text(total / 2); 
 }
 
 function recalculate_team_members() {
-  var members_s = $('.compare-table-th').length;
+  var members_s = $('th.compare-table-th').length;
   var members = parseInt(members_s);
 
   if (members > 5) {
@@ -195,12 +201,12 @@ function adjust_stats(el) {
 
 function expand_stats_and_skills(s) {
   return [stylify_flair(undefined, 'Flair Not Available'),
-          stylify_combo(stylify_stats(s.stats, s.level, s.plus),
-                        stylify_recs(s.recommendations)),
+          stylify_stats(s.stats, s.level, s.plus),
           stylify_skill(s.skills.active_0),
           stylify_skill(s.skills.active_1),
           stylify_skill(s.skills.passive, 'No Passive Aura'),
-          stylify_skill(s.skills.awakening, 'Not Awakened Hero')];
+          stylify_skill(s.skills.awakening, 'Not Awakened Hero'),
+          stylify_recs(s.recommendations)];
 }
 
 function stylify_combo(a, b) {

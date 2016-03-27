@@ -57,7 +57,7 @@ jQuery.fn.extend({
   add_column_to_bst: function(data) {
     var last_column_index = $(this).find('tbody').find('tr').first().find('td').length;
 
-    $(this).find('tbody').find('tr').each(function(i, r) {
+    $(this).find('tbody').find('tr.content').each(function(i, r) {
       $(this).append('<td data-column-index=' + last_column_index + '>' + data[i] || '-' + '</td>');
     });
   },
@@ -65,15 +65,33 @@ jQuery.fn.extend({
   add_header_column_to_bst: function(data, hero_id, hero_name_url_friendly) {
     var last_header_index = $(this).find('th').length;
 
-    $(this).find('thead').find('tr')
-      .append('<th class="compare-table-th" '
-            +      'data-hero-id=' + hero_id + ' '
-            +      'data-hero-name-url-friendly=' + hero_name_url_friendly + ' '
-            +      'data-header-index=' + last_header_index + '>'
+    // $(this).find('thead').find('tr')
+    //   .append('<th class="compare-table-th" '
+    //         +      'data-hero-id=' + hero_id + ' '
+    //         +      'data-hero-name-url-friendly=' + hero_name_url_friendly + ' '
+    //         +      'data-header-index=' + last_header_index + '>'
+    //         +   '<div class="th-inner">'
+    //         +     data
+    //         +   '</div>'
+    //         + '</th>');
+
+    //$(this).find('thead').find('tr').append(_generate_header_controls(data, hero_id, hero_name_url_friendly, last_header_index));
+    $(this).find('thead').find('tr').append_header_controls(data, hero_id, hero_name_url_friendly, last_header_index);
+    $(this).find('tbody').find('tr.pseudo-footer').last().append_header_controls(data, hero_id, hero_name_url_friendly, last_header_index, true);
+  },
+
+  append_header_controls: function(data, hero_id, hero_name_url_friendly, last_header_index, _pseudo) {
+    var pseudo = _pseudo || false;
+    var tag = pseudo ? 'td' : 'th';
+    $(this)
+      .append('<' + tag +' class="compare-table-th" '
+            +     'data-hero-id=' + hero_id + ' '
+            +     'data-hero-name-url-friendly=' + hero_name_url_friendly + ' '
+            +     'data-header-index=' + last_header_index + '>'
             +   '<div class="th-inner">'
             +     data
             +   '</div>'
-            + '</th>');
+            + '</' + tag + '>');
   },
 
   remove_column_from_bst: function(ord) {
@@ -155,9 +173,16 @@ jQuery.fn.extend({
       var lc = r.find('td[data-column-index=' + lei + ']');
       var rc = r.find('td[data-column-index=' + rei + ']');
 
+      var plc = r.find('td[data-header-index=' + lei + ']');
+      var prc = r.find('td[data-header-index=' + rei + ']');
+
       rc.insertBefore(lc);
       rc.attr('data-column-index', lei);
       lc.attr('data-column-index', rei);
+
+      prc.insertBefore(plc);
+      prc.attr('data-header-index', lei);
+      plc.attr('data-header-index', rei);
     });
 
     update_permalink();
