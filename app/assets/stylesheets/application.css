@@ -210,3 +210,7 @@ div#team-stats {
   height: 90vh;
   overflow-y: auto;
 }
+
+.navbar-inverse.no-rounding {
+  border-radius: 0px;
+}
