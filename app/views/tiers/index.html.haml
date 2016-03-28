@@ -10,7 +10,7 @@
     %thead
       %tr
         %th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
-        %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Name
+        %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons', 'data-searchable' => 'true'} Name
         %th{'data-field' => 'adventure', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-formatter' => 'format_generic_with_null_handler', 'data-visible' => 'false'} PvE
         %th{'data-field' => 'd_hard', 'data-sortable' => 'true', 'data-sorter' => 'tier_sorter', 'data-formatter' => 'format_generic_with_null_handler'} 
           D Hard
@@ -36,7 +36,8 @@
     onSort: function() {
       resize_bst_area('#tier-table');
       activate_links('#tier-table');
-    }
+    },
+    search: true
   });
 
   var tier_rank = {
