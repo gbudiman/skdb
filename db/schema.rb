@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160319191337) do
+ActiveRecord::Schema.define(version: 20160403065505) do
 
   create_table "atbs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -79,14 +79,15 @@ ActiveRecord::Schema.define(version: 20160319191337) do
   add_index "hero_teams", ["team_template_id", "hero_id"], name: "map_team_to_hero", unique: true, using: :btree
 
   create_table "heros", force: :cascade do |t|
-    t.string   "static_name", limit: 255, null: false
-    t.string   "name",        limit: 255, null: false
-    t.integer  "rank",        limit: 4,   null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.string   "static_name", limit: 255,              null: false
+    t.string   "name",        limit: 255,              null: false
+    t.integer  "rank",        limit: 4,                null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "element",     limit: 4
     t.string   "category",    limit: 255
     t.string   "acquisition", limit: 255
+    t.integer  "crit_count",  limit: 4,   default: -1, null: false
   end
 
   add_index "heros", ["name"], name: "hero_unique_name", unique: true, using: :btree
@@ -128,13 +129,14 @@ ActiveRecord::Schema.define(version: 20160319191337) do
   add_index "skill_atbs", ["skill_id"], name: "index_skill_atbs_on_skill_id", using: :btree
 
   create_table "skills", force: :cascade do |t|
-    t.string   "static_name", limit: 255,             null: false
-    t.string   "name",        limit: 255,             null: false
-    t.integer  "category",    limit: 4,               null: false
-    t.integer  "cooldown",    limit: 4,   default: 0, null: false
-    t.integer  "hero_id",     limit: 4,               null: false
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.string   "static_name", limit: 255,              null: false
+    t.string   "name",        limit: 255,              null: false
+    t.integer  "category",    limit: 4,                null: false
+    t.integer  "cooldown",    limit: 4,   default: 0,  null: false
+    t.integer  "hero_id",     limit: 4,                null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "hit_count",   limit: 4,   default: -1, null: false
   end
 
   add_index "skills", ["hero_id", "name"], name: "hero_unique_skill_name", unique: true, using: :btree

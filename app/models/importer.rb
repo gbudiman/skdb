@@ -30,6 +30,7 @@ class Importer
           skill.hero_id = hero.id
           skill.name = @result_skills[:skills][sk]
           skill.cooldown = @result_skills[:cooldown][sk] || 0
+          skill.hit_count = @result_skills[:hit_count][sk] || -1
           skill.save!
 
           # ensure to clean-up existing SkillAttributes
@@ -57,6 +58,7 @@ class Importer
 
         hero.category = row[:category]
         hero.element = row[:element]
+        hero.crit_count = row[:crit_count]
         hero.save!
 
         row[:equip_recommendations].each do |slot, value|
@@ -167,6 +169,7 @@ private
       inverse_heros: {},
       skills: {},
       cooldown: {},
+      hit_count: {},
       rankless_skills: {},
       inverse_skills: {},
       attributes: {},
@@ -178,6 +181,7 @@ private
       stat[:row_count] += 1
 
       stat[:cooldown][row[:static_data]] = row[:cooldown]
+      stat[:hit_count][row[:static_data]] = row[:hit_count]
 
       static_hero_name = Utility::strip_static_name_to_hero(row[:static_data])
       case stat[:heros][static_hero_name]

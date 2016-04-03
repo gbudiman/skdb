@@ -59,9 +59,10 @@ private
             hero_name:      row['Hero'],
             skill_name:     row['Skill'],
             cooldown:       (row['Cooldown'] || 0).to_i,
+            hit_count:      row['Hit Count'] =~ /proc/i ? -2 : row['Hit Count'].to_i,
             attributes:     Array.new }
 
-      row.keys[4..-1].each_slice(3) do |s|
+      row.keys[5..-1].each_slice(3) do |s|
         unless row[s[0]].blank?
           value = case row[s[2]]
           when /[A-Za-z]/
@@ -96,6 +97,7 @@ private
             spd:            nbti(row['SPD']),
             element:        row['element'],
             category:       row['class'],
+            crit_count:     row['critical_hit_count'],
             datapoints: {
               thirty:         { hp: nbti(row['HP_thirty']),
                                 atk: nbti(row['ATK_thirty']),

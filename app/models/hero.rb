@@ -18,6 +18,11 @@ class Hero < ActiveRecord::Base
   has_many :recommendations, dependent: :destroy
   has_many :hero_teams, dependent: :destroy
 
+  HIT_COUNT_PRE = {
+    -2 => '1, 2 if proc',
+    -1 => 'No data'
+  }
+
   def self.fetch_having_atb_effect _h
     if _h[:simplified]
       result = Hash.new
@@ -226,6 +231,7 @@ class Hero < ActiveRecord::Base
                  heros.rank         AS hero_rank,
                  heros.category     AS hero_category,
                  heros.element      AS hero_element,
+                 heros.crit_count   AS hero_crit_count,
                  recs.slot          AS recs_slot,
                  recs.value         AS recs_value,
                  stats.name         AS stat_name,
@@ -236,6 +242,7 @@ class Hero < ActiveRecord::Base
                  sk.name            AS skill_name,
                  sk.category        AS skill_category,
                  sk.cooldown        AS skill_cooldown,
+                 sk.hit_count       AS skill_hit_count,
                  sa.value           AS atb_value,
                  sa.target          AS atb_target,
                  atbs.id            AS atb_id,
@@ -251,6 +258,7 @@ class Hero < ActiveRecord::Base
       hero[:hero_rank]          = r.hero_rank.to_i
       hero[:hero_category]      = r.hero_category
       hero[:hero_element]       = Hero.elements.keys[r.hero_element]
+      hero[:crit_count]         = r.hero_crit_count == -1 ? 'No data' : r.hero_crit_count
       hero[:url_friendly]       = r.hero_static_name.split(/\_/).first
       hero[:skills]           ||= Hash.new
       hero[:stats]            ||= Hash.new
@@ -281,6 +289,7 @@ class Hero < ActiveRecord::Base
       skill[:name]          = r.skill_name
       skill[:category]      = Skill.categories.keys[r.skill_category]
       skill[:cooldown]      = r.skill_cooldown
+      skill[:hit_count]     = self.translate_hit_count r.skill_hit_count
       skill[:attributes]  ||= Hash.new
 
         # Attribute sub-member ##
@@ -311,6 +320,10 @@ class Hero < ActiveRecord::Base
   end
 
 private
+  def self.translate_hit_count _x
+    return HIT_COUNT_PRE[_x] || _x
+  end
+
   def static_name_only_has_one_numeric!
     unless self.static_name =~ /\A[A-Za-z\_]+\_\d\z/
       raise ActiveRecord::StatementInvalid, "Hero static name can only have one numeric: #{self.static_name}"
