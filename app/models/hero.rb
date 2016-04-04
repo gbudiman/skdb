@@ -95,8 +95,6 @@ class Hero < ActiveRecord::Base
       'attack_magical_fraction' => 'water'
     }
 
-    atb_ids = Atb.where('name = "attack_physical_fraction" OR name = "attack_magical_fraction"').pluck(:id)
-
     Hero.joins('LEFT OUTER JOIN skills
                   ON         heros.id = skills.hero_id
                 LEFT OUTER JOIN skill_atbs AS sa
@@ -115,7 +113,8 @@ class Hero < ActiveRecord::Base
                  sa.target          AS skill_target,
                  atbs.name          AS atb_name')
         .where('heros.rank = 6')
-        .where('sa.atb_id' => atb_ids).each do |r|
+        .where('atbs.name' => ['attack_physical_fraction', 'attack_magical_fraction'])
+        .each do |r|
       result[r.hero_id] ||= Hash.new
       result[r.hero_id][:name] = r.hero_name
       result[r.hero_id][:rank] = r.hero_rank
