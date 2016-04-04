@@ -18,11 +18,6 @@ class Hero < ActiveRecord::Base
   has_many :recommendations, dependent: :destroy
   has_many :hero_teams, dependent: :destroy
 
-  HIT_COUNT_PRE = {
-    -2 => '1, 2 if proc',
-    -1 => 'No data'
-  }
-
   def self.fetch_having_atb_effect _h
     if _h[:simplified]
       result = Hash.new
@@ -92,6 +87,73 @@ class Hero < ActiveRecord::Base
     end
   end
 
+  def self.fetch_hit_counts
+    result = Hash.new
+    denorm = Array.new
+    damage_type = {
+      'attack_physical_fraction' => 'fire',
+      'attack_magical_fraction' => 'water'
+    }
+
+    atb_ids = Atb.where('name = "attack_physical_fraction" OR name = "attack_magical_fraction"').pluck(:id)
+
+    Hero.joins('LEFT OUTER JOIN skills
+                  ON         heros.id = skills.hero_id
+                LEFT OUTER JOIN skill_atbs AS sa
+                  ON        skills.id = sa.skill_id
+                LEFT OUTER JOIN atbs
+                  ON        sa.atb_id = atbs.id')
+        .select('heros.id           AS hero_id,
+                 heros.name         AS hero_name,
+                 heros.rank         AS hero_rank,
+                 heros.category     AS hero_category,
+                 heros.element      AS hero_element,
+                 heros.crit_count   AS hero_crit_count,
+                 skills.id          AS skill_id,
+                 skills.name        AS skill_name,
+                 skills.hit_count   AS skill_hit_count,
+                 sa.target          AS skill_target,
+                 atbs.name          AS atb_name')
+        .where('heros.rank = 6')
+        .where('sa.atb_id' => atb_ids).each do |r|
+      result[r.hero_id] ||= Hash.new
+      result[r.hero_id][:name] = r.hero_name
+      result[r.hero_id][:rank] = r.hero_rank
+      result[r.hero_id][:category] = r.hero_category
+      result[r.hero_id][:element] = Hero.elements.keys[r.hero_element]
+      result[r.hero_id][:crit_count] = r.hero_crit_count
+      result[r.hero_id][:skills] ||= Hash.new
+
+      result[r.hero_id][:skills][r.skill_id] = {
+        name: r.skill_name,
+        hit_count: r.skill_hit_count,
+        target: r.skill_target,
+        damage_type: r.atb_name
+      }
+    end
+
+    result.each do |hero_id, h_data| 
+      h = Hash.new
+      h[:name] = h_data[:name]
+      h[:stripped_name] = h_data[:name].split(/\s+/).last
+      h[:rank] = h_data[:rank]
+      h[:category] = h_data[:category]
+      h[:element] = h_data[:element]
+      h[:crit_count] = h_data[:crit_count]
+
+      h_data[:skills].each do |skill_id, s_data|
+        h[:skill_name] = s_data[:name]
+        h[:hit_count] = s_data[:hit_count]
+        h[:target] = SkillAtb.targets.keys[s_data[:target]]
+        h[:damage_type] = damage_type[s_data[:damage_type]]
+
+        denorm.push h.dup
+      end
+    end
+
+    return denorm
+  end
+
   def self.fetch_with_stats **_h
     result = Hash.new
     denorm = Array.new
@@ -103,6 +165,7 @@ class Hero < ActiveRecord::Base
                  heros.rank         AS hero_rank,
                  heros.category     AS hero_category,
                  heros.element      AS hero_element,
+                 heros.crit_count   AS hero_crit_count,
                  stats.name         AS stat_name,
                  stats.datapoint    AS stat_datapoint,
                  stats.value        AS stat_value')
@@ -112,6 +175,7 @@ class Hero < ActiveRecord::Base
       result[r.hero_id][:rank] = r.hero_rank
       result[r.hero_id][:category] = r.hero_category
       result[r.hero_id][:element] = Hero.elements.keys[r.hero_element]
+      result[r.hero_id][:crit_count] = r.hero_crit_count
       result[r.hero_id][:stats] ||= Hash.new
 
       if r.stat_name
@@ -131,6 +195,7 @@ class Hero < ActiveRecord::Base
       h[:rank] = r[:rank]
       h[:category] = r[:category]
       h[:element] = r[:element]
+      h[:crit_count] = r[:crit_count]
 
       r[:stats].each do |stat, d|
         h[stat] = Stat.extrapolate d
@@ -258,7 +323,7 @@ class Hero < ActiveRecord::Base
       hero[:hero_rank]          = r.hero_rank.to_i
       hero[:hero_category]      = r.hero_category
       hero[:hero_element]       = Hero.elements.keys[r.hero_element]
-      hero[:crit_count]         = r.hero_crit_count == -1 ? 'No data' : r.hero_crit_count
+      hero[:crit_count]         = r.hero_crit_count
       hero[:url_friendly]       = r.hero_static_name.split(/\_/).first
       hero[:skills]           ||= Hash.new
       hero[:stats]            ||= Hash.new
@@ -289,7 +354,7 @@ class Hero < ActiveRecord::Base
       skill[:name]          = r.skill_name
       skill[:category]      = Skill.categories.keys[r.skill_category]
       skill[:cooldown]      = r.skill_cooldown
-      skill[:hit_count]     = self.translate_hit_count r.skill_hit_count
+      skill[:hit_count]     = r.skill_hit_count
       skill[:attributes]  ||= Hash.new
 
         # Attribute sub-member ##
@@ -320,10 +385,6 @@ class Hero < ActiveRecord::Base
   end
 
 private
-  def self.translate_hit_count _x
-    return HIT_COUNT_PRE[_x] || _x
-  end
-
   def static_name_only_has_one_numeric!
     unless self.static_name =~ /\A[A-Za-z\_]+\_\d\z/
       raise ActiveRecord::StatementInvalid, "Hero static name can only have one numeric: #{self.static_name}"

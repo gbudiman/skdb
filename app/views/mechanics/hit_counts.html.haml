@@ -1,0 +1,73 @@
+%div{id: 'hit-counts-toolbar'}
+  %h4
+    %strong Hit Counts
+
+%table{id: 'hit-counts-table', 'data-height' => '32em'}
+  %thead
+    %tr
+      %th{'data-field' => 'element', 'data-formatter' => 'format_hero_element', 'data-sortable' => 'true'} E
+      %th{'data-field' => 'stripped_name', 'data-sortable' => 'true', 'data-searchable' => 'true', 'data-formatter' => 'format_compact_name_with_dynamic_buttons'} Hero
+      %th{'data-field' => 'crit_count', 'data-sortable' => 'true', 'data-sort-name' => 'crit_count', 'data-formatter' => 'format_hit_count'} Crit Hit
+      %th{'data-field' => 'skill_name', 'data-sortable' => 'true', 'data-searchable' => 'true'} Skill Name
+      %th{'data-field' => 'damage_type', 'data-sortable' => 'true', 'data-formatter' => 'format_hero_element'} Damage Type
+      %th{'data-field' => 'hit_count', 'data-sortable' => 'true', 'data-sorter' => 'hit_count_sorter', 'data-formatter' => 'format_hit_count'} Hit Count
+      %th{'data-field' => 'target', 'data-sortable' => 'true', 'data-formatter' => 'format_target', 'data-sorter' => 'target_sorter'} Target
+
+= javascript_include_tag 'stat_table'
+
+:javascript
+  $('#hit-counts-table').bootstrapTable({
+    url: '/mechanics/hit_counts/fetch',
+    toolbar: '#hit-counts-toolbar',
+    onPostBody: function() {
+      resize_once('#hit-counts-table', false);
+    },
+    onSort: function() {
+      resize_bst_area('#hit-counts-table', false);
+    },
+    search: true
+  })
+
+  var target_rank = {
+    'enemy_one': 1,
+    'enemy_two': 2,
+    'enemy_three': 3,
+    'enemy_four': 4,
+    'enemy_all': 5
+  };
+  
+  function hit_count_sorter(_a, _b) {
+    a = _a == -2 ? 1 : _a;
+    b = _b == -2 ? 1 : _b;
+
+    if (a > b) return 1;
+    if (a < b) return -1;
+    return 0;
+  }
+
+  function target_sorter(_a, _b) {
+    a = target_rank[_a];
+    b = target_rank[_b];
+
+    if (a > b) return 1;
+    if (a < b) return -1;
+    return 0;
+  }
+
+  function format_hit_count(value, row) {
+    switch(value) {
+      case -1: return '<span class="label label-default">No Data</span>';
+      case -2: return '1 (2 if Proc)';
+      default: return value;
+    }
+  }
+
+  function format_target(value, row) {
+    switch(value) {
+      case 'enemy_one': return 1;
+      case 'enemy_two': return 2;
+      case 'enemy_three': return 3;
+      case 'enemy_four': return 4;
+      case 'enemy_all': return 5;
+    }
+  }
