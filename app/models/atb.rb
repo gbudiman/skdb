@@ -41,7 +41,7 @@ class Atb < ActiveRecord::Base
                    :hp_fraction,
                    :from_5_target_aoe_fraction,
                    :stat_original_fraction,
-                   :fraction, :amount, :turns, :probability, :hit_count, ]
+                   :fraction, :amount, :turns, :probability, :hit_count, :attack_count]
 
   before_validation :parse
 

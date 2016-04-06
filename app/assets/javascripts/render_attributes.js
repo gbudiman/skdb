@@ -1,7 +1,7 @@
 var modifier_translation = {
 	attack_magical: 'Magical Attack',
   attack_physical: 'Physical Attack',
-  berserk: 'Berserk',
+  berserk: 'Zombie',
   buff_duration_reduction: _render_stat('down', 'Buff Duration', 'inverse'),
   cooldown_decrease: _render_stat('down', 'Cooldown', 'inverse'),
   heal: 'Heal (Recover)',
@@ -68,6 +68,8 @@ var modifier_translation = {
   summon_avatars: 'Summon Avatars',
   taunt: 'Taunt',
   untargettable: 'Untargettable',
+  void_shield_attack_based: 'Void Shield Attack-Based',
+  void_shield_hit_based: 'Void Shield Hit-Based'
 };
 
 // Use http://localhost:2000/compare/52/61/157/55/166 to test
@@ -102,7 +104,11 @@ var modifier_title = {
   amount: 'Amount',
   turns: 'Turn Duration',
   probability: 'Probability',
-  hit_count: 'Hit Count'
+  attack_count: 'Attack Count',
+  hit_count: 'Hit Count',
+  before_dying_invincible_turns: 'Turns of Invincibility',
+  before_dying_critical_rate_increase_fraction: 'Critical Rate Increase',
+  before_dying_counter_rate_increase_fraction: 'Counter Rate Increase'
 }
 
 function _render_modifier_title (x) {
@@ -156,6 +162,7 @@ function _render_modifier(mdfs) {
 	      case 'fraction':      return 'filter';        break;
 	      case 'turns':         return 'refresh';       break;
 	      case 'probability':   return 'equalizer';     break;
+        case 'attack_count':
 	      case 'hit_count':     return 'scissors';      break;
 	      case 'amount':        return 'superscript';   break;
 	      default:              return 'question-sign';  
