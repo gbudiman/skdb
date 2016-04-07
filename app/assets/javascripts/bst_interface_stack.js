@@ -10,6 +10,7 @@ function stack_table_add(d) {
         }
 
   			if ($('#stack_' + atb).length == 1) {
+          console.log('populating ' + atb);
           populate_stack_table(atb, a, e, s);
       //     var overwrite;
   				// that = $('#stack_' + atb).attr('data-contributor');
@@ -61,8 +62,11 @@ function populate_stack_table(atb, a, e, s) {
   if (a.name.match(/void_shield_hit_based/)) {
     maybe_vs_hit_based = a.modifiers.hit_count;
   }
-    
-  overwrite[e.hero_id] = {}
+  
+  if (overwrite[e.hero_id] == undefined) {
+    overwrite[e.hero_id] = {}
+  }
+  
   overwrite[e.hero_id][s.name] = { hero_name: e.hero_name,
                                    hero_rank: e.hero_rank,
                                    skill_cooldown: s.cooldown, 
