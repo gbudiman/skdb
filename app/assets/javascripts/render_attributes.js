@@ -66,7 +66,7 @@ var modifier_translation = {
   stat_physical_attack_decrease: _render_stat('down', 'Physical Attack'),
   stat_physical_attack_increase: _render_stat('up', 'Physical Attack'),
   stat_speed_decrease: _render_stat('down', 'Speed'),
-  summon_avatars: 'Summon Avatars',
+  summon_avatars: 'Summon Avatars on Death',
   taunt: 'Taunt',
   untargettable: 'Untargettable',
   void_shield_attack_based: 'Void Shield Attack-Based',

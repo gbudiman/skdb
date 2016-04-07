@@ -201,7 +201,7 @@ function adjust_stats(el) {
 
 function expand_stats_and_skills(s) {
   return [stylify_flair(undefined, 'Flair Not Available'),
-          stylify_stats(s.stats, s.level, s.plus),
+          stylify_stats(s.stats, s.level, s.plus, s.crit_count),
           stylify_skill(s.skills.active_0),
           stylify_skill(s.skills.active_1),
           stylify_skill(s.skills.passive, 'No Passive Aura'),
@@ -238,16 +238,25 @@ function stylify_hero(d) {
 }
 
 function stylify_skill(d, err_na) {
+  var hit_count;
+
   // IE hax
   err_na = err_na || 'Not Available';
 
   if (!d) {
     return $.label_group(err_na, 'default');
-  };
-
+  } else {
+    if (d.hit_count > 0) {
+      var glyph_sym = '<span class="glyphicon glyphicon-scissors"></span>';
+      hit_count = ' '
+                +  $.label_group([glyph_sym, d.hit_count], 'default', 'Hit Count');
+    }
+  }
+  
   return '<strong>' + d['name'] + '</strong>'
        + '<br />' 
        + $.prettify_skill(d.category, d.cooldown)
+       + hit_count
        + _render_attributes(d.attributes);
 }
 
@@ -275,14 +284,15 @@ function stylify_recs(d) {
   return s;
 }
 
-function stylify_stats(d, _level, _plus) {
+function stylify_stats(d, _level, _plus, _crit_count) {
   var s = attach_growth_control(_level, _plus);
+  var crit_count = _crit_count == -1 ? 'No data' : _crit_count
 
   $.each(d, function(stat, ds) {
     var g = derive_gradients(ds);
     var value = extrapolate(g, ds);
     s += $.label_group([stat.toUpperCase(), value], 'default', stat);
-    s += '</br >';
+    s += '<br />';
     if (g) {
       s += '<span class="formula-' + stat + '" '
         +  '  data-level-gradient=' + g.level_gradient + ' '
@@ -290,6 +300,8 @@ function stylify_stats(d, _level, _plus) {
         +  '  data-base=' + g.base + '></span>';
     }
   });
+
+  s += $.label_group(['Crit', crit_count], 'default', 'Critical Hit Count');
 
   return s;
 }
