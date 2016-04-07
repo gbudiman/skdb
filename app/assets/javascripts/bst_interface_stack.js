@@ -5,29 +5,34 @@ function stack_table_add(d) {
   		// s.name
   		// s.cooldown
   		$.each(s.attributes, function(atb, a) {
+        if (a.name.match(/with_piercing/)) {
+          populate_stack_table('piercing_damage', a, e, s);
+        }
+
   			if ($('#stack_' + atb).length == 1) {
-          var overwrite;
-  				that = $('#stack_' + atb).attr('data-contributor');
+          populate_stack_table(atb, a, e, s);
+      //     var overwrite;
+  				// that = $('#stack_' + atb).attr('data-contributor');
 
-  				if (that == undefined) {
-  					overwrite = {};
-  				} else {
-            overwrite = $.parseJSON(that);
-          }
+  				// if (that == undefined) {
+  				// 	overwrite = {};
+  				// } else {
+      //       overwrite = $.parseJSON(that);
+      //     }
   					
-  				overwrite[e.hero_id] = {}
-  				overwrite[e.hero_id][s.name] = { hero_name: e.hero_name,
-                                           hero_rank: e.hero_rank,
-                                           skill_cooldown: s.cooldown, 
-                                           skill_category: s.category,
-                                           atb_target: a.target }
+  				// overwrite[e.hero_id] = {}
+  				// overwrite[e.hero_id][s.name] = { hero_name: e.hero_name,
+      //                                      hero_rank: e.hero_rank,
+      //                                      skill_cooldown: s.cooldown, 
+      //                                      skill_category: s.category,
+      //                                      atb_target: a.target }
 
 
-  				$('#stack_' + atb).attr('data-contributor', JSON.stringify(overwrite));
-          $('#stack_' + atb).update_stack_cell();
-  				$('#stack_' + atb)
-  					.removeClass('disabled btn-default')
-						.addClass('btn-success');
+  				// $('#stack_' + atb).attr('data-contributor', JSON.stringify(overwrite));
+      //     $('#stack_' + atb).update_stack_cell();
+  				// $('#stack_' + atb)
+  				// 	.removeClass('disabled btn-default')
+						// .addClass('btn-success');
 
 					// $.parseJSON($('#stack_' + atb).attr('data-contributor'));
 
@@ -35,6 +40,47 @@ function stack_table_add(d) {
   		})
   	})
   })
+}
+
+function populate_stack_table(atb, a, e, s) {
+  var overwrite;
+  var maybe_vs_attack_based;
+  var maybe_vs_hit_based;
+  that = $('#stack_' + atb).attr('data-contributor');
+
+  if (that == undefined) {
+    overwrite = {};
+  } else {
+    overwrite = $.parseJSON(that);
+  }
+
+  if (a.name.match(/void_shield_attack_based/)) {
+    maybe_vs_attack_based = a.modifiers.attack_count;
+  }
+
+  if (a.name.match(/void_shield_hit_based/)) {
+    maybe_vs_hit_based = a.modifiers.hit_count;
+  }
+    
+  overwrite[e.hero_id] = {}
+  overwrite[e.hero_id][s.name] = { hero_name: e.hero_name,
+                                   hero_rank: e.hero_rank,
+                                   skill_cooldown: s.cooldown, 
+                                   skill_category: s.category,
+                                   atb_target: a.target,
+                                   maybe_amount: a.modifiers.amount || a.modifiers.on_regular_attack_amount,
+                                   maybe_fraction: a.modifiers.fraction,
+                                   maybe_turn: a.modifiers.turns,
+                                   maybe_vs_attack_based: maybe_vs_attack_based, 
+                                   maybe_vs_hit_based: maybe_vs_hit_based,
+                                   maybe_vs_attack: a.modifiers }
+
+
+  $('#stack_' + atb).attr('data-contributor', JSON.stringify(overwrite));
+  $('#stack_' + atb).update_stack_cell();
+  $('#stack_' + atb)
+    .removeClass('disabled btn-default')
+    .addClass('btn-success');
 }
 
 function stack_table_remove(id) {
@@ -98,12 +144,36 @@ function _expand_stack_cell_content(d) {
   $.each(content, function(i, x) {
     count++;
     $.each(x, function(skill_name, skill_data) {
+      var extra = new Array();
+
+      if (skill_data.maybe_fraction != undefined) {
+        extra.push($.prettify_generic('filter', skill_data.maybe_fraction, 'DPS (%)'));
+      }
+
+      if (skill_data.maybe_turn != undefined) {
+        extra.push($.prettify_generic('refresh', skill_data.maybe_turn, 'Duration (Turns)'));
+      }
+
+      if (skill_data.maybe_vs_attack_based != undefined) {
+        extra.push($.prettify_generic('scissors', skill_data.maybe_vs_attack_based));
+      }
+
+      if (skill_data.maybe_vs_hit_based != undefined) {
+        extra.push($.prettify_generic('scissors', skill_data.maybe_vs_hit_based));
+      }
+
+      if (skill_data.maybe_amount != undefined) {
+        extra.push($.prettify_generic('filter', skill_data.maybe_amount));
+      }
+
       s_content += '<a href="#" class="list-group-item">'
                 +    '<div class="row">'
                 +      '<div class="col-xs-12">'
                 +        skill_data.hero_name.strip_hero_rank()
                 +        '<span class="pull-right">'
                 +          $.prettify_target(skill_data.atb_target)
+                +          '&nbsp;'
+                +          extra.join('&nbsp;')
                 +        '</span>'
                 +      '</div>'
                 +      '<div class="col-xs-12">'

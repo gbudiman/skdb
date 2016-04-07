@@ -3,6 +3,7 @@ var modifier_translation = {
   attack_physical: 'Physical Attack',
   berserk: 'Zombie',
   buff_duration_reduction: _render_stat('down', 'Buff Duration', 'inverse'),
+  cooldown_increase: _render_stat('up', 'Cooldown', 'inverse'),
   cooldown_decrease: _render_stat('down', 'Cooldown', 'inverse'),
   heal: 'Heal (Recover)',
   heal_fraction_hp: 'Heal Fractional',

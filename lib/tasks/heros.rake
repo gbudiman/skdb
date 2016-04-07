@@ -5,4 +5,9 @@ namespace :heros do
   	TeamTemplate.rebuild_database!
   end
 
+  task rebuild_local: :environment do
+    XlsxInterface.rebuild_database!
+    TeamTemplate.rebuild_database!
+  end
+
 end

@@ -1,6 +1,6 @@
 module ApplicationHelper
-  CLIENT = 'GA 1.0.46'
-  VERSION = '0.3.13'
+  CLIENT = 'GA 1.0.51'
+  VERSION = '0.3.14'
 
   def self.set_active s, _x
   	return s.current_page?(_x) ? 'active' : ''

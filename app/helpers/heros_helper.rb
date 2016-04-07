@@ -3,16 +3,21 @@ module HerosHelper
 		return \
 			[['Blind'				, 'Block Rate'	   						, :top				, :top		, :blind, :stat_block_rate, :bidir],
 			 ['Electrify'		, 'Lethal Rate'		   		  		, nil					, nil   	, :electrify, :stat_lethal_rate, :bidir],
-			 ['Paralyze'		, 'Critical Rate'		     			, nil					, :bottom	, :paralyze, :stat_critical_rate, :bidir],
-			 ['Petrify'			, nil                         , nil					, nil 		, :petrify],
-			 ['Silence'			, 'Debuff Immunity'						, nil					, :top		, :silence, :immunity_to_all_debuff],
-			 ['Stun'				, 'Damage Immunity'						, :bottom			, nil  		, :stun, :immunity_to_all_damage],
-			 [nil						, 'Physical Immunity'         , nil					, nil			, nil, :immunity_to_physical_damage],
-			 ['Bleed'				, 'Magical Immunity'					, nil 				, nil   	, :bleed, :immunity_to_magical_damage],
-			 ['Burn'				, '5-target AOE Immunity'     , nil					, nil   	, :burn, :immunity_to_5_target_aoe],
-			 ['Chill'				, 'Buff Removal'							, nil 				, nil 		, :chill, :remove_buffs],
-			 ['Death'				, 'Buff Duration Reduction'		, nil					, nil  		, :death, :buff_duration_reduction],
-			 ['Poison'			, 'Debuff Removal'						, :bottom			, :bottom	, :poison, :remove_debuffs]]
+			 ['Paralyze'		, 'Critical Rate'		     			, nil					, nil   	, :paralyze, :stat_critical_rate, :bidir],
+			 ['Petrify'			, 'Skill Cooldown'            , nil					, :bottom	, :petrify, :cooldown, :bidir_reverse],
+			 ['Silence'			, nil             						, nil					, nil	  	, :silence],
+			 ['Stun'				, 'Debuff Immunity'						, :bottom			, :top  	, :stun, :immunity_to_all_debuff],
+			 [nil						, 'Damage Immunity'           , nil					, nil			, nil, :immunity_to_all_damage],
+			 ['Bleed'				, 'Physical Immunity'					, :top				, nil   	, :bleed, :immunity_to_physical_damage],
+			 ['Burn'				, 'Magical Immunity'          , nil					, nil   	, :burn, :immunity_to_magical_damage],
+			 ['Chill'				, '5-target AOE Immunity'			, nil 				, nil 		, :chill, :immunity_to_5_target_aoe],
+			 ['Death'				, 'Buff Removal'		          , nil					, nil  		, :death, :remove_buffs],
+			 ['Poison'			, 'Buff Duration Reduction'		, :bottom			, nil   	, :poison, :buff_duration_reduction],
+			 [nil           , 'Debuff Removal'            , nil         , nil     , nil, :remove_debuffs],
+			 [nil           , 'Piercing Damage'           , nil         , nil     , nil, :piercing_damage],
+			 [nil           , 'Void Shield: Attack-Based' , nil         , nil     , nil, :void_shield_attack_based],
+			 [nil           , 'Void Shield: Hit-Based'    , nil         , :bottom , nil, :void_shield_hit_based],
+			]
 	end
 
 	def generate_ii_stack _h
@@ -37,12 +42,17 @@ module HerosHelper
 	def generate_ss_stack _h
 		return capture_haml do
 			if _h[:bidir]
+				left_id = "stack_#{_h[:name_id]}_" + (_h[:bidir] == :bidir ? 'increase' : 'decrease')
+				right_id = "stack_#{_h[:name_id]}_" + (_h[:bidir] == :bidir ? 'decrease' : 'increase')
+				left_arrow = 'glyphicon glyphicon-arrow-' + (_h[:bidir] == :bidir ? 'up' : 'down')
+				right_arrow = 'glyphicon glyphicon-arrow-' + (_h[:bidir] == :bidir ? 'down' : 'up') 
+
 				haml_tag :div, class: 'col-xs-1 synergy-leading' do
 					synergy_class = _h[:side] ? "synergy-leading-#{_h[:side]}" : 'synergy-mid'
 					haml_tag :button,
 									 class: "btn btn-default disabled btn-block #{synergy_class}",
-									 id: "stack_#{_h[:name_id]}_increase" do
-						haml_tag :span, class: 'glyphicon glyphicon-arrow-up'
+									 id: left_id do
+						haml_tag :span, class: left_arrow
 					end
 				end
 
@@ -57,8 +67,8 @@ module HerosHelper
 					synergy_class = _h[:side] ? "synergy-closing-#{_h[:side]}" : 'synergy-mid'
 					haml_tag :button,
 									 class: "btn btn-default disabled btn-block #{synergy_class}",
-									 id: "stack_#{_h[:name_id]}_decrease" do
-						haml_tag :span, class: 'glyphicon glyphicon-arrow-down'
+									 id: right_id do
+						haml_tag :span, class: right_arrow
 					end
 				end
 			else
