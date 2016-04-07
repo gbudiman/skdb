@@ -169,7 +169,7 @@ function adjust_growth_level(el, val) {
     el.text(current_value + val);
   }
 
-  adjust_stats(el.parent());
+  adjust_stats(el.parent().parent());
 }
 
 function adjust_growth_plus(el, val) {
@@ -180,7 +180,7 @@ function adjust_growth_plus(el, val) {
     el.text(current_value + val);
   }
 
-  adjust_stats(el.parent());
+  adjust_stats(el.parent().parent());
 }
 
 function adjust_stats(el) {
@@ -285,14 +285,16 @@ function stylify_recs(d) {
 }
 
 function stylify_stats(d, _level, _plus, _crit_count) {
-  var s = attach_growth_control(_level, _plus);
-  var crit_count = _crit_count == -1 ? 'No data' : _crit_count
+  var s = '<div class="col-xs-12 text-center">' + attach_growth_control(_level, _plus) + '</div>';
+  var crit_count = _crit_count == -1 ? 'No data' : (_crit_count + 'X')
 
   $.each(d, function(stat, ds) {
     var g = derive_gradients(ds);
     var value = extrapolate(g, ds);
-    s += $.label_group([stat.toUpperCase(), value], 'default', stat);
-    s += '<br />';
+    s += '<div class="col-xs-6">' 
+      +    $.label_group([stat.toUpperCase(), value], 'default', stat) 
+      +  '</div>';
+
     if (g) {
       s += '<span class="formula-' + stat + '" '
         +  '  data-level-gradient=' + g.level_gradient + ' '
@@ -301,7 +303,9 @@ function stylify_stats(d, _level, _plus, _crit_count) {
     }
   });
 
-  s += $.label_group(['Crit', crit_count], 'default', 'Critical Hit Count');
+  s += '<div class="col-xs-6">'
+    +    $.label_group(['Crit', crit_count], 'default', 'Critical Hit Count')
+    +  '</div>';
 
   return s;
 }
