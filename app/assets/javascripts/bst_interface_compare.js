@@ -238,7 +238,7 @@ function stylify_hero(d) {
 }
 
 function stylify_skill(d, err_na) {
-  var hit_count;
+  var hit_count = '';
 
   // IE hax
   err_na = err_na || 'Not Available';
